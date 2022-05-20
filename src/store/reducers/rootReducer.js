@@ -1,0 +1,15 @@
+import userReducer from "./userReducer";
+// import todoReducer from "./todoReducer";
+import { combineReducers, createStore } from "redux";
+
+const rootReducer = combineReducers({
+  user: userReducer,
+  //   todo: todoReducer,
+});
+
+const store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+export default store;
