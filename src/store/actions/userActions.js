@@ -7,6 +7,7 @@ import {
   privateRequest,
   privateRequestGet,
 } from "../../requestMethods";
+import { useQuery } from "react-query";
 
 const { REACT_APP_SALT } = process.env;
 
@@ -75,17 +76,42 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "ERROR_RESET_PASSWORD", payload: resMessage });
   }
 };
-export const refreshTest = async () => {
-  try {
-    const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
-    privateRequestGet.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${dehash}`;
-    const result = await privateRequestGet.get(`/api/auth/test`);
-    console.log(result.data.payload);
-    const resMessage = result.data;
-    return resMessage;
-  } catch (error) {
-    // console.log(error.response);
+// export const UseRefreshTest = async () => {
+//   try {
+//     const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
+//     privateRequestGet.defaults.headers.common[
+//       "Authorization"
+//     ] = `Bearer ${dehash}`;
+//     const result = await privateRequestGet.get(`/api/auth/test`);
+//     console.log(result.data.payload);
+//     const resMessage = result.data;
+//     return resMessage;
+//   } catch (error) {
+//     // console.log(error.response);
+//   }
+// };
+
+export const UseRefreshTest = (enabled, setEnabled) => {
+  console.log(enabled);
+  const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
+  privateRequestGet.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${dehash}`;
+  const { data, error, refetch } = useQuery(
+    ["Test"],
+    async () => {
+      const result = await privateRequestGet.get(`/api/auth/test`);
+      return result.data.payload;
+    },
+    { enabled: enabled, manual: true }
+  );
+
+  if (data) {
+    console.log(data.emp);
   }
+  if (error) {
+    console.log(error.message);
+  }
+
+  return { data, refetch };
 };

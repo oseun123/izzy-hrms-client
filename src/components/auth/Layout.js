@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./layouts/header/Header";
 import Aside from "./layouts/aside/Aside";
 import Footer from "./layouts/footer/Footer";
-import { refreshTest } from "../../store/actions/userActions";
+import { UseRefreshTest } from "../../store/actions/userActions";
 
 const Layout = () => {
+  const [enabled, setEnabled] = useState(false);
   function handleClick(e) {
     e.preventDefault();
-    refreshTest();
+    refetch();
   }
+  const { refetch } = UseRefreshTest(enabled, setEnabled);
   return (
     <div className=" hold-transition sidebar-mini layout-fixed text-sm">
       {/* Site wrapper */}
