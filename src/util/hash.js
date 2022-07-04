@@ -1,3 +1,7 @@
+import Cookies from "js-cookie";
+import { token } from "../config";
+const { REACT_APP_SALT } = process.env;
+
 export const crypt = (salt, text) => {
   const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
   const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
@@ -22,4 +26,12 @@ export const decrypt = (salt, encoded) => {
     .map(applySaltToChar)
     .map((charCode) => String.fromCharCode(charCode))
     .join("");
+};
+export const hashData = (payload) => {
+  const hash = crypt(REACT_APP_SALT, JSON.stringify(payload));
+  return hash;
+};
+export const dehashData = () => {
+  const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
+  return JSON.parse(dehash);
 };

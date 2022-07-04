@@ -3,11 +3,10 @@ import Spinner from "../../../helpers/Spinner";
 import { logOut } from "../../../../store/actions/userActions";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
-import Cookies from "js-cookie";
-import { token } from "../../../../config";
+
 import { Link } from "react-router-dom";
-import { decrypt } from "../../../../util/hash";
-const { REACT_APP_SALT } = process.env;
+import { dehashData } from "../../../../util/hash";
+
 function Header() {
   const [logoutState, setLogOutState] = useState(false);
   const [profile, setProfile] = useState({ first_name: "", last_name: "" });
@@ -18,8 +17,8 @@ function Header() {
     logOut(dispatch);
   }
   useEffect(() => {
-    const tok = decrypt(REACT_APP_SALT, Cookies.get(token));
-    const { first_name, last_name } = jwt_decode(tok);
+    const { token } = dehashData();
+    const { first_name, last_name } = jwt_decode(token);
     setProfile((current) => ({ ...current, first_name, last_name }));
   }, []);
   return (
