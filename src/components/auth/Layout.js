@@ -6,11 +6,12 @@ import { UseRefreshTest } from "../../store/actions/userActions";
 
 const Layout = () => {
   const [enabled, setEnabled] = useState(false);
+  const { refetch } = UseRefreshTest(enabled, setEnabled);
   function handleClick(e) {
+    // setEnabled();
     e.preventDefault();
     refetch();
   }
-  const { refetch } = UseRefreshTest(enabled, setEnabled);
   return (
     <div className=" hold-transition sidebar-mini layout-fixed text-sm">
       {/* Site wrapper */}

@@ -1,6 +1,6 @@
-import { token } from "../../config";
 import Cookies from "js-cookie";
-import { decrypt, crypt } from "../../util/hash";
+import { token } from "../../config";
+import { hashData, dehashData } from "../../util/hash";
 
 import {
   publicRequest,
@@ -8,8 +8,6 @@ import {
   privateRequestGet,
 } from "../../requestMethods";
 import { useQuery } from "react-query";
-
-const { REACT_APP_SALT } = process.env;
 
 export const resetUsersState = (dispatch) => {
   dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -20,9 +18,8 @@ export const login = async (dispatch, user, history) => {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     const result = await publicRequest.post("/api/auth/sign_in", user);
-    const hash = crypt(REACT_APP_SALT, result.data.payload.token);
-
-    // console.log(decrypt(REACT_APP_SALT, sd));
+    console.log(result.data.payload);
+    const hash = hashData(result.data.payload);
     Cookies.set(token, hash);
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "SUCCESS_LOGIN", payload: result.data });
@@ -35,8 +32,11 @@ export const login = async (dispatch, user, history) => {
 };
 
 export const logOut = async (dispatch) => {
-  const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
-  privateRequest.defaults.headers.common["Authorization"] = `Bearer ${dehash}`;
+  const dehash = dehashData();
+  console.log(dehash);
+  privateRequest.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${dehash.token}`;
   await privateRequest.post("/api/auth/logout");
   Cookies.remove(token);
   dispatch({ type: "LOGOUT_USER" });
@@ -92,15 +92,17 @@ export const resetPassword = async (dispatch, creds) => {
 // };
 
 export const UseRefreshTest = (enabled, setEnabled) => {
-  console.log(enabled);
-  const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
+  const dehash = dehashData();
   privateRequestGet.defaults.headers.common[
     "Authorization"
-  ] = `Bearer ${dehash}`;
+  ] = `Bearer ${dehash.token}`;
+
   const { data, error, refetch } = useQuery(
     ["Test"],
     async () => {
       const result = await privateRequestGet.get(`/api/auth/test`);
+      alert("fhfhf");
+      console.log(result.data.payload);
       return result.data.payload;
     },
     { enabled: enabled, manual: true }

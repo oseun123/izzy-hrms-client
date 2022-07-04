@@ -19,7 +19,7 @@ function Header() {
   }
   useEffect(() => {
     const tok = decrypt(REACT_APP_SALT, Cookies.get(token));
-    const { first_name, last_name } = jwt_decode(tok);
+    const { first_name, last_name } = jwt_decode(JSON.parse(tok).token);
     setProfile((current) => ({ ...current, first_name, last_name }));
   }, []);
   return (
@@ -27,7 +27,7 @@ function Header() {
       {/* Navbar */}
       <nav className="main-header navbar navbar-expand navbar-white navbar-light">
         {/* Left navbar links */}
-        {/* <ul className="navbar-nav">
+        <ul className="navbar-nav">
           <li className="nav-item">
             <a
               className="nav-link"
@@ -38,17 +38,7 @@ function Header() {
               <i className="fas fa-bars" />
             </a>
           </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="../../index3.html" className="nav-link">
-              Home
-            </a>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href={() => false} className="nav-link">
-              Contact
-            </a>
-          </li>
-        </ul> */}
+        </ul>
         {/* SEARCH FORM */}
         {/* <form className="form-inline ml-3">
           <div className="input-group input-group-sm">

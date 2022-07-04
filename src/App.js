@@ -14,8 +14,8 @@ import {
 import Cookies from "js-cookie";
 import { token } from "./config";
 import jwt_decode from "jwt-decode";
-import { decrypt, crypt } from "./util/hash";
-const { REACT_APP_SALT } = process.env;
+import { dehashData, hashData } from "./util/hash";
+
 
 function App() {
   return (
@@ -39,14 +39,13 @@ function App() {
 
 privateRequestGet.interceptors.request.use(
   async (config) => {
-    const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
+    const dehash = dehashData;
     let currentDate = new Date();
-    const decodedToken = jwt_decode(dehash);
+    const decodedToken = jwt_decode(dehash.token);
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
       const res = await refreshToken.get("/api/auth/refresh");
       config.headers["Authorization"] = "Bearer " + res.data.payload.new_token;
-      const hash = crypt(REACT_APP_SALT, res.data.payload.new_token);
-
+      const hash = hashData(res.data.payload.new_token);
       Cookies.set(token, hash);
     }
     return config;
@@ -57,13 +56,13 @@ privateRequestGet.interceptors.request.use(
 );
 privateRequest.interceptors.request.use(
   async (config) => {
-    const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
+    const dehash = dehashData();
     let currentDate = new Date();
-    const decodedToken = jwt_decode(dehash);
+    const decodedToken = jwt_decode(dehash.token);
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
       const res = await refreshToken.get("/api/auth/refresh");
       config.headers["Authorization"] = "Bearer " + res.data.payload.new_token;
-      const hash = crypt(REACT_APP_SALT, res.data.payload.new_token);
+      const hash = hashData(res.data.payload.new_token);
       Cookies.set(token, hash);
     }
     return config;
