@@ -1,15 +1,13 @@
 import { token } from "../../config";
 import Cookies from "js-cookie";
-import { hashData, dehashData } from "../../util/hash";
+import { hashData } from "../../util/hash";
 
 import {
   publicRequest,
-  privateRequest,
-  privateRequestGet,
+  setPrivateRequest,
+  setPrivateRequestGet,
 } from "../../requestMethods";
 import { useQuery } from "react-query";
-
-const { REACT_APP_SALT } = process.env;
 
 export const resetUsersState = (dispatch) => {
   dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -33,14 +31,7 @@ export const login = async (dispatch, user, history) => {
 };
 
 export const logOut = async (dispatch) => {
-  const dehash = dehashData();
-
-  console.log(dehash.token);
-
-  privateRequest.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${dehash.token}`;
-  await privateRequest.post("/api/auth/logout");
+  await setPrivateRequest().post("/api/auth/logout");
   Cookies.remove(token);
   dispatch({ type: "LOGOUT_USER" });
 };
@@ -79,31 +70,13 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "ERROR_RESET_PASSWORD", payload: resMessage });
   }
 };
-// export const UseRefreshTest = async () => {
-//   try {
-//     const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
-//     privateRequestGet.defaults.headers.common[
-//       "Authorization"
-//     ] = `Bearer ${dehash}`;
-//     const result = await privateRequestGet.get(`/api/auth/test`);
-//     console.log(result.data.payload);
-//     const resMessage = result.data;
-//     return resMessage;
-//   } catch (error) {
-//     // console.log(error.response);
-//   }
-// };
 
 export const UseRefreshTest = (enabled, setEnabled) => {
   console.log(enabled);
-  const dehash = dehashData();
-  privateRequestGet.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${dehash.token}`;
   const { data, error, refetch } = useQuery(
     ["Test"],
     async () => {
-      const result = await privateRequestGet.get(`/api/auth/test`);
+      const result = await setPrivateRequestGet().get(`/api/auth/test`);
       return result.data.payload;
     },
     { enabled: enabled, manual: true }
