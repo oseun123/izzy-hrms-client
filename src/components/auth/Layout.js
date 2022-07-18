@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./layouts/header/Header";
 import Aside from "./layouts/aside/Aside";
 import Footer from "./layouts/footer/Footer";
-import { UseRefreshTest } from "../../store/actions/userActions";
+import { UseRefreshTest } from "../../store/actions/userHooksActions";
 
 const Layout = () => {
   const [enabled, setEnabled] = useState(false);

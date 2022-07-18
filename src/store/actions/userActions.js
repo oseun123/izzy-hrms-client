@@ -2,12 +2,7 @@ import { token } from "../../config";
 import Cookies from "js-cookie";
 import { hashData } from "../../util/hash";
 
-import {
-  publicRequest,
-  setPrivateRequest,
-  setPrivateRequestGet,
-} from "../../requestMethods";
-import { useQuery } from "react-query";
+import { publicRequest, setPrivateRequest } from "../../requestMethods";
 
 export const resetUsersState = (dispatch) => {
   dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -18,6 +13,7 @@ export const login = async (dispatch, user, history) => {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     const result = await publicRequest.post("/api/auth/sign_in", user);
+    console.log(result.data.payload);
     const hash = hashData(result.data.payload);
     Cookies.set(token, hash);
     dispatch({ type: "STOP_SPINNER" });
@@ -31,9 +27,12 @@ export const login = async (dispatch, user, history) => {
 };
 
 export const logOut = async (dispatch) => {
-  await setPrivateRequest().post("/api/auth/logout");
+  dispatch({ type: "START_SPINNER" });
+  const result = await setPrivateRequest().post("/api/auth/logout");
   Cookies.remove(token);
-  dispatch({ type: "LOGOUT_USER" });
+  const payload = { status: result.data.status, message: result.data.message };
+  dispatch({ type: "STOP_SPINNER" });
+  dispatch({ type: "LOGOUT_USER", payload });
 };
 
 export const requestPasswordLink = async (dispatch, creds) => {
@@ -69,25 +68,4 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "ERROR_RESET_PASSWORD", payload: resMessage });
   }
-};
-
-export const UseRefreshTest = (enabled, setEnabled) => {
-  console.log(enabled);
-  const { data, error, refetch } = useQuery(
-    ["Test"],
-    async () => {
-      const result = await setPrivateRequestGet().get(`/api/auth/test`);
-      return result.data.payload;
-    },
-    { enabled: enabled, manual: true }
-  );
-
-  if (data) {
-    console.log(data.emp);
-  }
-  if (error) {
-    console.log(error.message);
-  }
-
-  return { data, refetch };
 };
