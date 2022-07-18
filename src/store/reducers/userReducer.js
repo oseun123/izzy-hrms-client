@@ -1,11 +1,24 @@
 import { token } from "../../config";
 import Cookies from "js-cookie";
+import { dehashData } from "../../util/hash";
+import jwt_decode from "jwt-decode";
+
+const dehashed = dehashData();
+let currentUser = {};
+let userpermissions = [];
+if (dehashed) {
+  const { token: tok, user } = dehashData();
+  currentUser = Cookies.get(token) ? jwt_decode(tok) : {};
+  userpermissions = Cookies.get(token) ? user.permissions : [];
+}
+
 const initState = {
   message: null,
   status: null,
-  errors: null,
   spinner: false,
   is_Loggedin: Cookies.get(token) ? true : false,
+  currentUser,
+  userpermissions,
 };
 
 const userReducer = (state = initState, { type, payload }) => {
@@ -15,7 +28,6 @@ const userReducer = (state = initState, { type, payload }) => {
         ...state,
         message: null,
         status: null,
-        errors: null,
         spinner: false,
       };
     case "START_SPINNER":
@@ -28,14 +40,25 @@ const userReducer = (state = initState, { type, payload }) => {
         ...state,
         spinner: false,
       };
-    case "SUCCESS_LOGIN":
-      //   console.log(payload);
+    case "SUCCESS_LOGIN": {
+      const dehashed = dehashData();
+      let currentUser = {};
+      let userpermissions = [];
+      if (dehashed) {
+        const { token: tok, user } = dehashData();
+        currentUser = Cookies.get(token) ? jwt_decode(tok) : {};
+        userpermissions = Cookies.get(token) ? user.permissions : [];
+      }
       return {
         ...state,
         is_Loggedin: true,
         status: payload.status,
         message: payload.message,
+        currentUser,
+        userpermissions,
       };
+    }
+    //   console.log(payload);
     case "REQUEST_PASSWORD_LINK_SUCCESS":
       //   console.log(payload);
       return {
@@ -73,10 +96,11 @@ const userReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         is_Loggedin: false,
-        message: null,
-        status: null,
-        errors: null,
+        status: payload.status,
+        message: payload.message,
         spinner: false,
+        currentUser: {},
+        userpermissions: [],
       };
     default:
       return state;

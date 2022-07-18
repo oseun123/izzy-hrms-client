@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "../../hooks";
 import MiniSpinner from "./../helpers/MiniSpinner";
 import Message from "./../helpers/Message";
@@ -8,7 +8,7 @@ import classnames from "classnames";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loginForm } from "../../util/formValidations";
-import { login, resetUsersState } from "./../../store/actions/userActions";
+import { login } from "./../../store/actions/userActions";
 const Login = () => {
   const initLoginUser = {
     email: "",
@@ -28,10 +28,6 @@ const Login = () => {
     initLoginUser,
     loginForm
   );
-
-  useEffect(() => {
-    return () => resetUsersState(dispatch);
-  }, [dispatch]);
 
   return (
     <div className="hold-transition login-page">

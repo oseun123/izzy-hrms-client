@@ -1,13 +1,9 @@
 import Cookies from "js-cookie";
-import { token } from "../../config";
-import { hashData, dehashData } from "../../util/hash";
 
-import {
-  publicRequest,
-  privateRequest,
-  privateRequestGet,
-} from "../../requestMethods";
-import { useQuery } from "react-query";
+import { hashData } from "../../util/hash";
+
+import { publicRequest, setPrivateRequest } from "../../requestMethods";
+
 
 export const resetUsersState = (dispatch) => {
   dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -32,14 +28,13 @@ export const login = async (dispatch, user, history) => {
 };
 
 export const logOut = async (dispatch) => {
-  const dehash = dehashData();
-  console.log(dehash);
-  privateRequest.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${dehash.token}`;
-  await privateRequest.post("/api/auth/logout");
+
+  dispatch({ type: "START_SPINNER" });
+  const result = await setPrivateRequest().post("/api/auth/logout");
   Cookies.remove(token);
-  dispatch({ type: "LOGOUT_USER" });
+  const payload = { status: result.data.status, message: result.data.message };
+  dispatch({ type: "STOP_SPINNER" });
+  dispatch({ type: "LOGOUT_USER", payload });
 };
 
 export const requestPasswordLink = async (dispatch, creds) => {
@@ -76,44 +71,4 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "ERROR_RESET_PASSWORD", payload: resMessage });
   }
 };
-// export const UseRefreshTest = async () => {
-//   try {
-//     const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
-//     privateRequestGet.defaults.headers.common[
-//       "Authorization"
-//     ] = `Bearer ${dehash}`;
-//     const result = await privateRequestGet.get(`/api/auth/test`);
-//     console.log(result.data.payload);
-//     const resMessage = result.data;
-//     return resMessage;
-//   } catch (error) {
-//     // console.log(error.response);
-//   }
-// };
 
-export const UseRefreshTest = (enabled, setEnabled) => {
-  const dehash = dehashData();
-  privateRequestGet.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${dehash.token}`;
-
-  const { data, error, refetch } = useQuery(
-    ["Test"],
-    async () => {
-      const result = await privateRequestGet.get(`/api/auth/test`);
-      alert("fhfhf");
-      console.log(result.data.payload);
-      return result.data.payload;
-    },
-    { enabled: enabled, manual: true }
-  );
-
-  if (data) {
-    console.log(data.emp);
-  }
-  if (error) {
-    console.log(error.message);
-  }
-
-  return { data, refetch };
-};

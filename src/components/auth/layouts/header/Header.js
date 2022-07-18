@@ -1,31 +1,38 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "../../../helpers/Spinner";
 import { logOut } from "../../../../store/actions/userActions";
-import { useDispatch } from "react-redux";
-import jwt_decode from "jwt-decode";
-import Cookies from "js-cookie";
-import { token } from "../../../../config";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  currentUser,
+  message,
+  status,
+  spinner,
+} from "../../../../store/selectors/userSelectors";
 import { Link } from "react-router-dom";
-import { decrypt } from "../../../../util/hash";
-const { REACT_APP_SALT } = process.env;
+import Message from "../../../helpers/Message";
+
 function Header() {
-  const [logoutState, setLogOutState] = useState(false);
+  const { first_name, last_name } = useSelector(currentUser);
+  const store_message = useSelector(message);
+  const store_status = useSelector(status);
+  const store_spinner = useSelector(spinner);
+
   const [profile, setProfile] = useState({ first_name: "", last_name: "" });
   const dispatch = useDispatch();
   function logOutUser(e) {
     e.preventDefault();
-    setLogOutState(true);
     logOut(dispatch);
   }
   useEffect(() => {
-    const tok = decrypt(REACT_APP_SALT, Cookies.get(token));
-    const { first_name, last_name } = jwt_decode(JSON.parse(tok).token);
     setProfile((current) => ({ ...current, first_name, last_name }));
-  }, []);
+  }, [first_name, last_name]);
   return (
     <>
       {/* Navbar */}
       <nav className="main-header navbar navbar-expand navbar-white navbar-light">
+        {store_message && store_status ? (
+          <Message message={store_message} status={store_status} />
+        ) : null}
         {/* Left navbar links */}
         <ul className="navbar-nav">
           <li className="nav-item">
@@ -59,11 +66,11 @@ function Header() {
 
         <ul className="navbar-nav ml-auto">
           {/* Notifications Dropdown Menu */}
-          {logoutState ? <Spinner color="success" /> : null}
+          {store_spinner ? <Spinner color="success" /> : null}
           <li className="nav-item dropdown">
             <Link className="nav-link" data-toggle="dropdown" to={() => false}>
-              {profile.last_name.toUpperCase()}{" "}
-              {profile.first_name.toUpperCase()} <i className="far fa-user" />
+              {profile.last_name?.toUpperCase()}{" "}
+              {profile.first_name?.toUpperCase()} <i className="far fa-user" />
               <span className="badge badge-warning navbar-badge"></span>
             </Link>
             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">

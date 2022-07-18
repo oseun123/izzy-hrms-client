@@ -32,6 +32,13 @@ export const hashData = (payload) => {
   return hash;
 };
 export const dehashData = () => {
-  const dehash = decrypt(REACT_APP_SALT, Cookies.get(token));
-  return JSON.parse(dehash);
+  const tok = Cookies.get(token);
+  if (tok) {
+    const dehash = decrypt(REACT_APP_SALT, tok);
+    if (dehash) {
+      return JSON.parse(dehash);
+    }
+  }
+  return null;
+
 };
