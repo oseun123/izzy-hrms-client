@@ -1,8 +1,9 @@
-import { token } from "../../config";
 import Cookies from "js-cookie";
+
 import { hashData } from "../../util/hash";
 
 import { publicRequest, setPrivateRequest } from "../../requestMethods";
+
 
 export const resetUsersState = (dispatch) => {
   dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -27,6 +28,7 @@ export const login = async (dispatch, user, history) => {
 };
 
 export const logOut = async (dispatch) => {
+
   dispatch({ type: "START_SPINNER" });
   const result = await setPrivateRequest().post("/api/auth/logout");
   Cookies.remove(token);
@@ -69,3 +71,4 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "ERROR_RESET_PASSWORD", payload: resMessage });
   }
 };
+

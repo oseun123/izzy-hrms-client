@@ -34,7 +34,7 @@ function Header() {
           <Message message={store_message} status={store_status} />
         ) : null}
         {/* Left navbar links */}
-        {/* <ul className="navbar-nav">
+        <ul className="navbar-nav">
           <li className="nav-item">
             <a
               className="nav-link"
@@ -45,17 +45,7 @@ function Header() {
               <i className="fas fa-bars" />
             </a>
           </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="../../index3.html" className="nav-link">
-              Home
-            </a>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href={() => false} className="nav-link">
-              Contact
-            </a>
-          </li>
-        </ul> */}
+        </ul>
         {/* SEARCH FORM */}
         {/* <form className="form-inline ml-3">
           <div className="input-group input-group-sm">
