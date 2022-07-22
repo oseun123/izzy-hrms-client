@@ -71,7 +71,10 @@ privateRequest.interceptors.response.use(
   },
   function (error) {
     const err = error.response.data.message;
-    if (err === "Invalid Session. Kindly login again.") {
+    if (
+      err === "Invalid Session. Kindly login again." ||
+      err === "Unauthorized"
+    ) {
       Cookies.remove(token);
       store.dispatch({
         type: "LOGOUT_USER",
@@ -90,7 +93,10 @@ privateRequestGet.interceptors.response.use(
   },
   function (error) {
     const err = error.response.data.message;
-    if (err === "Invalid Session. Kindly login again.") {
+    if (
+      err === "Invalid Session. Kindly login again." ||
+      err === "Unauthorized"
+    ) {
       Cookies.remove(token);
       store.dispatch({
         type: "LOGOUT_USER",

@@ -1,5 +1,6 @@
 import React from "react";
 import Dashboard from "./Dashboard";
+import Preferences from "./Preferences";
 function Aside() {
   function handleClick(e) {
     let parent = e.target.closest(".has-treeview");
@@ -67,8 +68,7 @@ function Aside() {
          with font-awesome or any other icon font library */}
 
               <Dashboard />
-              <Dashboard />
-              <Dashboard />
+              <Preferences />
             </ul>
           </nav>
           {/* /.sidebar-menu */}

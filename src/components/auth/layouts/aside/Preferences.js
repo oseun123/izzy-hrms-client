@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { dashboardpermissions } from "../../../../store/selectors/userSelectors";
+import { preferencespermissions } from "../../../../store/selectors/userSelectors";
 
-function Dashboard() {
-  const permissions = useSelector(dashboardpermissions);
+function Preferences() {
+  const permissions = useSelector(preferencespermissions);
   // console.log(permissions);
 
   if (permissions?.length) {
@@ -13,7 +13,7 @@ function Dashboard() {
         <a href={() => false} className="nav-link">
           <i className="nav-icon fas fa-tachometer-alt" />
           <p>
-            Dashboard
+            Preferences
             <i className="right fas fa-angle-left" />
           </p>
         </a>
@@ -36,4 +36,4 @@ function Dashboard() {
   }
 }
 
-export default Dashboard;
+export default Preferences;

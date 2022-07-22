@@ -12,4 +12,19 @@ const spinner = createSelector([user], (user) => user.spinner);
 
 const userpermissions = createSelector([user], (user) => user.userpermissions);
 
-export { currentUser, message, status, spinner, userpermissions };
+const dashboardpermissions = createSelector([user], (user) =>
+  user.userpermissions?.filter((permission) => permission.for === "Dashboard")
+);
+const preferencespermissions = createSelector([user], (user) =>
+  user.userpermissions?.filter((permission) => permission.for === "Preferences")
+);
+
+export {
+  currentUser,
+  message,
+  status,
+  spinner,
+  userpermissions,
+  dashboardpermissions,
+  preferencespermissions,
+};
