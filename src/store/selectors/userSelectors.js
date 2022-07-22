@@ -19,6 +19,18 @@ const preferencespermissions = createSelector([user], (user) =>
   user.userpermissions?.filter((permission) => permission.for === "Preferences")
 );
 
+const userhaspermission = () =>
+  createSelector(
+    (state) => state.user,
+    (_, permission) => {
+      return permission;
+    },
+    (user, permission) => {
+      return user.userpermissions?.filter((perm) => perm.action === permission)
+        .length;
+    }
+  );
+
 export {
   currentUser,
   message,
@@ -27,4 +39,5 @@ export {
   userpermissions,
   dashboardpermissions,
   preferencespermissions,
+  userhaspermission,
 };

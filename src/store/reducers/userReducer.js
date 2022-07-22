@@ -23,6 +23,13 @@ const initState = {
 
 const userReducer = (state = initState, { type, payload }) => {
   switch (type) {
+    case "NOT_AUTHORIZED":
+      return {
+        ...state,
+        message:
+          "Your are not authorized to perform this action.Kindly contact the administrator",
+        status: "error",
+      };
     case "CLEAR_USERS_ERRORS":
       return {
         ...state,
@@ -30,6 +37,7 @@ const userReducer = (state = initState, { type, payload }) => {
         status: null,
         spinner: false,
       };
+
     case "START_SPINNER":
       return {
         ...state,

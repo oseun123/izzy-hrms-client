@@ -21,7 +21,7 @@ function Dashboard() {
           {permissions?.map((item) => {
             return (
               <li className="nav-item" key={item.id}>
-                <Link to="/ok" className="nav-link dont-close ">
+                <Link to={item.name} className="nav-link dont-close ">
                   <i className="far fa-circle nav-icon dont-close" />
                   <p className="dont-close">{item.name}</p>
                 </Link>
