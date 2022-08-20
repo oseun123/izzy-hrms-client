@@ -321,7 +321,7 @@ const role_columns = (isTabletOrMobile, confirm_text, confirmAction) => {
             <Link to={`/preferences/view-roles/${id}`}>
               <Tag color="geekblue">View</Tag>
             </Link>
-            <Link>
+            <Link to={`/preferences/edit-roles/${id}`}>
               <Tag color="cyan">Edit</Tag>
             </Link>
             <Link>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -8,7 +9,7 @@ function Footer() {
           <b>Version</b> 3.0.5
         </div>
         <strong>
-          Copyright © 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.
+          Copyright © 2014-2019 <Link to={() => false}> Izzy hrms V.1.00</Link>.
         </strong>{" "}
         All rights reserved.
       </footer>

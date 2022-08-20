@@ -46,14 +46,14 @@ function Header() {
         {/* Left navbar links */}
         <ul className="navbar-nav">
           <li className="nav-item">
-            <a
+            <Link
               className="nav-link"
               data-widget="pushmenu"
-              href="#!"
+              to="#!"
               role="button"
             >
               <i className="fas fa-bars" />
-            </a>
+            </Link>
           </li>
           <li className="nav-item  d-sm-inline-block ">
             <Link onClick={goBack} to="#!" className="nav-link" title="Go back">

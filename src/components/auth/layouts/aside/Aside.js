@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Preferences from "./Preferences";
 function Aside() {
@@ -27,7 +28,7 @@ function Aside() {
       {/* Main Sidebar Container */}
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
         {/* Brand Logo */}
-        <a href="../../index3.html" className="brand-link">
+        <Link to="#" className="brand-link">
           <img
             src="../../dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"
@@ -37,7 +38,7 @@ function Aside() {
           <span className="brand-text font-weight-light">
             <b>Izzy</b>HRMS
           </span>
-        </a>
+        </Link>
         {/* Sidebar */}
         <div className="sidebar">
           {/* Sidebar user (optional) */}
@@ -50,9 +51,9 @@ function Aside() {
               />
             </div>
             <div className="info">
-              <a href={() => false} className="d-block">
+              <Link to="/" className="d-block">
                 Alexander Pierce
-              </a>
+              </Link>
             </div>
           </div>
           {/* Sidebar Menu */}

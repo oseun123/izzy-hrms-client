@@ -8,7 +8,12 @@ import { Switch, Route } from "react-router-dom";
 // dashboard components
 import { PersonalDashboard } from "./layouts/dashboard";
 //  preferences component
-import { CreateRoles, ViewRoles, RoleDetails } from "./layouts/preferences";
+import {
+  CreateRoles,
+  ViewRoles,
+  RoleDetails,
+  EditRoles,
+} from "./layouts/preferences";
 const Footer = lazy(() => import("./layouts/footer/Footer"));
 const Layout = () => {
   return (
@@ -36,6 +41,12 @@ const Layout = () => {
                 exact
                 path="/preferences/create-roles"
                 component={CreateRoles}
+                permission="CREATE_ROLES"
+              />
+              <HasPermission
+                exact
+                path="/preferences/edit-roles/:id"
+                component={EditRoles}
                 permission="CREATE_ROLES"
               />
               <HasPermission

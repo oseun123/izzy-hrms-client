@@ -35,4 +35,10 @@ function useShallowEqualSelector(selector) {
   return useSelector(selector, shallowEqual);
 }
 
-export { useForm, useShallowEqualSelector };
+function useRerender() {
+  const [rerender, setRerender] = useState(false);
+  setRerender(!rerender);
+  return setRerender;
+}
+
+export { useForm, useShallowEqualSelector, useRerender };

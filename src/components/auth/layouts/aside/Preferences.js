@@ -16,13 +16,13 @@ function Preferences() {
   if (root_permissions?.length || roles_permissions?.length) {
     return (
       <li className="nav-item has-treeview">
-        <a href={() => false} className="nav-link">
+        <Link to={() => false} className="nav-link">
           <i className="nav-icon fas fa-user-cog" />
           <p>
             Preferences
             <i className="right fas fa-angle-left" />
           </p>
-        </a>
+        </Link>
         <ul className="nav nav-treeview">
           {root_permissions?.map((item) => {
             return (
@@ -37,13 +37,13 @@ function Preferences() {
           {roles_permissions.length ? (
             <>
               <li className="nav-item has-treeview">
-                <a href={() => false} className="nav-link ">
+                <Link to={() => false} className="nav-link ">
                   <i className="far fa-circle nav-icon fa-rd " />
                   <p>
                     Roles
                     <i className="right fas fa-angle-left" />
                   </p>
-                </a>
+                </Link>
                 <ul className="nav nav-treeview">
                   {roles_permissions.map((role_perm) => {
                     return (

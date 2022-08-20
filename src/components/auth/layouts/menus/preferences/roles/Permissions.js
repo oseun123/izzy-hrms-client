@@ -4,18 +4,20 @@ function Permissions(props) {
   const { index, permission, all_permissions, handleCheckChange, readonly } =
     props;
   return (
-    <div className="card  card-outline card-secondary ">
+    <div className="card  card-outline card-secondary  ">
       <div className="card-header" id={`headingRole${index}`}>
         <h3 className="card-title font-weight-light">{permission}</h3>
         <div className="card-tools d-flex">
           <div className="form-check ">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value={`chk-${index}`}
-              title="check all permissions"
-              onChange={handleCheckChange}
-            />
+            {!readonly && (
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value={`chk-${index}`}
+                title="check all permissions"
+                onChange={handleCheckChange}
+              />
+            )}
           </div>
           <button
             type="button"
@@ -46,7 +48,7 @@ function Permissions(props) {
 
                   <label
                     className="form-check-label"
-                    for={all_permissions[permission][item].id}
+                    htmlFor={all_permissions[permission][item].id}
                   >
                     {all_permissions[permission][item].name}
                   </label>
