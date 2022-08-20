@@ -1,22 +1,55 @@
 import { createSelector } from "reselect";
 
-const user = (state) => state.user;
+// const user = (state) => state.user;
 
-const currentUser = createSelector([user], (user) => user.currentUser);
-
-const message = createSelector([user], (user) => user.message);
-
-const status = createSelector([user], (user) => user.status);
-
-const spinner = createSelector([user], (user) => user.spinner);
-
-const userpermissions = createSelector([user], (user) => user.userpermissions);
-
-const dashboardpermissions = createSelector([user], (user) =>
-  user.userpermissions?.filter((permission) => permission.for === "Dashboard")
+const currentUser = createSelector(
+  (state) => state.user,
+  (user) => user.currentUser
 );
-const preferencespermissions = createSelector([user], (user) =>
-  user.userpermissions?.filter((permission) => permission.for === "Preferences")
+
+const message = createSelector(
+  (state) => state.user,
+  (user) => user.message
+);
+
+const status = createSelector(
+  (state) => state.user,
+  (user) => user.status
+);
+
+const spinner = createSelector(
+  (state) => state.user,
+  (user) => user.spinner
+);
+
+const userpermissions = createSelector(
+  (state) => state.user,
+  (user) => user.userpermissions
+);
+
+const dashboardpermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Dashboard" && permission.module === "root"
+    )
+);
+const preferencespermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" && permission.module === "root"
+    )
+);
+const preferencesRolespermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" && permission.module === "Roles"
+    )
 );
 
 const userhaspermission = () =>
@@ -39,5 +72,6 @@ export {
   userpermissions,
   dashboardpermissions,
   preferencespermissions,
+  preferencesRolespermissions,
   userhaspermission,
 };

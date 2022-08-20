@@ -1,5 +1,7 @@
 import { useState } from "react";
-export const useForm = (callback, initState = {}, validate) => {
+import { useSelector, shallowEqual } from "react-redux";
+
+function useForm(callback, initState = {}, validate) {
   const [values, setValues] = useState(initState);
   const [errors, setErrors] = useState({});
 
@@ -28,4 +30,9 @@ export const useForm = (callback, initState = {}, validate) => {
     });
   }
   return { handleChange, handleSubmit, errors, values, clearForm };
-};
+}
+function useShallowEqualSelector(selector) {
+  return useSelector(selector, shallowEqual);
+}
+
+export { useForm, useShallowEqualSelector };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "../../hooks";
 import MiniSpinner from "./../helpers/MiniSpinner";
 import Message from "./../helpers/Message";
@@ -9,6 +9,7 @@ import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { loginForm } from "../../util/formValidations";
 import { login } from "./../../store/actions/userActions";
+import { resetUsersState } from "../../store/actions/userActions";
 const Login = () => {
   const initLoginUser = {
     email: "",
@@ -18,6 +19,11 @@ const Login = () => {
   const { spinner, message, status } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+  useEffect(() => {
+    return () => {
+      resetUsersState(dispatch);
+    };
+  }, [dispatch]);
   // callback
   const loginUserFromForm = () => {
     login(dispatch, values, history);
@@ -45,7 +51,7 @@ const Login = () => {
               <Message message={message} status={status} />
             ) : null}
 
-            <Spinner color={"primary"} d-hidden mb-2 spinner={spinner} />
+            <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
                 <input
@@ -85,7 +91,7 @@ const Login = () => {
                 />
                 <div className="input-group-append">
                   <div className="input-group-text text-primary">
-                    <span className="fas fa-lock" />
+                    <span className="fas fa-lock text-secondary" />
                   </div>
                 </div>
 
@@ -101,8 +107,12 @@ const Login = () => {
                 <div className="col-8"></div>
                 {/* /.col */}
                 <div className="col-4">
-                  <button type="submit" className="btn btn-primary btn-block">
-                    <span>
+                  <button
+                    type="submit"
+                    className="btn btn-primary d-flex"
+                    disabled={spinner}
+                  >
+                    <span className="shift_up">
                       Sign In
                       <MiniSpinner color="white" d-hidden spinner={spinner} />
                     </span>

@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useShallowEqualSelector } from "../../../../hooks";
 import { dashboardpermissions } from "../../../../store/selectors/userSelectors";
 
 function Dashboard() {
-  const permissions = useSelector(dashboardpermissions);
-  // console.log(permissions);
+  const permissions = useShallowEqualSelector(
+    dashboardpermissions
+  );
 
   if (permissions?.length) {
     return (
@@ -21,8 +22,8 @@ function Dashboard() {
           {permissions?.map((item) => {
             return (
               <li className="nav-item" key={item.id}>
-                <Link to={item.name} className="nav-link dont-close ">
-                  <i className="far fa-circle nav-icon dont-close" />
+                <Link to={item.url} className="nav-link dont-close ">
+                  <i className="far fa-circle nav-icon dont-close fa-rd" />
                   <p className="dont-close">{item.name}</p>
                 </Link>
               </li>
@@ -36,4 +37,4 @@ function Dashboard() {
   }
 }
 
-export default Dashboard;
+export default React.memo(Dashboard);

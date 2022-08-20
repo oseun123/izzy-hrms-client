@@ -13,7 +13,7 @@ export const login = async (dispatch, user, history) => {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     const result = await publicRequest.post("/api/auth/sign_in", user);
-    console.log(result.data.payload);
+   
     const hash = hashData(result.data.payload);
     Cookies.set(token, hash);
     dispatch({ type: "STOP_SPINNER" });

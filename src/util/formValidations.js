@@ -48,3 +48,15 @@ export const validatResetPassword = (values) => {
   }
   return errors;
 };
+
+export const validateCreateRole = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name.trim() === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+  if (values.hasOwnProperty("permissions") && values.permissions.length === 0) {
+    errors.permissions = "Permissions cannot be empty.";
+  }
+  return errors;
+};

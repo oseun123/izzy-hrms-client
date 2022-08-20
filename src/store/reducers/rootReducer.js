@@ -1,11 +1,11 @@
 import userReducer from "./userReducer";
-// import todoReducer from "./todoReducer";
+import preferencesReducer from "./preferencesReducer";
 import { combineReducers, createStore } from "redux";
 const { REACT_APP_ENV } = process.env;
 
 const rootReducer = combineReducers({
   user: userReducer,
-  //   todo: todoReducer,
+  preferences: preferencesReducer,
 });
 let store;
 if (REACT_APP_ENV === "development") {

@@ -1,12 +1,15 @@
 import React, { useMemo } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { userhaspermission } from "../store/selectors/userSelectors";
 
 function HasPermission({ component: Component, permission, ...rest }) {
   const dispatch = useDispatch();
   const memoUserpermission = useMemo(userhaspermission, []);
-  const hasper = useSelector((state) => memoUserpermission(state, permission));
+  const hasper = useSelector(
+    (state) => memoUserpermission(state, permission),
+    shallowEqual
+  );
   return (
     <Route
       {...rest}

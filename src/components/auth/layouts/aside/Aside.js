@@ -80,4 +80,4 @@ function Aside() {
   );
 }
 
-export default Aside;
+export default React.memo(Aside);

@@ -20,7 +20,13 @@ export const UseRefreshTest = (enabled, setEnabled) => {
     }
     if (data) {
       dispatch({ type: "STOP_SPINNER" });
-      console.log(data.emp);
+      // console.log(data.emp);
+      const result = data.emp.reduce(function (r, a) {
+        r[a.for] = r[a.for] || [];
+        r[a.for].push(a);
+        return r;
+      }, Object.create(null));
+      console.log(result);
       // dispatch({ type: "START_SPINNER" });
     }
 

@@ -110,6 +110,19 @@ const userReducer = (state = initState, { type, payload }) => {
         currentUser: {},
         userpermissions: [],
       };
+    case "CREATE_ROLE_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_ROLE_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
     default:
       return state;
   }

@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "../../../helpers/Spinner";
 import { logOut } from "../../../../store/actions/userActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useShallowEqualSelector } from "../../../../hooks";
 import {
   currentUser,
   message,
   status,
   spinner,
 } from "../../../../store/selectors/userSelectors";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Message from "../../../helpers/Message";
 
 function Header() {
-  const { first_name, last_name } = useSelector(currentUser);
-  const store_message = useSelector(message);
-  const store_status = useSelector(status);
-  const store_spinner = useSelector(spinner);
+  const history = useHistory();
+  const { first_name, last_name } = useShallowEqualSelector(currentUser);
+  const store_message = useShallowEqualSelector(message);
+  const store_status = useShallowEqualSelector(status);
+  const store_spinner = useShallowEqualSelector(spinner);
 
   const [profile, setProfile] = useState({ first_name: "", last_name: "" });
   const dispatch = useDispatch();
   function logOutUser(e) {
     e.preventDefault();
     logOut(dispatch);
+  }
+  function goBack(e) {
+    e.preventDefault();
+    history.goBack();
+  }
+  function goForward(e) {
+    e.preventDefault();
+    history.goForward();
   }
   useEffect(() => {
     setProfile((current) => ({ ...current, first_name, last_name }));
@@ -34,7 +44,7 @@ function Header() {
           <Message message={store_message} status={store_status} />
         ) : null}
         {/* Left navbar links */}
-        {/* <ul className="navbar-nav">
+        <ul className="navbar-nav">
           <li className="nav-item">
             <a
               className="nav-link"
@@ -45,38 +55,46 @@ function Header() {
               <i className="fas fa-bars" />
             </a>
           </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="../../index3.html" className="nav-link">
-              Home
-            </a>
+          <li className="nav-item  d-sm-inline-block ">
+            <Link onClick={goBack} to="#!" className="nav-link" title="Go back">
+              <i className="fas fa-arrow-left text-secondary   "></i>
+            </Link>
+          </li>
+          <li className="nav-item  d-sm-inline-block">
+            <Link
+              onClick={goForward}
+              to="#!"
+              className="nav-link"
+              title="Go forward"
+            >
+              <i className="fas fa-arrow-right text-secondary"></i>
+            </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
-            <a href={() => false} className="nav-link">
-              Contact
-            </a>
+            <Link to="/" className="nav-link" title="My dashboard">
+              <i className="fas fa-tachometer-alt text-secondary  "></i>
+            </Link>
           </li>
-        </ul> */}
-        {/* SEARCH FORM */}
-        {/* <form className="form-inline ml-3">
-          <div className="input-group input-group-sm">
-            <input
-              className="form-control form-control-navbar"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <div className="input-group-append">
-              <button className="btn btn-navbar" type="submit">
-                <i className="fas fa-search" />
-              </button>
-            </div>
-          </div>
-        </form> */}
-        {/* Right navbar links */}
+          <li className="nav-item d-none d-sm-inline-block">
+            <Link to={() => false} className="nav-link" title="Change Password">
+              <i className="fas fa-unlock-alt text-secondary" />
+            </Link>
+          </li>
+          <li className="nav-item d-none d-sm-inline-block">
+            <Link
+              to={() => false}
+              onClick={logOutUser}
+              className="nav-link"
+              title="Logout"
+            >
+              <i className="fas fa-sign-out-alt text-secondary" />
+            </Link>
+          </li>
+        </ul>
 
         <ul className="navbar-nav ml-auto">
           {/* Notifications Dropdown Menu */}
-          {store_spinner ? <Spinner color="success" /> : null}
+          {store_spinner ? <Spinner color="secondary" /> : null}
           <li className="nav-item dropdown">
             <Link className="nav-link" data-toggle="dropdown" to={() => false}>
               {profile.last_name?.toUpperCase()}{" "}
@@ -105,4 +123,4 @@ function Header() {
     </>
   );
 }
-export default Header;
+export default React.memo(Header);

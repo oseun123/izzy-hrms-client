@@ -53,7 +53,7 @@ const ResetPassword = () => {
             {message && status ? (
               <Message message={message} status={status} />
             ) : null}
-            <Spinner color={"primary"} d-hidden mb-2 spinner={spinner} />
+            <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
                 <input
@@ -108,9 +108,15 @@ const ResetPassword = () => {
                 <div className="col-8"></div>
                 {/* /.col */}
                 <div className="col-4">
-                  <button type="submit" className="btn btn-primary btn-block">
-                    Submit
-                    <MiniSpinner color="white" d-hidden spinner={spinner} />
+                  <button
+                    type="submit"
+                    className="btn btn-primary d-flex"
+                    disabled={spinner}
+                  >
+                    <span className="shift_up">
+                      Submit
+                      <MiniSpinner color="white" d-hidden spinner={spinner} />
+                    </span>
                   </button>
                 </div>
                 {/* /.col */}

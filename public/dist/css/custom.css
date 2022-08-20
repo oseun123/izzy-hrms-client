@@ -28,3 +28,29 @@
 .login-box-msg{
   padding-bottom: 0px;
 }
+.text-sm .content-header h1 {
+  font-size: 1.1rem !important;
+}
+.fa-rd{
+  font-size: 12px !important;
+}
+.card-title{
+  font-weight: 500 !important;
+}
+.font-weight-light{
+  font-weight: 400 !important;
+}
+.shift_up{
+  margin-top: -5px !important;
+}
+.btn{
+  border-radius:0px !important;
+  
+}
+input {
+  border-radius: 0px !important;
+}
+
+svg {
+  vertical-align: baseline;
+}

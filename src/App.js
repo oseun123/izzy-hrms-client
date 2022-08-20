@@ -6,6 +6,7 @@ import Login from "./components/guest/Login";
 import ResetPassword from "./components/guest/ResetPassword";
 import RequireAuth from "./hoc/RequireAuth";
 import AlreadyAuth from "./hoc/AlreadyAuth";
+import "antd/dist/antd.css";
 
 function App() {
   return (

@@ -15,7 +15,7 @@ function NoMatch() {
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item">
-                    <Link to="/">Home</Link>
+                    <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">404 Error Page</li>
                 </ol>
