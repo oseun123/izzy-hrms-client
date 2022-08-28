@@ -16,6 +16,7 @@ import { validateCreateRole } from "../../../../../../util/formValidations";
 import { createRole } from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
+import { Input } from 'antd';
 
 function CreateRoles() {
   const [enabled, setEnabled] = useState(true);
@@ -116,17 +117,18 @@ function CreateRoles() {
                     <label htmlFor="name">
                       Name <span className="text-danger">*</span>
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="name"
                       name="name"
-                      className={classnames("form-control", {
+                      allowClear
+                      className={classnames("form-control form-control-sm", {
                         "is-invalid": errors.name,
                       })}
                       onChange={handleChange}
                       value={values.name}
                     />
-
+                  
                     <div
                       className={classnames(
                         "invalid-feedback",

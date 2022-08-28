@@ -13,6 +13,7 @@ import {
   ViewRoles,
   RoleDetails,
   EditRoles,
+  AddUserRole,
 } from "./layouts/preferences";
 const Footer = lazy(() => import("./layouts/footer/Footer"));
 const Layout = () => {
@@ -62,6 +63,12 @@ const Layout = () => {
                 permission="VIEW_ROLES"
               />
 
+             <HasPermission
+                exact
+                path="/preferences/assign-roles"
+                component={AddUserRole}
+                permission="ASSIGN_ROLES"
+              />
               <Route path="*" component={NoMatch} />
             </Switch>
           </div>

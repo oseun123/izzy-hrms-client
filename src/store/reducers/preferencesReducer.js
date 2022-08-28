@@ -4,6 +4,7 @@ const initState = {
   spinner: false,
   system_permissions: {},
   system_roles: [],
+  system_users: [],
 };
 
 const preferencesReducer = (state = initState, { type, payload }) => {
@@ -30,6 +31,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         system_permissions: { ...payload.payload.system_permissions },
+      };
+
+    case "SYSTEM_USERS_SUCCESS":
+      return {
+        ...state,
+        system_users: [ ...payload.payload.system_users ],
+      };
+    case "SYSTEM_USERS_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
       };
     case "SYSTEM_PERMISSION_ERROR":
       return {

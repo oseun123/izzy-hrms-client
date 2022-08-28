@@ -54,3 +54,7 @@ input {
 svg {
   vertical-align: baseline;
 }
+
+label:not(.form-check-label):not(.custom-file-label) {
+  font-weight: 600;
+}
