@@ -60,3 +60,16 @@ export const validateCreateRole = (values) => {
   }
   return errors;
 };
+export const validateAssignUsers = (values) => {
+  let errors = {};
+
+  console.log(values);
+
+  if (values.hasOwnProperty("role") && values.role === "") {
+    errors.role = "Role cannot not be empty.";
+  }
+  if (values.hasOwnProperty("users") && values.users.length === 0) {
+    errors.users = "User cannot be empty.";
+  }
+  return errors;
+};

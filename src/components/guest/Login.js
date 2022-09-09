@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginForm } from "../../util/formValidations";
 import { login } from "./../../store/actions/userActions";
 import { resetUsersState } from "../../store/actions/userActions";
+import { Input } from "antd";
+
 const Login = () => {
   const initLoginUser = {
     email: "",
@@ -54,22 +56,18 @@ const Login = () => {
             <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
-                <input
+                <Input
+                  allowClear
+                  status={errors.email ? "error" : ""}
                   type="text"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.email,
-                  })}
                   value={values.email}
                   name="email"
                   onChange={handleChange}
                   placeholder="Enter Email"
+                  addonAfter={
+                    <span className="fas fa-envelope text-secondary" />
+                  }
                 />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-envelope" />
-                  </div>
-                </div>
-
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {
                     "custom-visibible": errors.email,
@@ -79,21 +77,21 @@ const Login = () => {
                 </div>
               </div>
               <div className="input-group mb-3">
-                <input
+                <Input.Password
+                  allowClear
+                  status={errors.password ? "error" : ""}
                   type="password"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.password,
-                  })}
                   value={values.password}
                   onChange={handleChange}
                   name="password"
                   placeholder="Enter Password"
+                  addonAfter={<span className="fas fa-lock text-secondary" />}
                 />
-                <div className="input-group-append">
+                {/* <div className="input-group-append">
                   <div className="input-group-text text-primary">
                     <span className="fas fa-lock text-secondary" />
                   </div>
-                </div>
+                </div> */}
 
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {

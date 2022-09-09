@@ -11,6 +11,7 @@ import {
 } from "../../store/actions/userActions";
 import { useForm } from "../../hooks";
 import { requestLink } from "../../util/formValidations";
+import { Input } from "antd";
 const ForgetPassword = () => {
   const initEmail = {
     email: "",
@@ -53,21 +54,19 @@ const ForgetPassword = () => {
             <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
-                <input
+                <Input
+                  allowClear
+                  status={errors.email ? "error" : ""}
                   type="text"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.email,
-                  })}
                   value={values.email}
                   name="email"
                   onChange={handleChange}
                   placeholder="Enter Email"
+                  addonAfter={
+                    <span className="fas fa-envelope text-secondary" />
+                  }
                 />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-envelope" />
-                  </div>
-                </div>
+
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {
                     "custom-visibible": errors.email,

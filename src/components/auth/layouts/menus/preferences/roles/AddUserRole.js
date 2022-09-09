@@ -16,11 +16,8 @@ import {
   useGetSystemUsers,
 } from "./../../../../../../store/actions/preferencesHooksActions";
 import { useForm } from "../../../../../../hooks";
-import { validateCreateRole } from "../../../../../../util/formValidations";
-import {
-  createRole,
-  assignUsers,
-} from "../../../../../../store/actions/preferencesActions";
+import { validateAssignUsers } from "../../../../../../util/formValidations";
+import { assignUsers } from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
 import { Select } from "antd";
@@ -31,8 +28,6 @@ function AddUserRole() {
   const [enabled, setEnabled] = useState(true);
   const [all_roles, setAllRoles] = useState([]);
   const [all_users, setAllUsers] = useState([]);
-  const [sel_users, setSelUsers] = useState([]);
-  const [sel_role, setSelRole] = useState("");
 
   const dispatch = useDispatch();
 
@@ -44,34 +39,31 @@ function AddUserRole() {
   const roles = useShallowEqualSelector(system_roles);
   const users = useShallowEqualSelector(system_users);
 
-  // const initRoles = {
-  //   role: "",
-  //   default: false,
-  //   permissions: [],
-  // };
+  const initValues = {
+    role: "",
+    users: [],
+  };
   // callback
-  // const createRolesFromform = () => {
-  //   createRole(dispatch, values).then((res) => {
-  //     if (res?.status === "success") {
-  //       clearForm();
-  //       document.querySelector("#default").checked = false;
-  //       document.querySelectorAll(".perm-role").forEach((checkbox) => {
-  //         checkbox.checked = false;
-  //       });
-  //       document.querySelectorAll(".form-check-input").forEach((checkbox) => {
-  //         checkbox.checked = false;
-  //       });
-  //     }
-  //   });
-  // };
-  // const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
-  //   createRolesFromform,
-  //   initRoles,
-  //   validateCreateRole
-  // );
+  const assignUsersFromform = () => {
+    // alert("here");
+    console.log(values);
+
+    assignUsers(dispatch, { role_id: values.role, users: values.users }).then(
+      (res) => {
+        if (res?.status === "success") {
+          clearForm();
+        }
+      }
+    );
+  };
+  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
+    assignUsersFromform,
+    initValues,
+    validateAssignUsers
+  );
   const handleChangeRole = (role_id) => {
     if (role_id) {
-      setSelRole(role_id);
+      handleChange("_", true, { name: "role", value: role_id });
       const sel_user_id = [];
       const filtered_user = all_roles.find((role) => {
         return role.id === role_id;
@@ -79,25 +71,22 @@ function AddUserRole() {
       filtered_user.users.forEach((user) => {
         return sel_user_id.push(user.id);
       });
-      setSelUsers(sel_user_id);
+      handleChange("_", true, { name: "users", value: sel_user_id });
     } else {
-      setSelUsers([]);
+      handleChange("_", true, { name: "role", value: "" });
+      handleChange("_", true, { name: "users", value: [] });
     }
   };
 
   const handleChangeUsers = (value) => {
-    setSelUsers(value || []);
+    handleChange("_", true, { name: "users", value: value });
   };
 
-  // const onSearch = (value) => {
-  //   console.log("search:", value);
-  // };
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log({ sel_role, sel_users });
-    assignUsers(dispatch, { role_id: sel_role, users: sel_users });
-  }
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   console.log({ sel_role, sel_users });
+  //   assignUsers(dispatch, { role_id: sel_role, users: sel_users });
+  // }
 
   useEffect(() => {
     setAllRoles(roles);
@@ -148,7 +137,7 @@ function AddUserRole() {
               </div>
               <div className="card-body">
                 <div className="row">
-                  <div className="form-group col-md-6">
+                  <div className="form-group col-md-4">
                     <label htmlFor="name">
                       Roles <span className="text-danger">*</span>
                     </label>
@@ -157,20 +146,18 @@ function AddUserRole() {
                         width: "100%",
                       }}
                       showSearch
+                      status={errors.role ? "error" : ""}
                       id="role"
                       name="role"
                       allowClear
-                      // className={classnames("form-control form-control-sm ", {
-                      //   "is-invalid": errors.role,
-                      // })}
                       onChange={handleChangeRole}
                       filterOption={(input, option) => {
                         return option.children[1]
                           .toLowerCase()
                           .includes(input.toLowerCase());
                       }}
+                      value={values.role}
                     >
-                      {/* <Option value="" >select role</Option>  */}
                       {all_roles &&
                         all_roles.map((role) => (
                           <Option key={role.id} value={role.id}>
@@ -180,7 +167,7 @@ function AddUserRole() {
                         ))}
                     </Select>
 
-                    {/* <div
+                    <div
                       className={classnames(
                         "invalid-feedback",
                         "custom-feedback",
@@ -190,12 +177,9 @@ function AddUserRole() {
                       )}
                     >
                       {errors.role}
-                    </div> */}
+                    </div>
                   </div>
-                </div>
-
-                <div className="row">
-                  <div className="form-group col-md-12">
+                  <div className="form-group col-md-8">
                     <label htmlFor="users">
                       Users <span className="text-danger">*</span>
                     </label>
@@ -203,15 +187,13 @@ function AddUserRole() {
                       style={{
                         width: "100%",
                       }}
+                      status={errors.users ? "error" : ""}
                       showSearch
                       id="users"
                       name="users"
                       mode="multiple"
                       allowClear
-                      value={sel_users}
-                      // className={classnames("form-control form-control-sm ", {
-                      //   "is-invalid": errors.role,
-                      // })}
+                      value={values.users}
                       onChange={handleChangeUsers}
                       filterOption={(input, option) => {
                         return option.children[1]
@@ -219,7 +201,6 @@ function AddUserRole() {
                           .includes(input.toLowerCase());
                       }}
                     >
-                      {/* <Option value="" >select role</Option>  */}
                       {all_users &&
                         all_users.map((user) => (
                           <Option key={user.id} value={user.id}>
@@ -228,7 +209,7 @@ function AddUserRole() {
                           </Option>
                         ))}
                     </Select>
-                    {/* 
+
                     <div
                       className={classnames(
                         "invalid-feedback",
@@ -239,7 +220,7 @@ function AddUserRole() {
                       )}
                     >
                       {errors.users}
-                    </div> */}
+                    </div>
                   </div>
                 </div>
 

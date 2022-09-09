@@ -11,6 +11,7 @@ import {
 } from "../../store/actions/userActions";
 import { useForm } from "../../hooks";
 import { validatResetPassword } from "../../util/formValidations";
+import { Input } from "antd";
 const ResetPassword = () => {
   const { token } = useParams();
   const initData = {
@@ -56,21 +57,16 @@ const ResetPassword = () => {
             <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
-                <input
-                  type="password"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.password,
-                  })}
+                <Input.Password
+                  status={errors.password ? "error" : ""}
+                  allowClear
                   value={values.password}
                   name="password"
                   onChange={handleChange}
                   placeholder="Enter Password"
+                  addonAfter={<span className="fas fa-lock text-secondary" />}
                 />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-lock" />
-                  </div>
-                </div>
+
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {
                     "custom-visibible": errors.password,
@@ -80,21 +76,16 @@ const ResetPassword = () => {
                 </div>
               </div>
               <div className="input-group mb-3">
-                <input
-                  type="password"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.password_confirm,
-                  })}
+                <Input.Password
+                  status={errors.password_confirm ? "error" : ""}
+                  allowClear
                   value={values.password_confirm}
                   name="password_confirm"
                   onChange={handleChange}
-                  placeholder="Confirm Password "
+                  placeholder="Confirm Password"
+                  addonAfter={<span className="fas fa-lock text-secondary" />}
                 />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-lock" />
-                  </div>
-                </div>
+
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {
                     "custom-visibible": errors.password_confirm,

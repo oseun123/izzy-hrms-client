@@ -21,9 +21,9 @@ import Permissions from "./Permissions";
 function RoleDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
-  useGetSystemRoles(enabled, setEnabled, page, size);
+  // const [page, setPage] = useState(1);
+  // const [size, setSize] = useState(10);
+  useGetSystemRoles(enabled, setEnabled);
 
   const dispatch = useDispatch();
   const status = useShallowEqualSelector(status_preferences);
