@@ -12,7 +12,6 @@ import {
 } from "./requestMethods";
 import Cookies from "js-cookie";
 import { token } from "./config";
-import jwt_decode from "jwt-decode";
 import { dehashData, hashData } from "./util/hash";
 
 const client = new QueryClient();
@@ -28,62 +27,28 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-privateRequestGet.interceptors.request.use(
-  async (config) => {
-    const dehash = dehashData();
-    let currentDate = new Date();
-    const decodedToken = jwt_decode(dehash.token);
-    if (decodedToken.exp * 1000 < currentDate.getTime()) {
-      const res = await refreshToken.get("/api/auth/refresh");
-      config.headers["Authorization"] = "Bearer " + res.data.payload.new_token;
-
-      const hash = hashData({ ...dehash, token: res.data.payload.new_token });
-
-      Cookies.set(token, hash);
-    }
-    return config;
-  },
-  async (error) => {
-    return Promise.reject(error);
-  }
-);
-privateRequest.interceptors.request.use(
-  async (config) => {
-    const dehash = dehashData();
-    let currentDate = new Date();
-    const decodedToken = jwt_decode(dehash.token);
-    if (decodedToken.exp * 1000 < currentDate.getTime()) {
-      const res = await refreshToken.get("/api/auth/refresh");
-      config.headers["Authorization"] = "Bearer " + res.data.payload.new_token;
-      const hash = hashData({ ...dehash, token: res.data.payload.new_token });
-      Cookies.set(token, hash);
-    }
-    return config;
-  },
-  async (error) => {
-    return Promise.reject(error);
-  }
-);
-
 privateRequest.interceptors.response.use(
   function (response) {
     return response;
   },
-  function (error) {
+  async (error) => {
+    const prevRequest = error?.config;
     const err = error.response.data.message;
+    const dehash = dehashData();
     if (
       err === "Invalid Session. Kindly login again." ||
-      err === "Unauthorized"
+      (err === "Unauthorized" && !prevRequest?.sent)
     ) {
-      Cookies.remove(token);
-      store.dispatch({
-        type: "LOGOUT_USER",
-        payload: {
-          message: "Invalid Session. Kindly login again.",
-          status: "error",
-        },
-      });
+      prevRequest.sent = true;
+      const res = await refreshToken.get("/api/auth/refresh");
+      prevRequest.headers["Authorization"] =
+        "Bearer " + res.data.payload.new_token;
+      const hash = hashData({ ...dehash, token: res.data.payload.new_token });
+      Cookies.set(token, hash);
+
+      return privateRequest(prevRequest);
     }
+
     return Promise.reject(error);
   }
 );
@@ -91,21 +56,24 @@ privateRequestGet.interceptors.response.use(
   function (response) {
     return response;
   },
-  function (error) {
+  async (error) => {
+    const prevRequest = error?.config;
     const err = error.response.data.message;
+    const dehash = dehashData();
     if (
       err === "Invalid Session. Kindly login again." ||
-      err === "Unauthorized"
+      (err === "Unauthorized" && !prevRequest?.sent)
     ) {
-      Cookies.remove(token);
-      store.dispatch({
-        type: "LOGOUT_USER",
-        payload: {
-          message: "Invalid Session. Kindly login again.",
-          status: "error",
-        },
-      });
+      prevRequest.sent = true;
+      const res = await refreshToken.get("/api/auth/refresh");
+      prevRequest.headers["Authorization"] =
+        "Bearer " + res.data.payload.new_token;
+      const hash = hashData({ ...dehash, token: res.data.payload.new_token });
+      Cookies.set(token, hash);
+
+      return privateRequestGet(prevRequest);
     }
+
     return Promise.reject(error);
   }
 );
