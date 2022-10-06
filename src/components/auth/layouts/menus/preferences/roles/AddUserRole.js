@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import MiniSpinner from "../../../../../helpers/MiniSpinner";
 import { useDispatch } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
+import {
+  useShallowEqualSelector,
+  useForm,
+  useAxiosPrivate,
+} from "../../../../../../hooks";
 import {
   spinner_preferences,
   message_preferences,
@@ -15,29 +18,35 @@ import {
   useGetSystemRoles,
   useGetSystemUsers,
 } from "./../../../../../../store/actions/preferencesHooksActions";
-import { useForm } from "../../../../../../hooks";
+
 import { validateAssignUsers } from "../../../../../../util/formValidations";
-import { assignUsers } from "../../../../../../store/actions/preferencesActions";
+import {
+  assignUsers,
+  preferencesCleanUp,
+} from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
-import { Select } from "antd";
+import { Select, Button } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
 function AddUserRole() {
-  const [enabled, setEnabled] = useState(true);
+  const [enableduser, setEnabledUser] = useState(true);
+  const [enabledrole, setEnabledRole] = useState(true);
   const [all_roles, setAllRoles] = useState([]);
   const [all_users, setAllUsers] = useState([]);
 
   const dispatch = useDispatch();
 
-  useGetSystemRoles(enabled, setEnabled, "_", "_", "all");
-  useGetSystemUsers(enabled, setEnabled);
+  useGetSystemRoles(enabledrole, setEnabledRole, "_", "_", "all");
+  useGetSystemUsers(enableduser, setEnabledUser);
   const spinner = useShallowEqualSelector(spinner_preferences);
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
   const roles = useShallowEqualSelector(system_roles);
   const users = useShallowEqualSelector(system_users);
+  const request = useAxiosPrivate();
 
   const initValues = {
     role: "",
@@ -46,15 +55,16 @@ function AddUserRole() {
   // callback
   const assignUsersFromform = () => {
     // alert("here");
-    console.log(values);
+    // console.log(values);
 
-    assignUsers(dispatch, { role_id: values.role, users: values.users }).then(
-      (res) => {
-        if (res?.status === "success") {
-          clearForm();
-        }
+    assignUsers(dispatch, request, {
+      role_id: values.role,
+      users: values.users,
+    }).then((res) => {
+      if (res?.status === "success") {
+        clearForm();
       }
-    );
+    });
   };
   const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
     assignUsersFromform,
@@ -98,7 +108,7 @@ function AddUserRole() {
 
   useEffect(() => {
     return () => {
-      dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+      preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
 
@@ -224,16 +234,15 @@ function AddUserRole() {
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  className="btn btn-primary d-flex"
-                  disabled={spinner}
+                <Button
+                  type="primary"
+                  icon={<PlusCircleOutlined />}
+                  loading={spinner}
+                  htmlType="submit"
                 >
-                  <span className="shift_up">
-                    <i className="fas fa-plus-circle"></i> Assign
-                    <MiniSpinner color="white" d-hidden spinner={spinner} />
-                  </span>
-                </button>
+                  {" "}
+                  Create
+                </Button>
 
                 {/* /.card */}
               </div>

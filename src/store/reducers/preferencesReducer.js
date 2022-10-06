@@ -5,6 +5,7 @@ const initState = {
   system_permissions: {},
   system_roles: [],
   system_users: [],
+  system_departments: [],
 };
 
 const preferencesReducer = (state = initState, { type, payload }) => {
@@ -36,7 +37,7 @@ const preferencesReducer = (state = initState, { type, payload }) => {
     case "SYSTEM_USERS_SUCCESS":
       return {
         ...state,
-        system_users: [ ...payload.payload.system_users ],
+        system_users: [...payload.payload.system_users],
       };
     case "SYSTEM_USERS_ERROR":
       return {
@@ -61,6 +62,17 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+    case "SYSTEM_DEPARTMENTS_SUCCESS":
+      return {
+        ...state,
+        system_departments: [...payload.payload.departments],
+      };
+    case "SYSTEM_DEPARTMENTS_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
     case "DELETE_ROLE_SUCCESS": {
       const deleted_id = parseInt(payload.payload.role);
       const sys_roles = [...state.system_roles];
@@ -74,6 +86,30 @@ const preferencesReducer = (state = initState, { type, payload }) => {
       };
     }
     case "DELETE_ROLE_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_DEPARTMENT_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_DEPARTMENT_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_ROLE_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_ROLE_ERROR":
       return {
         ...state,
         message: payload.message,

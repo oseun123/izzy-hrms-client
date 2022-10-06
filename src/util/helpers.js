@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 function capitalizeFirstLetter(string) {
   return string?.charAt(0)?.toUpperCase() + string.slice(1);
 }
@@ -9,4 +11,21 @@ function filtered_permissions(permissions) {
   }, Object.create(null));
 }
 
-export { capitalizeFirstLetter, filtered_permissions };
+function isForbiddden(dispatch, error, token, location = null, history = null) {
+  if (error.response.status === 403) {
+    Cookies.remove(token);
+    if (location && history) {
+      history.push("/login", { state: { from: location }, replace: true });
+    }
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({
+      type: "LOGOUT_USER",
+      payload: {
+        message: "Invalid Session. Kindly login again.",
+        status: "error",
+      },
+    });
+  }
+}
+
+export { capitalizeFirstLetter, filtered_permissions, isForbiddden };

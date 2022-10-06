@@ -4,9 +4,9 @@ import { useShallowEqualSelector } from "../../../../hooks";
 import { dashboardpermissions } from "../../../../store/selectors/userSelectors";
 
 function Dashboard() {
-  const permissions = useShallowEqualSelector(dashboardpermissions);
+  const root_permissions = useShallowEqualSelector(dashboardpermissions);
 
-  if (permissions?.length) {
+  if (root_permissions?.length) {
     return (
       <li className="nav-item has-treeview">
         <Link to={() => false} className="nav-link">
@@ -17,7 +17,7 @@ function Dashboard() {
           </p>
         </Link>
         <ul className="nav nav-treeview">
-          {permissions?.map((item) => {
+          {root_permissions?.map((item) => {
             return (
               <li className="nav-item" key={item.id}>
                 <Link to={item.url} className="nav-link dont-close ">

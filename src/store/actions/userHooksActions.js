@@ -1,17 +1,22 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useQuery } from "react-query";
-import { setPrivateRequestGet } from "../../requestMethods";
+import { useQuery, useQueryClient } from "react-query";
+import { useAxiosPrivate } from "../../hooks";
+import { isForbiddden } from "../../util/helpers";
+
+import { token } from "./../../config";
 
 export const UseRefreshTest = (enabled, setEnabled) => {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const request = useAxiosPrivate();
   const { data, error, refetch, isLoading } = useQuery(
     ["Test"],
     async () => {
-      const result = await setPrivateRequestGet().get(`/api/auth/test`);
+      const result = await request.get(`/api/auth/test`);
       return result.data.payload;
     },
-    { enabled: enabled, manual: true }
+    { enabled: enabled, manual: true, retry: 2 }
   );
 
   useEffect(() => {
@@ -31,9 +36,10 @@ export const UseRefreshTest = (enabled, setEnabled) => {
     }
 
     if (error) {
-      console.log(error.message);
+      queryClient.removeQueries(["Test"]);
+      isForbiddden(dispatch, error, token);
     }
-  }, [dispatch, isLoading, data, error]);
+  }, [dispatch, isLoading, data, error, queryClient]);
 
   return { data, refetch };
 };

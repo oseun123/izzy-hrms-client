@@ -1,15 +1,17 @@
-import { token } from "../../config";
+import { token, user_perm } from "../../config";
 import Cookies from "js-cookie";
 import { dehashData } from "../../util/hash";
 import jwt_decode from "jwt-decode";
 
-const dehashed = dehashData();
 let currentUser = {};
 let userpermissions = [];
-if (dehashed) {
-  const { token: tok, user } = dehashData();
-  currentUser = Cookies.get(token) ? jwt_decode(tok) : {};
-  userpermissions = Cookies.get(token) ? user.permissions : [];
+if (Cookies.get(token)) {
+  const tok = dehashData(token);
+  currentUser = jwt_decode(tok);
+}
+
+if (Cookies.get(user_perm)) {
+  userpermissions = dehashData(user_perm);
 }
 
 const initState = {
@@ -49,13 +51,15 @@ const userReducer = (state = initState, { type, payload }) => {
         spinner: false,
       };
     case "SUCCESS_LOGIN": {
-      const dehashed = dehashData();
       let currentUser = {};
       let userpermissions = [];
-      if (dehashed) {
-        const { token: tok, user } = dehashData();
-        currentUser = Cookies.get(token) ? jwt_decode(tok) : {};
-        userpermissions = Cookies.get(token) ? user.permissions : [];
+      if (Cookies.get(token)) {
+        const tok = dehashData(token);
+        currentUser = jwt_decode(tok);
+      }
+
+      if (Cookies.get(user_perm)) {
+        userpermissions = dehashData(user_perm);
       }
       return {
         ...state,
@@ -66,7 +70,12 @@ const userReducer = (state = initState, { type, payload }) => {
         userpermissions,
       };
     }
-    //   console.log(payload);
+
+    case "GET_USER_PERMION_SUCCESS":
+      return {
+        ...state,
+        userpermissions: [...payload.payload.userpermissions],
+      };
     case "REQUEST_PASSWORD_LINK_SUCCESS":
       //   console.log(payload);
       return {
@@ -109,18 +118,6 @@ const userReducer = (state = initState, { type, payload }) => {
         spinner: false,
         currentUser: {},
         userpermissions: [],
-      };
-    case "CREATE_ROLE_SUCCESS":
-      return {
-        ...state,
-        message: payload.message,
-        status: payload.status,
-      };
-    case "CREATE_ROLE_ERROR":
-      return {
-        ...state,
-        message: payload.message,
-        status: payload.status,
       };
 
     default:

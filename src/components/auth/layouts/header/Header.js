@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from "../../../helpers/Spinner";
 import { logOut } from "../../../../store/actions/userActions";
 import { useDispatch } from "react-redux";
-import { useShallowEqualSelector } from "../../../../hooks";
+import { useShallowEqualSelector, useAxiosPrivate } from "../../../../hooks";
 import {
   currentUser,
   message,
@@ -11,9 +11,12 @@ import {
 } from "../../../../store/selectors/userSelectors";
 import { Link, useHistory } from "react-router-dom";
 import Message from "../../../helpers/Message";
+import { capitalizeFirstLetter } from "../../../../util/helpers";
 
 function Header() {
   const history = useHistory();
+  const request = useAxiosPrivate();
+
   const { first_name, last_name } = useShallowEqualSelector(currentUser);
   const store_message = useShallowEqualSelector(message);
   const store_status = useShallowEqualSelector(status);
@@ -23,7 +26,7 @@ function Header() {
   const dispatch = useDispatch();
   function logOutUser(e) {
     e.preventDefault();
-    logOut(dispatch);
+    logOut(dispatch, request);
   }
   function goBack(e) {
     e.preventDefault();
@@ -34,7 +37,7 @@ function Header() {
     history.goForward();
   }
   useEffect(() => {
-    setProfile((current) => ({ ...current, first_name, last_name }));
+    setProfile((prev) => ({ ...prev, first_name, last_name }));
   }, [first_name, last_name]);
   return (
     <>
@@ -57,7 +60,7 @@ function Header() {
           </li>
           <li className="nav-item  d-sm-inline-block ">
             <Link onClick={goBack} to="#!" className="nav-link" title="Go back">
-              <i className="fas fa-arrow-left text-secondary   "></i>
+              <i className="fas fa-arrow-left text-primary  "></i>
             </Link>
           </li>
           <li className="nav-item  d-sm-inline-block">
@@ -67,12 +70,12 @@ function Header() {
               className="nav-link"
               title="Go forward"
             >
-              <i className="fas fa-arrow-right text-secondary"></i>
+              <i className="fas fa-arrow-right text-primary"></i>
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
             <Link to="/" className="nav-link" title="My dashboard">
-              <i className="fas fa-tachometer-alt text-secondary  "></i>
+              <i className="fas fa-tachometer-alt text-secondary fa-5x "></i>
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
@@ -87,7 +90,7 @@ function Header() {
               className="nav-link"
               title="Logout"
             >
-              <i className="fas fa-sign-out-alt text-secondary" />
+              <i className="fas fa-sign-out-alt text-maroon" />
             </Link>
           </li>
         </ul>
@@ -97,15 +100,17 @@ function Header() {
           {store_spinner ? <Spinner color="secondary" /> : null}
           <li className="nav-item dropdown">
             <Link className="nav-link" data-toggle="dropdown" to={() => false}>
-              {profile.last_name?.toUpperCase()}{" "}
-              {profile.first_name?.toUpperCase()} <i className="far fa-user" />
+              {capitalizeFirstLetter(profile?.last_name)}{" "}
+              {capitalizeFirstLetter(profile?.first_name)}{" "}
+              <i className="far fa-user" />
               <span className="badge badge-warning navbar-badge"></span>
             </Link>
             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <span className="dropdown-item dropdown-header">My Account</span>
               <div className="dropdown-divider" />
               <Link to={() => false} className="dropdown-item">
-                <i className="fas fa-unlock-alt mr-2" /> Change password
+                <i className="fas fa-unlock-alt mr-2  text-secondary" /> Change
+                password
               </Link>
               <div className="dropdown-divider" />
               <Link
@@ -113,7 +118,7 @@ function Header() {
                 className="dropdown-item"
                 onClick={logOutUser}
               >
-                <i className="fas fa-sign-out-alt mr-2" /> Logout
+                <i className="fas fa-sign-out-alt mr-2 text-secondary" /> Logout
               </Link>
             </div>
           </li>

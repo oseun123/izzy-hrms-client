@@ -24,6 +24,10 @@ const system_roles = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_roles
 );
+const system_departments = createSelector(
+  (state) => state.preferences,
+  (preferences) => preferences.system_departments
+);
 const system_users = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_users
@@ -45,5 +49,6 @@ export {
   system_permissions,
   system_roles,
   single_system_role,
-  system_users
+  system_users,
+  system_departments,
 };

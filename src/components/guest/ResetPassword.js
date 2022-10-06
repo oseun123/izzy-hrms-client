@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import MiniSpinner from "./../helpers/MiniSpinner";
+
 import Message from "./../helpers/Message";
 import Spinner from "./../helpers/Spinner";
 import classnames from "classnames";
@@ -11,7 +11,8 @@ import {
 } from "../../store/actions/userActions";
 import { useForm } from "../../hooks";
 import { validatResetPassword } from "../../util/formValidations";
-import { Input } from "antd";
+import { Input, Button } from "antd";
+import { LockOutlined, SyncOutlined } from "@ant-design/icons";
 const ResetPassword = () => {
   const { token } = useParams();
   const initData = {
@@ -64,7 +65,7 @@ const ResetPassword = () => {
                   name="password"
                   onChange={handleChange}
                   placeholder="Enter Password"
-                  addonAfter={<span className="fas fa-lock text-secondary" />}
+                  addonBefore={<LockOutlined className="text-secondary" />}
                 />
 
                 <div
@@ -83,7 +84,7 @@ const ResetPassword = () => {
                   name="password_confirm"
                   onChange={handleChange}
                   placeholder="Confirm Password"
-                  addonAfter={<span className="fas fa-lock text-secondary" />}
+                  addonBefore={<LockOutlined className="text-secondary" />}
                 />
 
                 <div
@@ -96,19 +97,17 @@ const ResetPassword = () => {
               </div>
 
               <div className="row">
-                <div className="col-8"></div>
+                <div className="col-4"></div>
                 {/* /.col */}
-                <div className="col-4">
-                  <button
-                    type="submit"
-                    className="btn btn-primary d-flex"
-                    disabled={spinner}
+                <div className="col-8 text-right">
+                  <Button
+                    type="primary"
+                    icon={<SyncOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
                   >
-                    <span className="shift_up">
-                      Submit
-                      <MiniSpinner color="white" d-hidden spinner={spinner} />
-                    </span>
-                  </button>
+                    Reset
+                  </Button>
                 </div>
                 {/* /.col */}
               </div>

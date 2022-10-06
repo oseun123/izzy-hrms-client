@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { token } from "../config";
+
 const { REACT_APP_SALT } = process.env;
 
 export const crypt = (salt, text) => {
@@ -31,8 +31,8 @@ export const hashData = (payload) => {
   const hash = crypt(REACT_APP_SALT, JSON.stringify(payload));
   return hash;
 };
-export const dehashData = () => {
-  const tok = Cookies.get(token);
+export const dehashData = (item) => {
+  const tok = Cookies.get(item);
   if (tok) {
     const dehash = decrypt(REACT_APP_SALT, tok);
     if (dehash) {

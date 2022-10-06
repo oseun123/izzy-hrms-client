@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import MiniSpinner from "../../../../../helpers/MiniSpinner";
+
 import { useDispatch } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
+import {
+  useShallowEqualSelector,
+  useAxiosPrivate,
+} from "../../../../../../hooks";
 import {
   spinner_preferences,
   message_preferences,
@@ -13,10 +16,14 @@ import Permissions from "./Permissions";
 import { useGetSystemPermissions } from "./../../../../../../store/actions/preferencesHooksActions";
 import { useForm } from "../../../../../../hooks";
 import { validateCreateRole } from "../../../../../../util/formValidations";
-import { createRole } from "../../../../../../store/actions/preferencesActions";
+import {
+  createRole,
+  preferencesCleanUp,
+} from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
-import { Input } from 'antd';
+import { Input, Button, Space } from "antd";
+import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 
 function CreateRoles() {
   const [enabled, setEnabled] = useState(true);
@@ -26,6 +33,7 @@ function CreateRoles() {
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
   const all_system_permissions = useShallowEqualSelector(system_permissions);
+  const request = useAxiosPrivate();
 
   const initRoles = {
     name: "",
@@ -34,7 +42,7 @@ function CreateRoles() {
   };
   // callback
   const createRolesFromform = () => {
-    createRole(dispatch, values).then((res) => {
+    createRole(dispatch, request, values).then((res) => {
       if (res?.status === "success") {
         clearForm();
         document.querySelector("#default").checked = false;
@@ -74,7 +82,7 @@ function CreateRoles() {
   }
   useEffect(() => {
     return () => {
-      dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+      preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
 
@@ -122,13 +130,11 @@ function CreateRoles() {
                       id="name"
                       name="name"
                       allowClear
-                      className={classnames("form-control form-control-sm", {
-                        "is-invalid": errors.name,
-                      })}
+                      status={errors.name ? "error" : ""}
                       onChange={handleChange}
                       value={values.name}
                     />
-                  
+
                     <div
                       className={classnames(
                         "invalid-feedback",
@@ -193,16 +199,20 @@ function CreateRoles() {
                   )}
 
                 {/* /.card */}
-                <button
-                  type="submit"
-                  className="btn btn-primary d-flex"
-                  disabled={spinner}
-                >
-                  <span className="shift_up">
-                    <i class="fas fa-plus-circle"></i> Create
-                    <MiniSpinner color="white" d-hidden spinner={spinner} />
-                  </span>
-                </button>
+                <Space>
+                  <Button
+                    type="primary"
+                    icon={<PlusCircleOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
+                  >
+                    {" "}
+                    Create
+                  </Button>
+                  <Link to="/preferences/view-roles">
+                    <Button icon={<EyeOutlined />}> View</Button>
+                  </Link>
+                </Space>
               </div>
             </div>
           </form>

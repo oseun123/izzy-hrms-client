@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import MiniSpinner from "../../../../../helpers/MiniSpinner";
+
 import { useDispatch, shallowEqual, useSelector } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
+import {
+  useShallowEqualSelector,
+  useForm,
+  useAxiosPrivate,
+} from "../../../../../../hooks";
 import {
   spinner_preferences,
   message_preferences,
@@ -14,21 +18,30 @@ import Permissions from "./Permissions";
 import {
   useGetSystemPermissions,
   useGetSystemRoles,
+  useGetUserPermissions,
 } from "../../../../../../store/actions/preferencesHooksActions";
-import { useForm } from "../../../../../../hooks";
+
 import { validateCreateRole } from "../../../../../../util/formValidations";
-import { updateRole } from "../../../../../../store/actions/preferencesActions";
+import {
+  updateRole,
+  preferencesCleanUp,
+} from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
+import { currentUser } from "../../../../../../store/selectors/userSelectors";
+import { FormOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
 
 function EditRoles() {
+  const auth_user = useShallowEqualSelector(currentUser);
   const { id } = useParams();
-
+  const [enabledUserPerm, setEnabledUserPerm] = useState(false);
   const [enabled, setEnabled] = useState(true);
   const [nam, setNam] = useState("");
   const dispatch = useDispatch();
   useGetSystemRoles(enabled, setEnabled);
   useGetSystemPermissions(enabled, setEnabled);
+  useGetUserPermissions(enabledUserPerm, setEnabledUserPerm, auth_user.id);
   const spinner = useShallowEqualSelector(spinner_preferences);
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
@@ -37,10 +50,11 @@ function EditRoles() {
     (state) => single_system_role(state, id),
     shallowEqual
   );
+  const request = useAxiosPrivate();
+
   const role_name = single_role[0]?.name;
   const permissions = single_role[0]?.permissions;
   const is_default = single_role[0]?.default;
-
   const initRoles = {
     name: role_name,
     default: false,
@@ -49,7 +63,12 @@ function EditRoles() {
   };
   // callback
   const updateRolesFromform = () => {
-    updateRole(dispatch, values);
+    updateRole(dispatch, request, values).then((res) => {
+      if (res?.status === "success") {
+        setEnabledUserPerm(true);
+        setEnabled(true);
+      }
+    });
   };
   const { values, errors, handleChange, handleSubmit } = useForm(
     updateRolesFromform,
@@ -79,7 +98,7 @@ function EditRoles() {
   }
   useEffect(() => {
     return () => {
-      dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+      preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
 
@@ -105,7 +124,7 @@ function EditRoles() {
         }
       });
     });
-  }, [permissions]);
+  }, [permissions, all_system_permissions]);
 
   return (
     <>
@@ -146,13 +165,12 @@ function EditRoles() {
                     <label htmlFor="name">
                       Name <span className="text-danger">*</span>
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="name"
                       name="name"
-                      className={classnames("form-control", {
-                        "is-invalid": errors.name,
-                      })}
+                      allowClear
+                      status={errors.name ? "error" : ""}
                       onChange={handleChange}
                       value={values.name}
                       defaultValue={nam}
@@ -222,16 +240,15 @@ function EditRoles() {
                   )}
 
                 {/* /.card */}
-                <button
-                  type="submit"
-                  className="btn btn-primary d-flex"
-                  disabled={spinner}
+                <Button
+                  type="primary"
+                  icon={<FormOutlined />}
+                  loading={spinner}
+                  htmlType="submit"
                 >
-                  <span className="shift_up">
-                    <i className="fas fa-edit"></i> Update
-                    <MiniSpinner color="white" d-hidden spinner={spinner} />
-                  </span>
-                </button>
+                  {" "}
+                  Update
+                </Button>
               </div>
             </div>
           </form>

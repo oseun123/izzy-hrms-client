@@ -1,4 +1,4 @@
-export const loginForm = (values) => {
+const loginForm = (values) => {
   let errors = {};
   if (values.hasOwnProperty("email") && values.email.trim() === "") {
     errors.email = "Must not be empty";
@@ -17,15 +17,15 @@ export const loginForm = (values) => {
   }
   return errors;
 };
-
-export const requestLink = (values) => {
+const requestLink = (values) => {
   let errors = {};
   if (values.hasOwnProperty("email") && values.email.trim() === "") {
     errors.email = "Email must not be empty";
   }
   return errors;
 };
-export const validatResetPassword = (values) => {
+
+const validatResetPassword = (values) => {
   let errors = {};
   if (values.hasOwnProperty("password") && values.password.trim() === "") {
     errors.password = "Password must not be empty";
@@ -49,7 +49,7 @@ export const validatResetPassword = (values) => {
   return errors;
 };
 
-export const validateCreateRole = (values) => {
+const validateCreateRole = (values) => {
   let errors = {};
 
   if (values.hasOwnProperty("name") && values.name.trim() === "") {
@@ -60,10 +60,9 @@ export const validateCreateRole = (values) => {
   }
   return errors;
 };
-export const validateAssignUsers = (values) => {
-  let errors = {};
 
-  console.log(values);
+const validateAssignUsers = (values) => {
+  let errors = {};
 
   if (values.hasOwnProperty("role") && values.role === "") {
     errors.role = "Role cannot not be empty.";
@@ -72,4 +71,22 @@ export const validateAssignUsers = (values) => {
     errors.users = "User cannot be empty.";
   }
   return errors;
+};
+const validateCreateDepartment = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+
+  return errors;
+};
+
+export {
+  validateAssignUsers,
+  validateCreateRole,
+  validatResetPassword,
+  requestLink,
+  loginForm,
+  validateCreateDepartment,
 };

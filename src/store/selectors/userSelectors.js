@@ -51,6 +51,14 @@ const preferencesRolespermissions = createSelector(
         permission.for === "Preferences" && permission.module === "Roles"
     )
 );
+const preferencesDepartmentpermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" && permission.module === "Department"
+    )
+);
 
 const userhaspermission = () =>
   createSelector(
@@ -73,5 +81,6 @@ export {
   dashboardpermissions,
   preferencespermissions,
   preferencesRolespermissions,
+  preferencesDepartmentpermissions,
   userhaspermission,
 };

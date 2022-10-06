@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Preferences from "./Preferences";
+import { useShallowEqualSelector } from "../../../../hooks";
+import { currentUser } from "../../../../store/selectors/userSelectors";
+import { capitalizeFirstLetter } from "../../../../util/helpers";
+
 function Aside() {
+  const { first_name, last_name } = useShallowEqualSelector(currentUser);
+
+  const [profile, setProfile] = useState({ first_name: "", last_name: "" });
   function handleClick(e) {
     let parent = e.target.closest(".has-treeview");
     let child = e.target.closest(".has-treeview ").children[1];
@@ -23,6 +30,11 @@ function Aside() {
       child.style.display = "block";
     }
   }
+
+  useEffect(() => {
+    setProfile((prev) => ({ ...prev, first_name, last_name }));
+  }, [first_name, last_name]);
+
   return (
     <>
       {/* Main Sidebar Container */}
@@ -52,7 +64,8 @@ function Aside() {
             </div>
             <div className="info">
               <Link to="/" className="d-block">
-                Alexander Pierce
+                {capitalizeFirstLetter(profile?.last_name)}{" "}
+                {capitalizeFirstLetter(profile?.first_name)}{" "}
               </Link>
             </div>
           </div>

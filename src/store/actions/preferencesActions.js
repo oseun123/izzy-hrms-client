@@ -1,15 +1,10 @@
-import { setPrivateRequest } from "../../requestMethods";
-
-const createRole = async (dispatch, creds) => {
+const createRole = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await setPrivateRequest().post(
-      "/api/preferences/roles",
-      creds
-    );
+    const result = await request.post("/api/preferences/roles", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -22,13 +17,13 @@ const createRole = async (dispatch, creds) => {
     dispatch({ type: "CREATE_ROLE_ERROR", payload: resMessage });
   }
 };
-const updateRole = async (dispatch, creds) => {
+const updateRole = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await setPrivateRequest().put(
+    const result = await request.put(
       `/api/preferences/roles/${creds.role_id}`,
       creds
     );
@@ -44,13 +39,13 @@ const updateRole = async (dispatch, creds) => {
     dispatch({ type: "CREATE_ROLE_ERROR", payload: resMessage });
   }
 };
-const assignUsers = async (dispatch, creds) => {
+const assignUsers = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await setPrivateRequest().put(
+    const result = await request.put(
       `/api/preferences/roles-users/${creds.role_id}`,
       creds
     );
@@ -66,16 +61,36 @@ const assignUsers = async (dispatch, creds) => {
     dispatch({ type: "CREATE_ROLE_ERROR", payload: resMessage });
   }
 };
-
-const deleteRole = async (dispatch, creds) => {
+const removeUser = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await setPrivateRequest().delete(
-      `/api/preferences/roles/${creds.id}`
+    const result = await request.put(
+      `/api/preferences/roles-user/${creds.role_id}`,
+      creds
     );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_ROLE_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_ROLE_ERROR", payload: resMessage });
+  }
+};
+
+const deleteRole = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.delete(`/api/preferences/roles/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -89,4 +104,35 @@ const deleteRole = async (dispatch, creds) => {
   }
 };
 
-export { createRole, deleteRole, updateRole, assignUsers };
+const createDepartment = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.post("/api/preferences/departments", creds);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_DEPARTMENT_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_DEPARTMENT_ERROR", payload: resMessage });
+  }
+};
+const preferencesCleanUp = async (dispatch) => {
+  dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+};
+
+export {
+  createRole,
+  deleteRole,
+  updateRole,
+  assignUsers,
+  removeUser,
+  createDepartment,
+  preferencesCleanUp,
+};

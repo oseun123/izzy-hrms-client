@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import MiniSpinner from "./../helpers/MiniSpinner";
+
 import Message from "./../helpers/Message";
 import Spinner from "./../helpers/Spinner";
 import classnames from "classnames";
@@ -11,7 +11,8 @@ import {
 } from "../../store/actions/userActions";
 import { useForm } from "../../hooks";
 import { requestLink } from "../../util/formValidations";
-import { Input } from "antd";
+import { Input, Button } from "antd";
+import { SendOutlined, MailOutlined } from "@ant-design/icons";
 const ForgetPassword = () => {
   const initEmail = {
     email: "",
@@ -62,9 +63,7 @@ const ForgetPassword = () => {
                   name="email"
                   onChange={handleChange}
                   placeholder="Enter Email"
-                  addonAfter={
-                    <span className="fas fa-envelope text-secondary" />
-                  }
+                  addonBefore={<MailOutlined className="text-secondary" />}
                 />
 
                 <div
@@ -77,19 +76,17 @@ const ForgetPassword = () => {
               </div>
 
               <div className="row">
-                <div className="col-8"></div>
+                <div className="col-4"></div>
                 {/* /.col */}
-                <div className="col-4">
-                  <button
-                    type="submit"
-                    className="btn btn-primary d-flex"
-                    disabled={spinner}
+                <div className="col-8 text-right">
+                  <Button
+                    type="primary"
+                    icon={<SendOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
                   >
-                    <span className="shift_up">
-                      Submit
-                      <MiniSpinner color="white" d-hidden spinner={spinner} />
-                    </span>
-                  </button>
+                    Send
+                  </Button>
                 </div>
                 {/* /.col */}
               </div>

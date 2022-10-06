@@ -11,29 +11,30 @@ import {
   // spinner_preferences,
   message_preferences,
   status_preferences,
-  system_roles,
+  system_departments,
 } from "../../../../../../store/selectors/preferencesSelector";
-import { useGetSystemRoles } from "./../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemDepartment } from "./../../../../../../store/actions/preferencesHooksActions";
 import {
   deleteRole,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
-import { role_columns } from "./../../../../../../util/tables";
+import { department_columns } from "./../../../../../../util/tables";
 const { Option } = Select;
 
-function ViewRoles() {
+function ViewDepartments() {
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const dispatch = useDispatch();
-  const { data } = useGetSystemRoles(enabled, setEnabled, page, size);
+  const { data } = useGetSystemDepartment(enabled, setEnabled, page, size);
+
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
-  const roles = useShallowEqualSelector(system_roles);
+  const departments = useShallowEqualSelector(system_departments);
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Are you sure you want to delete this role?";
+  const confirm_text = "Are you sure you want to delete this department?";
   const request = useAxiosPrivate();
 
   useEffect(() => {
@@ -52,7 +53,8 @@ function ViewRoles() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    deleteRole(dispatch, request, { id });
+    // deleteRole(dispatch, request, { id });
+    console.log(id);
   }
   return (
     <>
@@ -64,7 +66,7 @@ function ViewRoles() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1>View Roles</h1>
+              <h1>View Departments</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
@@ -86,16 +88,16 @@ function ViewRoles() {
               {/* Default box */}
               <div className="card">
                 <div className="card-header">
-                  <h3 className="card-title">System roles</h3>
+                  <h3 className="card-title">System departments</h3>
                 </div>
                 <div className="card-body">
                   <Table
-                    columns={role_columns(
+                    columns={department_columns(
                       isTabletOrMobile,
                       confirm_text,
                       confirmAction
                     )}
-                    dataSource={roles}
+                    dataSource={departments}
                     rowKey={(record) => record.id}
                     scroll={{
                       x: 786,
@@ -117,26 +119,6 @@ function ViewRoles() {
                                   {record.users.map((user) => (
                                     <span className="badge bg-secondary rounded-pill p-1">
                                       {user.first_name}
-                                    </span>
-                                  ))}
-                                </Space>
-                              </Card>
-                            </div>
-                          ) : null}
-
-                          {record?.permissions?.length ? (
-                            <div>
-                              <Card
-                                size="small"
-                                title="Permissions"
-                                style={{
-                                  margin: 0,
-                                }}
-                              >
-                                <Space wrap>
-                                  {record.permissions.map((perm) => (
-                                    <span className="badge bg-secondary rounded-pill p-1">
-                                      {perm.name}
                                     </span>
                                   ))}
                                 </Space>
@@ -183,4 +165,4 @@ function ViewRoles() {
   );
 }
 
-export default ViewRoles;
+export default ViewDepartments;

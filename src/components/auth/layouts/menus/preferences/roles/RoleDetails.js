@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table } from "antd";
-import { useGetSystemRoles } from "./../../../../../../store/actions/preferencesHooksActions";
+import {
+  useGetSystemRoles,
+  useGetUserPermissions,
+} from "./../../../../../../store/actions/preferencesHooksActions";
+import {
+  removeUser,
+  preferencesCleanUp,
+} from "../../../../../../store/actions/preferencesActions";
 
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
+import {
+  useShallowEqualSelector,
+  useAxiosPrivate,
+} from "../../../../../../hooks";
 import {
   message_preferences,
   status_preferences,
   single_system_role,
 } from "../../../../../../store/selectors/preferencesSelector";
+
+import { currentUser } from "../../../../../../store/selectors/userSelectors";
 import Message from "../../../../../helpers/Message";
 import {
   capitalizeFirstLetter,
@@ -17,14 +29,18 @@ import {
 } from "./../../../../../../util/helpers";
 import { role_details_columns } from "./../../../../../../util/tables";
 import Permissions from "./Permissions";
+const confirm_text = "Are you sure you want to remove this user?";
 
 function RoleDetails() {
+  const auth_user = useShallowEqualSelector(currentUser);
   const { id } = useParams();
-  const [enabled, setEnabled] = useState(true);
+  const [enabledRole, setEnabledRole] = useState(true);
+  const [enabledUserPerm, setEnabledUserPerm] = useState(false);
   // const [page, setPage] = useState(1);
   // const [size, setSize] = useState(10);
-  useGetSystemRoles(enabled, setEnabled);
-
+  useGetSystemRoles(enabledRole, setEnabledRole);
+  useGetUserPermissions(enabledUserPerm, setEnabledUserPerm, auth_user.id);
+  const request = useAxiosPrivate();
   const dispatch = useDispatch();
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
@@ -39,9 +55,19 @@ function RoleDetails() {
   const permissions = single_role[0]?.permissions;
   const filtered_perm = filtered_permissions(permissions);
 
+  function toremoveUser(user_id) {
+    const creds = { user: user_id, role_id: id };
+    removeUser(dispatch, request, creds).then((res) => {
+      if (res.status === "success") {
+        setEnabledRole(true);
+        setEnabledUserPerm(true);
+      }
+    });
+  }
+
   useEffect(() => {
     return () => {
-      dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+      preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
 
@@ -99,7 +125,7 @@ function RoleDetails() {
                 </div>
                 <div className="card-body">
                   <Table
-                    columns={role_details_columns()}
+                    columns={role_details_columns(confirm_text, toremoveUser)}
                     rowKey={(record) => record.id}
                     dataSource={users}
                     scroll={{

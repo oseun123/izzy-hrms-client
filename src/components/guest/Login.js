@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useForm } from "../../hooks";
-import MiniSpinner from "./../helpers/MiniSpinner";
 import Message from "./../helpers/Message";
 import Spinner from "./../helpers/Spinner";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import classnames from "classnames";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loginForm } from "../../util/formValidations";
 import { login } from "./../../store/actions/userActions";
 import { resetUsersState } from "../../store/actions/userActions";
-import { Input } from "antd";
+import { Input, Button } from "antd";
+import { LoginOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const initLoginUser = {
@@ -21,6 +21,8 @@ const Login = () => {
   const { spinner, message, status } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+
   useEffect(() => {
     return () => {
       resetUsersState(dispatch);
@@ -28,7 +30,7 @@ const Login = () => {
   }, [dispatch]);
   // callback
   const loginUserFromForm = () => {
-    login(dispatch, values, history);
+    login(dispatch, values, history, location);
   };
 
   const { values, errors, handleChange, handleSubmit } = useForm(
@@ -64,9 +66,7 @@ const Login = () => {
                   name="email"
                   onChange={handleChange}
                   placeholder="Enter Email"
-                  addonAfter={
-                    <span className="fas fa-envelope text-secondary" />
-                  }
+                  addonBefore={<MailOutlined className="text-secondary" />}
                 />
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {
@@ -85,13 +85,8 @@ const Login = () => {
                   onChange={handleChange}
                   name="password"
                   placeholder="Enter Password"
-                  addonAfter={<span className="fas fa-lock text-secondary" />}
+                  addonBefore={<LockOutlined className="text-secondary" />}
                 />
-                {/* <div className="input-group-append">
-                  <div className="input-group-text text-primary">
-                    <span className="fas fa-lock text-secondary" />
-                  </div>
-                </div> */}
 
                 <div
                   className={classnames("invalid-feedback", "custom-feedback", {
@@ -102,19 +97,18 @@ const Login = () => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-8"></div>
+                <div className="col-4"></div>
                 {/* /.col */}
-                <div className="col-4">
-                  <button
-                    type="submit"
-                    className="btn btn-primary d-flex"
-                    disabled={spinner}
+                <div className="col-8 text-right">
+                  <Button
+                    type="primary"
+                    icon={<LoginOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
                   >
-                    <span className="shift_up">
-                      Sign In
-                      <MiniSpinner color="white" d-hidden spinner={spinner} />
-                    </span>
-                  </button>
+                    {" "}
+                    Sign In
+                  </Button>
                 </div>
                 {/* /.col */}
               </div>

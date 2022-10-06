@@ -1,4 +1,4 @@
-import { BASE_URL } from "./config";
+import { BASE_URL, token } from "./config";
 import axios from "axios";
 import { dehashData } from "./util/hash";
 export const refreshToken = axios.create({
@@ -31,16 +31,14 @@ export const privateRequestGet = axios.create({
   withCredentials: true,
 });
 export const setPrivateRequest = () => {
-  const dehash = dehashData();
-  privateRequest.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${dehash.token}`;
+  const dehash = dehashData(token);
+  privateRequest.defaults.headers.common["Authorization"] = `Bearer ${dehash}`;
   return privateRequest;
 };
 export const setPrivateRequestGet = () => {
-  const dehash = dehashData();
+  const dehash = dehashData(token);
   privateRequestGet.defaults.headers.common[
     "Authorization"
-  ] = `Bearer ${dehash.token}`;
+  ] = `Bearer ${dehash?.token}`;
   return privateRequestGet;
 };
