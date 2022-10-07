@@ -91,6 +91,26 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+    case "DELETE_DEPARTMENT_SUCCESS": {
+      const deleted_id = parseInt(payload.payload.department);
+      const system_departments = [...state.system_departments];
+      const filtered_department = system_departments.filter(
+        (dept) => dept.id !== deleted_id
+      );
+
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+        system_departments: [...filtered_department],
+      };
+    }
+    case "DELETE_DEPARTMENT_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
     case "CREATE_DEPARTMENT_SUCCESS":
       return {
         ...state,

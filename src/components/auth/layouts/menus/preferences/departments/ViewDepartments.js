@@ -15,7 +15,7 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 import { useGetSystemDepartment } from "./../../../../../../store/actions/preferencesHooksActions";
 import {
-  deleteRole,
+  deleteDepartment,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import Message from "../../../../../helpers/Message";
@@ -53,8 +53,7 @@ function ViewDepartments() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    // deleteRole(dispatch, request, { id });
-    console.log(id);
+    deleteDepartment(dispatch, request, { id });
   }
   return (
     <>
