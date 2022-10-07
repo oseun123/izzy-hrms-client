@@ -53,7 +53,11 @@ function ViewDepartments() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    deleteDepartment(dispatch, request, { id });
+    deleteDepartment(dispatch, request, { id }).then((res) => {
+      if (res?.status === "success") {
+        setEnabled(true);
+      }
+    });
   }
   return (
     <>

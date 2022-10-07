@@ -17,6 +17,7 @@ import {
   ViewDepartments,
   EditDepartments,
   CreateDepartments,
+  DepartmentDetails,
 } from "./layouts/preferences";
 
 const Footer = lazy(() => import("./layouts/footer/Footer"));
@@ -98,6 +99,13 @@ const Layout = () => {
                 path="/preferences/edit-departments/:id"
                 component={EditDepartments}
                 permission="CREATE_DEPARTMENT"
+              />
+
+              <HasPermission
+                exact
+                path="/preferences/view-departments/:id"
+                component={DepartmentDetails}
+                permission="VIEW_DEPARTMENT"
               />
               {/* end department */}
               <Route path="*" component={NoMatch} />

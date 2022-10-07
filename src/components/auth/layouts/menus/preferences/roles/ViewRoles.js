@@ -52,7 +52,11 @@ function ViewRoles() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    deleteRole(dispatch, request, { id });
+    deleteRole(dispatch, request, { id }).then((res) => {
+      if (res?.status === "success") {
+        setEnabled(true);
+      }
+    });
   }
   return (
     <>

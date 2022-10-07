@@ -511,4 +511,155 @@ const department_columns = (isTabletOrMobile, confirm_text, confirmAction) => {
   ];
 };
 
-export { role_details_columns, role_columns, department_columns };
+const department_details_columns = () => {
+  return [
+    {
+      title: "First Name",
+      dataIndex: "first_name",
+      key: "first_name",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter First name"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.first_name.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+    {
+      title: "Last Name",
+      key: "last_name",
+      dataIndex: "last_name",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter Last name"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.last_name.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter email"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.email.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+  ];
+};
+
+export {
+  role_details_columns,
+  role_columns,
+  department_columns,
+  department_details_columns,
+};

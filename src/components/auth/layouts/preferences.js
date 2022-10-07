@@ -7,3 +7,4 @@ export { default as CreateDepartments } from "./menus/preferences/departments/Cr
 export { default as ViewDepartments } from "./menus/preferences/departments/ViewDepartments";
 
 export { default as EditDepartments } from "./menus/preferences/departments/EditDepartments";
+export { default as DepartmentDetails } from "./menus/preferences/departments/DepartmentDetails";

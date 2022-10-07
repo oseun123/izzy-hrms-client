@@ -36,8 +36,7 @@ function RoleDetails() {
   const { id } = useParams();
   const [enabledRole, setEnabledRole] = useState(true);
   const [enabledUserPerm, setEnabledUserPerm] = useState(false);
-  // const [page, setPage] = useState(1);
-  // const [size, setSize] = useState(10);
+
   useGetSystemRoles(enabledRole, setEnabledRole);
   useGetUserPermissions(enabledUserPerm, setEnabledUserPerm, auth_user.id);
   const request = useAxiosPrivate();
