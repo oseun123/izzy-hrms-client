@@ -60,7 +60,7 @@ function Header() {
           </li>
           <li className="nav-item  d-sm-inline-block ">
             <Link onClick={goBack} to="#!" className="nav-link" title="Go back">
-              <i className="fas fa-arrow-left text-primary  "></i>
+              <i className="fas fa-arrow-left text-primary font-increase "></i>
             </Link>
           </li>
           <li className="nav-item  d-sm-inline-block">
@@ -70,17 +70,17 @@ function Header() {
               className="nav-link"
               title="Go forward"
             >
-              <i className="fas fa-arrow-right text-primary"></i>
+              <i className="fas fa-arrow-right text-primary font-increase"></i>
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
             <Link to="/" className="nav-link" title="My dashboard">
-              <i className="fas fa-tachometer-alt text-secondary fa-5x "></i>
+              <i className="fas fa-tachometer-alt text-secondary font-increase "></i>
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
             <Link to={() => false} className="nav-link" title="Change Password">
-              <i className="fas fa-unlock-alt text-secondary" />
+              <i className="fas fa-unlock-alt text-secondary font-increase" />
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
@@ -90,7 +90,7 @@ function Header() {
               className="nav-link"
               title="Logout"
             >
-              <i className="fas fa-sign-out-alt text-maroon" />
+              <i className="fas fa-sign-out-alt text-maroon font-increase" />
             </Link>
           </li>
         </ul>

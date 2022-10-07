@@ -41,6 +41,15 @@ const single_system_role = createSelector(
     return preferences.system_roles.filter((role) => role.id === role_id);
   }
 );
+const single_system_department = createSelector(
+  (state) => state.preferences,
+  (_, dept_id) => {
+    return parseInt(dept_id);
+  },
+  (preferences, dept_id) => {
+    return preferences.system_departments.filter((dept) => dept.id === dept_id);
+  }
+);
 
 export {
   message_preferences,
@@ -51,4 +60,5 @@ export {
   single_system_role,
   system_users,
   system_departments,
+  single_system_department,
 };

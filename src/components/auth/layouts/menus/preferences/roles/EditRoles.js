@@ -29,8 +29,8 @@ import {
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
 import { currentUser } from "../../../../../../store/selectors/userSelectors";
-import { FormOutlined } from "@ant-design/icons";
-import { Button, Input } from "antd";
+import { FormOutlined, EyeOutlined } from "@ant-design/icons";
+import { Button, Input, Space } from "antd";
 
 function EditRoles() {
   const auth_user = useShallowEqualSelector(currentUser);
@@ -240,15 +240,20 @@ function EditRoles() {
                   )}
 
                 {/* /.card */}
-                <Button
-                  type="primary"
-                  icon={<FormOutlined />}
-                  loading={spinner}
-                  htmlType="submit"
-                >
-                  {" "}
-                  Update
-                </Button>
+                <Space>
+                  <Button
+                    type="primary"
+                    icon={<FormOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
+                  >
+                    {" "}
+                    Update
+                  </Button>
+                  <Link to="/preferences/view-roles">
+                    <Button icon={<EyeOutlined />}> View</Button>
+                  </Link>
+                </Space>
               </div>
             </div>
           </form>

@@ -12,40 +12,39 @@
     );
   background-blend-mode: soft-light, screen;
 }
-.custom-feedback{
+.custom-feedback {
   height: 5px !important;
   display: block !important;
 }
-.custom-visibible{
+.custom-visibible {
   visibility: visible !important;
 }
-.d-hidden{
+.d-hidden {
   visibility: hidden !important;
 }
-.d-visible{
+.d-visible {
   visibility: visible !important;
 }
-.login-box-msg{
+.login-box-msg {
   padding-bottom: 0px;
 }
 .text-sm .content-header h1 {
   font-size: 1.1rem !important;
 }
-.fa-rd{
+.fa-rd {
   font-size: 12px !important;
 }
-.card-title{
+.card-title {
   font-weight: 500 !important;
 }
-.font-weight-light{
+.font-weight-light {
   font-weight: 400 !important;
 }
-.shift_up{
+.shift_up {
   margin-top: -5px !important;
 }
-.btn{
-  border-radius:0px !important;
-  
+.btn {
+  border-radius: 0px !important;
 }
 /* input {
   border-radius: 0px !important;
@@ -58,3 +57,7 @@ svg {
 label:not(.form-check-label):not(.custom-file-label) {
   font-weight: 600;
 }
+
+/* .font-increase {
+  font-size: 18px !important;
+} */

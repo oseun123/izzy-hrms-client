@@ -14,8 +14,9 @@ import {
   RoleDetails,
   EditRoles,
   AddUserRole,
-  CreateDepartment,
   ViewDepartments,
+  EditDepartments,
+  CreateDepartments,
 } from "./layouts/preferences";
 
 const Footer = lazy(() => import("./layouts/footer/Footer"));
@@ -35,12 +36,16 @@ const Layout = () => {
           <Aside />
           <div className="content-wrapper">
             <Switch>
+              {/* dashboard */}
               <HasPermission
                 exact
                 path="/"
                 component={PersonalDashboard}
                 permission="PERSONAL_DASHBOARD"
               />
+              {/* end dashboard */}
+
+              {/* roles */}
               <HasPermission
                 exact
                 path="/preferences/create-roles"
@@ -53,6 +58,7 @@ const Layout = () => {
                 component={EditRoles}
                 permission="CREATE_ROLES"
               />
+
               <HasPermission
                 exact
                 path="/preferences/view-roles"
@@ -72,11 +78,13 @@ const Layout = () => {
                 component={AddUserRole}
                 permission="ASSIGN_ROLES"
               />
+              {/* end roles */}
 
+              {/* department */}
               <HasPermission
                 exact
                 path="/preferences/create-departments"
-                component={CreateDepartment}
+                component={CreateDepartments}
                 permission="CREATE_DEPARTMENT"
               />
               <HasPermission
@@ -85,6 +93,13 @@ const Layout = () => {
                 component={ViewDepartments}
                 permission="VIEW_DEPARTMENT"
               />
+              <HasPermission
+                exact
+                path="/preferences/edit-departments/:id"
+                component={EditDepartments}
+                permission="CREATE_DEPARTMENT"
+              />
+              {/* end department */}
               <Route path="*" component={NoMatch} />
             </Switch>
           </div>
