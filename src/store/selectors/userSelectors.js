@@ -32,7 +32,9 @@ const dashboardpermissions = createSelector(
   (user) =>
     user.userpermissions?.filter(
       (permission) =>
-        permission.for === "Dashboard" && permission.module === "root"
+        permission.for === "Dashboard" &&
+        permission.module === "root" &&
+        permission.menu === 1
     )
 );
 const preferencespermissions = createSelector(
@@ -40,7 +42,9 @@ const preferencespermissions = createSelector(
   (user) =>
     user.userpermissions?.filter(
       (permission) =>
-        permission.for === "Preferences" && permission.module === "root"
+        permission.for === "Preferences" &&
+        permission.module === "root" &&
+        permission.menu === 1
     )
 );
 const preferencesRolespermissions = createSelector(
@@ -48,7 +52,9 @@ const preferencesRolespermissions = createSelector(
   (user) =>
     user.userpermissions?.filter(
       (permission) =>
-        permission.for === "Preferences" && permission.module === "Roles"
+        permission.for === "Preferences" &&
+        permission.module === "Roles" &&
+        permission.menu === 1
     )
 );
 const preferencesDepartmentpermissions = createSelector(
@@ -56,7 +62,19 @@ const preferencesDepartmentpermissions = createSelector(
   (user) =>
     user.userpermissions?.filter(
       (permission) =>
-        permission.for === "Preferences" && permission.module === "Department"
+        permission.for === "Preferences" &&
+        permission.module === "Department" &&
+        permission.menu === 1
+    )
+);
+const preferencesGenderpermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Gender" &&
+        permission.menu === 1
     )
 );
 
@@ -83,4 +101,5 @@ export {
   preferencesRolespermissions,
   preferencesDepartmentpermissions,
   userhaspermission,
+  preferencesGenderpermissions,
 };

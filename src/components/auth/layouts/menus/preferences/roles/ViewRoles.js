@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Space, Table, Pagination, Select, Card } from "antd";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
@@ -13,6 +13,7 @@ import {
   status_preferences,
   system_roles,
 } from "../../../../../../store/selectors/preferencesSelector";
+import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 import { useGetSystemRoles } from "./../../../../../../store/actions/preferencesHooksActions";
 import {
   deleteRole,
@@ -35,6 +36,15 @@ function ViewRoles() {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const confirm_text = "Are you sure you want to delete this role?";
   const request = useAxiosPrivate();
+  const memoUserpermission = useMemo(userhaspermission, []);
+  const delete_role = useSelector(
+    (state) => memoUserpermission(state, "DELETE_ROLES"),
+    shallowEqual
+  );
+  const edit_role = useSelector(
+    (state) => memoUserpermission(state, "EDIT_ROLES"),
+    shallowEqual
+  );
 
   useEffect(() => {
     return () => {
@@ -97,7 +107,9 @@ function ViewRoles() {
                     columns={role_columns(
                       isTabletOrMobile,
                       confirm_text,
-                      confirmAction
+                      confirmAction,
+                      delete_role,
+                      edit_role
                     )}
                     dataSource={roles}
                     rowKey={(record) => record.id}

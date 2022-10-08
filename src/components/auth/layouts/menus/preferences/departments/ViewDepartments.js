@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Space, Table, Pagination, Select, Card } from "antd";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
@@ -13,6 +13,8 @@ import {
   status_preferences,
   system_departments,
 } from "../../../../../../store/selectors/preferencesSelector";
+import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
+
 import { useGetSystemDepartment } from "./../../../../../../store/actions/preferencesHooksActions";
 import {
   deleteDepartment,
@@ -33,6 +35,16 @@ function ViewDepartments() {
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
   const departments = useShallowEqualSelector(system_departments);
+  const memoUserpermission = useMemo(userhaspermission, []);
+  const delete_dept = useSelector(
+    (state) => memoUserpermission(state, "DELETE_DEPARTMENT"),
+    shallowEqual
+  );
+  const edit_dept = useSelector(
+    (state) => memoUserpermission(state, "EDIT_DEPARTMENT"),
+    shallowEqual
+  );
+
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const confirm_text = "Are you sure you want to delete this department?";
   const request = useAxiosPrivate();
@@ -98,7 +110,9 @@ function ViewDepartments() {
                     columns={department_columns(
                       isTabletOrMobile,
                       confirm_text,
-                      confirmAction
+                      confirmAction,
+                      delete_dept,
+                      edit_dept
                     )}
                     dataSource={departments}
                     rowKey={(record) => record.id}

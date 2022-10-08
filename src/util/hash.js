@@ -1,4 +1,5 @@
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+import { storage_type } from "../config";
 
 const { REACT_APP_SALT } = process.env;
 
@@ -32,7 +33,7 @@ export const hashData = (payload) => {
   return hash;
 };
 export const dehashData = (item) => {
-  const tok = Cookies.get(item);
+  const tok = storage_type.getItem(item);
   if (tok) {
     const dehash = decrypt(REACT_APP_SALT, tok);
     if (dehash) {

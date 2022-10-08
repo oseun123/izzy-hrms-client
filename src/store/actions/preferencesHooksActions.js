@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { useAxiosPrivate } from "../../hooks";
 import { isForbiddden } from "../../util/helpers";
-import { token } from "./../../config";
+import { token, storage_type } from "./../../config";
 import { useLocation, useHistory } from "react-router-dom";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { hashData } from "../../util/hash";
 import { user_perm } from "../../config";
 // import { setPrivateRequest } from "../../requestMethods";
@@ -84,7 +84,7 @@ const useGetUserPermissions = (enabled, setEnabled, user_id) => {
       // alert("hhhhh");
 
       const hash_perm = hashData(data.payload.userpermissions);
-      Cookies.set(user_perm, hash_perm);
+      storage_type.setItem(user_perm, hash_perm);
 
       dispatch({ type: "GET_USER_PERMION_SUCCESS", payload: data });
       setEnabled(false);

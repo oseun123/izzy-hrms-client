@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector, shallowEqual } from "react-redux";
-import { BASE_URL, token } from "./config";
+import { BASE_URL, token, storage_type } from "./config";
 import { setPrivateRequest } from "./requestMethods";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 import { hashData } from "./util/hash";
 
@@ -93,7 +93,8 @@ function useRefreshToken() {
     });
 
     const hash = hashData(res.data.payload.new_token);
-    Cookies.set(token, hash);
+
+    storage_type.setItem(token, hash);
 
     return res.data.payload.new_token;
   };

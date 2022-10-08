@@ -1,8 +1,8 @@
-import { token, user_perm } from "../../config";
-import Cookies from "js-cookie";
+import { token, user_perm, storage_type } from "../../config";
+// import Cookies from "js-cookie";
 import { hashData } from "../../util/hash";
 
-import { publicRequest, setPrivateRequest } from "../../requestMethods";
+import { publicRequest } from "../../requestMethods";
 
 export const resetUsersState = (dispatch) => {
   dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -16,9 +16,11 @@ export const login = async (dispatch, user, history, location) => {
     const result = await publicRequest.post("/api/auth/sign_in", user);
     const hash = hashData(result.data.payload.token);
     const hash_perm = hashData(result.data.payload.user.permissions);
-    Cookies.set(user_perm, hash_perm);
-    Cookies.set(token, hash);
+    storage_type.setItem(token, hash);
+    storage_type.setItem(user_perm, hash_perm);
+
     dispatch({ type: "STOP_SPINNER" });
+
     dispatch({ type: "SUCCESS_LOGIN", payload: result.data });
     history.push(from);
   } catch (error) {
@@ -40,11 +42,11 @@ export const logOut = async (dispatch, request) => {
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "LOGOUT_USER", payload });
 
-    Cookies.remove(token);
-    Cookies.remove(user_perm);
+    storage_type.removeItem(token);
+    storage_type.removeItem(user_perm);
   } catch (error) {
     if (error.response?.status === 403) {
-      Cookies.remove(token);
+      storage_type.removeItem(token);
       dispatch({ type: "STOP_SPINNER" });
 
       dispatch({

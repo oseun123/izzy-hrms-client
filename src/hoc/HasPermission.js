@@ -10,6 +10,7 @@ function HasPermission({ component: Component, permission, ...rest }) {
     (state) => memoUserpermission(state, permission),
     shallowEqual
   );
+
   return (
     <Route
       {...rest}

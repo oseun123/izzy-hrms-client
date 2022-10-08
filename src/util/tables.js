@@ -174,7 +174,13 @@ const role_details_columns = (confirm_text, removeUser) => {
   ];
 };
 
-const role_columns = (isTabletOrMobile, confirm_text, confirmAction) => {
+const role_columns = (
+  isTabletOrMobile,
+  confirm_text,
+  confirmAction,
+  delete_role,
+  edit_role
+) => {
   return [
     {
       title: "Name",
@@ -347,30 +353,40 @@ const role_columns = (isTabletOrMobile, confirm_text, confirmAction) => {
             <Link to={`/preferences/view-roles/${id}`}>
               <Tag color="geekblue">View</Tag>
             </Link>
-            <Link to={`/preferences/edit-roles/${id}`}>
-              <Tag color="cyan">Edit</Tag>
-            </Link>
-            <Link>
-              <Popconfirm
-                placement="topRight"
-                title={confirm_text}
-                onConfirm={() => {
-                  // console.log({ id });
-                  confirmAction(id);
-                }}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Tag color="red">Delete</Tag>
-              </Popconfirm>
-            </Link>
+            {edit_role ? (
+              <Link to={`/preferences/edit-roles/${id}`}>
+                <Tag color="cyan">Edit</Tag>
+              </Link>
+            ) : null}
+            {delete_role ? (
+              <Link>
+                <Popconfirm
+                  placement="topRight"
+                  title={confirm_text}
+                  onConfirm={() => {
+                    // console.log({ id });
+                    confirmAction(id);
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Tag color="red">Delete</Tag>
+                </Popconfirm>
+              </Link>
+            ) : null}
           </Space>
         );
       },
     },
   ];
 };
-const department_columns = (isTabletOrMobile, confirm_text, confirmAction) => {
+const department_columns = (
+  isTabletOrMobile,
+  confirm_text,
+  confirmAction,
+  delete_perm,
+  edit_dept
+) => {
   return [
     {
       title: "Name",
@@ -487,23 +503,28 @@ const department_columns = (isTabletOrMobile, confirm_text, confirmAction) => {
             <Link to={`/preferences/view-departments/${id}`}>
               <Tag color="geekblue">View</Tag>
             </Link>
-            <Link to={`/preferences/edit-departments/${id}`}>
-              <Tag color="cyan">Edit</Tag>
-            </Link>
-            <Link>
-              <Popconfirm
-                placement="topRight"
-                title={confirm_text}
-                onConfirm={() => {
-                  // console.log({ id });
-                  confirmAction(id);
-                }}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Tag color="red">Delete</Tag>
-              </Popconfirm>
-            </Link>
+            {edit_dept ? (
+              <Link to={`/preferences/edit-departments/${id}`}>
+                <Tag color="cyan">Edit</Tag>
+              </Link>
+            ) : null}
+
+            {delete_perm ? (
+              <Link>
+                <Popconfirm
+                  placement="topRight"
+                  title={confirm_text}
+                  onConfirm={() => {
+                    // console.log({ id });
+                    confirmAction(id);
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Tag color="red">Delete</Tag>
+                </Popconfirm>
+              </Link>
+            ) : null}
           </Space>
         );
       },

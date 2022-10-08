@@ -1,4 +1,5 @@
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+import { storage_type } from "../config";
 
 function capitalizeFirstLetter(string) {
   return string?.charAt(0)?.toUpperCase() + string.slice(1);
@@ -13,7 +14,7 @@ function filtered_permissions(permissions) {
 
 function isForbiddden(dispatch, error, token, location = null, history = null) {
   if (error.response.status === 403) {
-    Cookies.remove(token);
+    storage_type.removeItem(token);
     if (location && history) {
       history.push("/login", { state: { from: location }, replace: true });
     }

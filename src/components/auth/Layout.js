@@ -38,7 +38,7 @@ const Layout = () => {
           <div className="content-wrapper">
             <Switch>
               {/* dashboard */}
-              <HasPermission
+              <Route
                 exact
                 path="/"
                 component={PersonalDashboard}
@@ -57,7 +57,7 @@ const Layout = () => {
                 exact
                 path="/preferences/edit-roles/:id"
                 component={EditRoles}
-                permission="CREATE_ROLES"
+                permission="EDIT_ROLES"
               />
 
               <HasPermission
@@ -98,7 +98,7 @@ const Layout = () => {
                 exact
                 path="/preferences/edit-departments/:id"
                 component={EditDepartments}
-                permission="CREATE_DEPARTMENT"
+                permission="EDIT_DEPARTMENT"
               />
 
               <HasPermission

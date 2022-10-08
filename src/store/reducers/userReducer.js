@@ -1,16 +1,16 @@
-import { token, user_perm } from "../../config";
-import Cookies from "js-cookie";
+import { token, user_perm, storage_type } from "../../config";
+// import storage_type from "js-cookie";
 import { dehashData } from "../../util/hash";
 import jwt_decode from "jwt-decode";
 
 let currentUser = {};
 let userpermissions = [];
-if (Cookies.get(token)) {
+if (storage_type.getItem(token)) {
   const tok = dehashData(token);
   currentUser = jwt_decode(tok);
 }
 
-if (Cookies.get(user_perm)) {
+if (storage_type.getItem(user_perm)) {
   userpermissions = dehashData(user_perm);
 }
 
@@ -18,7 +18,7 @@ const initState = {
   message: null,
   status: null,
   spinner: false,
-  is_Loggedin: Cookies.get(token) ? true : false,
+  is_Loggedin: storage_type.getItem(token) ? true : false,
   currentUser,
   userpermissions,
 };
@@ -53,14 +53,15 @@ const userReducer = (state = initState, { type, payload }) => {
     case "SUCCESS_LOGIN": {
       let currentUser = {};
       let userpermissions = [];
-      if (Cookies.get(token)) {
+      if (storage_type.getItem(token)) {
         const tok = dehashData(token);
         currentUser = jwt_decode(tok);
       }
 
-      if (Cookies.get(user_perm)) {
+      if (storage_type.getItem(user_perm)) {
         userpermissions = dehashData(user_perm);
       }
+      // console.log(userpermissions);
       return {
         ...state,
         is_Loggedin: true,
