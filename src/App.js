@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
 import Layout from "./components/auth/Layout";
 import ForgetPassword from "./components/guest/ForgetPassword";
@@ -7,9 +7,21 @@ import ResetPassword from "./components/guest/ResetPassword";
 import RequireAuth from "./hoc/RequireAuth";
 import AlreadyAuth from "./hoc/AlreadyAuth";
 import "antd/dist/antd.css";
+import Spinner from "./components/helpers/Spinner";
 
 function App() {
-  return (
+  const [isloaded, SetIsloaded] = useState(false);
+
+  useEffect(() => {
+    const time = setTimeout(() => {
+      SetIsloaded(true);
+    }, 5000);
+    return () => {
+      clearTimeout(time);
+    };
+  }, []);
+
+  const is_loaded = (
     <BrowserRouter>
       <Switch>
         <AlreadyAuth
@@ -26,6 +38,17 @@ function App() {
       </Switch>
     </BrowserRouter>
   );
+
+  const loading = (
+    <div style={{ padding: "200px" }}>
+      <Spinner position="center" size="large" color="secondary" />
+    </div>
+  );
+  if (isloaded) {
+    return is_loaded;
+  } else {
+    return loading;
+  }
 }
 
 export default App;

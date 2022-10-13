@@ -2,8 +2,11 @@ import { token, user_perm, storage_type } from "../../config";
 // import storage_type from "js-cookie";
 import { dehashData } from "../../util/hash";
 import jwt_decode from "jwt-decode";
+import { getApp } from "../../util/helpers";
 
 let currentUser = {};
+let subdomain = getApp() || null;
+
 let userpermissions = [];
 if (storage_type.getItem(token)) {
   const tok = dehashData(token);
@@ -21,6 +24,7 @@ const initState = {
   is_Loggedin: storage_type.getItem(token) ? true : false,
   currentUser,
   userpermissions,
+  subdomain,
 };
 
 const userReducer = (state = initState, { type, payload }) => {

@@ -6,6 +6,7 @@ const initState = {
   system_roles: [],
   system_users: [],
   system_departments: [],
+  system_genders: [],
 };
 
 const preferencesReducer = (state = initState, { type, payload }) => {
@@ -73,6 +74,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+
+    case "SYSTEM_GENDERS_SUCCESS":
+      return {
+        ...state,
+        system_genders: [...payload.payload.genders],
+      };
+    case "SYSTEM_GENDERS_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
     case "DELETE_ROLE_SUCCESS": {
       const deleted_id = parseInt(payload.payload.role);
       const sys_roles = [...state.system_roles];
@@ -111,6 +124,28 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+
+    case "DELETE_GENDER_SUCCESS": {
+      const deleted_id = parseInt(payload.payload.gender);
+      const system_genders = [...state.system_genders];
+      const filtered_genders = system_genders.filter(
+        (gend) => gend.id !== deleted_id
+      );
+
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+        system_genders: [...filtered_genders],
+      };
+    }
+    case "DELETE_GENDER_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
     case "CREATE_DEPARTMENT_SUCCESS":
       return {
         ...state,
@@ -130,6 +165,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         status: payload.status,
       };
     case "CREATE_ROLE_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_GENDER_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_GENDER_ERROR":
       return {
         ...state,
         message: payload.message,

@@ -8,3 +8,7 @@ export { default as ViewDepartments } from "./menus/preferences/departments/View
 
 export { default as EditDepartments } from "./menus/preferences/departments/EditDepartments";
 export { default as DepartmentDetails } from "./menus/preferences/departments/DepartmentDetails";
+export { default as CreateGenders } from "./menus/preferences/genders/CreateGenders";
+export { default as ViewGenders } from "./menus/preferences/genders/ViewGenders";
+export { default as GenderDetails } from "./menus/preferences/genders/GenderDetails";
+export { default as EditGenders } from "./menus/preferences/genders/EditGenders";

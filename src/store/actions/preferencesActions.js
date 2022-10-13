@@ -1,3 +1,7 @@
+const preferencesCleanUp = async (dispatch) => {
+  dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+};
+
 const createRole = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -166,8 +170,66 @@ const createDepartment = async (dispatch, request, creds) => {
     dispatch({ type: "CREATE_DEPARTMENT_ERROR", payload: resMessage });
   }
 };
-const preferencesCleanUp = async (dispatch) => {
-  dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+const createGender = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.post("/api/preferences/genders", creds);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_GENDER_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_GENDER_ERROR", payload: resMessage });
+  }
+};
+const deleteGender = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.delete(`/api/preferences/genders/${creds.id}`);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "DELETE_GENDER_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "DELETE_GENDER_ERROR", payload: resMessage });
+  }
+};
+
+const updateGender = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.put(
+      `/api/preferences/genders/${creds.gender_id}`,
+      creds
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_GENDER_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_GENDER_ERROR", payload: resMessage });
+  }
 };
 
 export {
@@ -180,4 +242,7 @@ export {
   preferencesCleanUp,
   deleteDepartment,
   updateDepartment,
+  createGender,
+  deleteGender,
+  updateGender,
 };

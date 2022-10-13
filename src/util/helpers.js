@@ -29,4 +29,22 @@ function isForbiddden(dispatch, error, token, location = null, history = null) {
   }
 }
 
-export { capitalizeFirstLetter, filtered_permissions, isForbiddden };
+function getApp() {
+  const subdomain = getSubdomain(window.location.hostname);
+  return subdomain;
+}
+
+function getSubdomain(location) {
+  const locationspart = location.split(".");
+  // let sliceTill = -2;
+  console.log(locationspart);
+  console.log(locationspart[0]);
+  // console.log(locationspart[locationspart.length - 1]);
+  // // for localhost
+  // const islocalhost = locationspart[locationspart.length - 1] === "localhost";
+  // if (islocalhost) sliceTill = -1;
+
+  return locationspart[0];
+}
+
+export { capitalizeFirstLetter, filtered_permissions, isForbiddden, getApp };

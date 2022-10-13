@@ -28,6 +28,10 @@ const system_departments = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_departments
 );
+const system_genders = createSelector(
+  (state) => state.preferences,
+  (preferences) => preferences.system_genders
+);
 const system_users = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_users
@@ -51,6 +55,16 @@ const single_system_department = createSelector(
   }
 );
 
+const single_system_gender = createSelector(
+  (state) => state.preferences,
+  (_, gend_id) => {
+    return parseInt(gend_id);
+  },
+  (preferences, gend_id) => {
+    return preferences.system_genders.filter((gen) => gen.id === gend_id);
+  }
+);
+
 export {
   message_preferences,
   status_preferences,
@@ -61,4 +75,6 @@ export {
   system_users,
   system_departments,
   single_system_department,
+  system_genders,
+  single_system_gender,
 };

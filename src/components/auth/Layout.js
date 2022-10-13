@@ -18,6 +18,10 @@ import {
   EditDepartments,
   CreateDepartments,
   DepartmentDetails,
+  CreateGenders,
+  ViewGenders,
+  GenderDetails,
+  EditGenders,
 } from "./layouts/preferences";
 
 const Footer = lazy(() => import("./layouts/footer/Footer"));
@@ -108,6 +112,35 @@ const Layout = () => {
                 permission="VIEW_DEPARTMENT"
               />
               {/* end department */}
+
+              {/* start gender */}
+              <HasPermission
+                exact
+                path="/preferences/create-genders"
+                component={CreateGenders}
+                permission="CREATE_GENDER"
+              />
+
+              <HasPermission
+                exact
+                path="/preferences/view-genders"
+                component={ViewGenders}
+                permission="VIEW_GENDER"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-genders/:id"
+                component={GenderDetails}
+                permission="VIEW_GENDER"
+              />
+              <HasPermission
+                exact
+                path="/preferences/edit-genders/:id"
+                component={EditGenders}
+                permission="EDIT_GENDER"
+              />
+
+              {/* end gender */}
               <Route path="*" component={NoMatch} />
             </Switch>
           </div>

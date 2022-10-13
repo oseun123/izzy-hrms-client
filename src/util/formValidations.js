@@ -81,6 +81,15 @@ const validateCreateDepartment = (values) => {
 
   return errors;
 };
+const validateCreateGender = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+
+  return errors;
+};
 
 export {
   validateAssignUsers,
@@ -89,4 +98,5 @@ export {
   requestLink,
   loginForm,
   validateCreateDepartment,
+  validateCreateGender,
 };
