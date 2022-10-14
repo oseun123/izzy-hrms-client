@@ -2,10 +2,10 @@ import { token, user_perm, storage_type } from "../../config";
 // import storage_type from "js-cookie";
 import { dehashData } from "../../util/hash";
 import jwt_decode from "jwt-decode";
-import { getApp } from "../../util/helpers";
+import { getAppSubdomain } from "../../util/helpers";
 
 let currentUser = {};
-let subdomain = getApp() || null;
+let subdomain = getAppSubdomain();
 
 let userpermissions = [];
 if (storage_type.getItem(token)) {
@@ -25,6 +25,7 @@ const initState = {
   currentUser,
   userpermissions,
   subdomain,
+  current_cleint: null,
 };
 
 const userReducer = (state = initState, { type, payload }) => {
@@ -123,6 +124,18 @@ const userReducer = (state = initState, { type, payload }) => {
         spinner: false,
         currentUser: {},
         userpermissions: [],
+      };
+    case "CURRENT_CLIENT_SUCCESS":
+      console.log(payload);
+      return {
+        ...state,
+        current_cleint: payload.payload.current_cleint,
+      };
+    case "CURRENT_CLIENT_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
       };
 
     default:

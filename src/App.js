@@ -8,18 +8,36 @@ import RequireAuth from "./hoc/RequireAuth";
 import AlreadyAuth from "./hoc/AlreadyAuth";
 import "antd/dist/antd.css";
 import Spinner from "./components/helpers/Spinner";
+import { getAppSubdomain } from "../src/util/helpers";
+import { UseGetCurrentClient } from "../src/store/actions/userHooksActions";
 
 function App() {
-  const [isloaded, SetIsloaded] = useState(false);
+  const [isloaded, setIsloaded] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [client, setClient] = useState("");
+  const { data, error } = UseGetCurrentClient(enabled, setEnabled, client);
 
   useEffect(() => {
-    const time = setTimeout(() => {
-      SetIsloaded(true);
-    }, 5000);
-    return () => {
-      clearTimeout(time);
-    };
+    const is_subdomain = getAppSubdomain();
+    if (is_subdomain) {
+      setClient(is_subdomain);
+      setEnabled(true);
+    } else {
+      setIsloaded(true);
+    }
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      setIsloaded(true);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      window.location.replace(process.env.REACT_APP_HOST);
+    }
+  }, [error]);
 
   const is_loaded = (
     <BrowserRouter>

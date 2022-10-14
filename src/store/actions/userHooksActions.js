@@ -5,8 +5,9 @@ import { useAxiosPrivate } from "../../hooks";
 import { isForbiddden } from "../../util/helpers";
 
 import { token } from "./../../config";
+// import { useLocation, useHistory } from "react-router-dom";
 
-export const UseRefreshTest = (enabled, setEnabled) => {
+const UseRefreshTest = (enabled, setEnabled) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const request = useAxiosPrivate();
@@ -43,3 +44,52 @@ export const UseRefreshTest = (enabled, setEnabled) => {
 
   return { data, refetch };
 };
+const UseGetCurrentClient = (enabled, setEnabled, client) => {
+  const dispatch = useDispatch();
+  // const location = useLocation();
+  // const history = useHistory();
+  const queryClient = useQueryClient();
+  const request = useAxiosPrivate();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["current_client"],
+    async () => {
+      const result = await request.get(`/api/auth/current_client/${client}`);
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 1 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "CURRENT_CLIENT_SUCCESS", payload: data });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["current_client"]);
+
+      const resMessage = error.response.data;
+
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "CURRENT_CLIENT_ERROR", payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    // location,
+    // history,
+    queryClient,
+  ]);
+
+  return { data, error, refetch };
+};
+
+export { UseRefreshTest, UseGetCurrentClient };
