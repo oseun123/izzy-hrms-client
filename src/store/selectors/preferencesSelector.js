@@ -32,6 +32,14 @@ const system_genders = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_genders
 );
+const system_states = createSelector(
+  (state) => state.preferences,
+  (preferences) => preferences.system_states
+);
+const system_countrys = createSelector(
+  (state) => state.preferences,
+  (preferences) => preferences.system_countrys
+);
 const system_users = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_users
@@ -64,6 +72,24 @@ const single_system_gender = createSelector(
     return preferences.system_genders.filter((gen) => gen.id === gend_id);
   }
 );
+const single_system_state = createSelector(
+  (state) => state.preferences,
+  (_, state_id) => {
+    return parseInt(state_id);
+  },
+  (preferences, state_id) => {
+    return preferences.system_states.filter((stat) => stat.id === state_id);
+  }
+);
+const single_system_country = createSelector(
+  (state) => state.preferences,
+  (_, country_id) => {
+    return parseInt(country_id);
+  },
+  (preferences, country_id) => {
+    return preferences.system_countrys.filter((coun) => coun.id === country_id);
+  }
+);
 
 export {
   message_preferences,
@@ -77,4 +103,8 @@ export {
   single_system_department,
   system_genders,
   single_system_gender,
+  system_states,
+  system_countrys,
+  single_system_state,
+  single_system_country,
 };

@@ -7,6 +7,8 @@ import {
   preferencesRolespermissions,
   preferencesDepartmentpermissions,
   preferencesGenderpermissions,
+  preferencesStatepermissions,
+  preferencesCountrypermissions,
 } from "../../../../store/selectors/userSelectors";
 
 function Preferences() {
@@ -19,6 +21,12 @@ function Preferences() {
   );
   const gender_permissions = useShallowEqualSelector(
     preferencesGenderpermissions
+  );
+  const state_permissions = useShallowEqualSelector(
+    preferencesStatepermissions
+  );
+  const country_permissions = useShallowEqualSelector(
+    preferencesCountrypermissions
   );
 
   if (
@@ -132,6 +140,68 @@ function Preferences() {
                         >
                           <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
                           <p className="dont-close">{gender_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* state*/}
+
+          {state_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {state_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {state_permissions.map((state_perm) => {
+                    return (
+                      <li className="nav-item" key={state_perm.id}>
+                        <Link
+                          to={state_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{state_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* country*/}
+
+          {country_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {country_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {country_permissions.map((country_perm) => {
+                    return (
+                      <li className="nav-item" key={country_perm.id}>
+                        <Link
+                          to={country_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{country_perm.name}</p>
                         </Link>
                       </li>
                     );

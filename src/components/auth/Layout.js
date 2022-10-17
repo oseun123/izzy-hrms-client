@@ -22,6 +22,14 @@ import {
   ViewGenders,
   GenderDetails,
   EditGenders,
+  CreateStates,
+  ViewStates,
+  StateDetails,
+  CreateCountry,
+  ViewCountry,
+  EditStates,
+  EditCountry,
+  CountryDetails,
 } from "./layouts/preferences";
 
 const Footer = lazy(() => import("./layouts/footer/Footer"));
@@ -141,6 +149,63 @@ const Layout = () => {
               />
 
               {/* end gender */}
+
+              {/* start state */}
+              <HasPermission
+                exact
+                path="/preferences/create-states"
+                component={CreateStates}
+                permission="CREATE_STATES"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-states"
+                component={ViewStates}
+                permission="VIEW_STATES"
+              />
+
+              <HasPermission
+                exact
+                path="/preferences/view-states/:id"
+                component={StateDetails}
+                permission="VIEW_STATES"
+              />
+              <HasPermission
+                exact
+                path="/preferences/edit-states/:id"
+                component={EditStates}
+                permission="EDIT_STATES"
+              />
+              {/* end state */}
+
+              {/* start country */}
+              <HasPermission
+                exact
+                path="/preferences/create-countries"
+                component={CreateCountry}
+                permission="CREATE_COUNTRY"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-countries"
+                component={ViewCountry}
+                permission="VIEW_COUNTRY"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-countries/:id"
+                component={CountryDetails}
+                permission="VIEW_COUNTRY"
+              />
+              <HasPermission
+                exact
+                path="/preferences/edit-countries/:id"
+                component={EditCountry}
+                permission="EDIT_COUNTRY"
+              />
+
+              {/* end country */}
+
               <Route path="*" component={NoMatch} />
             </Switch>
           </div>

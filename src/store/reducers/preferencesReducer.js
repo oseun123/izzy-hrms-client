@@ -7,6 +7,8 @@ const initState = {
   system_users: [],
   system_departments: [],
   system_genders: [],
+  system_states: [],
+  system_countrys: [],
 };
 
 const preferencesReducer = (state = initState, { type, payload }) => {
@@ -86,6 +88,29 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+    case "SYSTEM_STATES_SUCCESS":
+      return {
+        ...state,
+        system_states: [...payload.payload.states],
+      };
+    case "SYSTEM_STATES_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
+    case "SYSTEM_COUNTRY_SUCCESS":
+      return {
+        ...state,
+        system_countrys: [...payload.payload.countrys],
+      };
+    case "SYSTEM_COUNTRY_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
     case "DELETE_ROLE_SUCCESS": {
       const deleted_id = parseInt(payload.payload.role);
       const sys_roles = [...state.system_roles];
@@ -146,6 +171,48 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         status: payload.status,
       };
 
+    case "DELETE_COUNTRY_SUCCESS": {
+      const deleted_id = parseInt(payload.payload.country);
+      const system_countrys = [...state.system_countrys];
+      const filtered_countrys = system_countrys.filter(
+        (coun) => coun.id !== deleted_id
+      );
+
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+        system_countrys: [...filtered_countrys],
+      };
+    }
+    case "DELETE_COUNTRY_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
+    case "DELETE_STATE_SUCCESS": {
+      const deleted_id = parseInt(payload.payload.state);
+      const system_states = [...state.system_states];
+      const filtered_states = system_states.filter(
+        (state) => state.id !== deleted_id
+      );
+
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+        system_states: [...filtered_states],
+      };
+    }
+    case "DELETE_STATE_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
     case "CREATE_DEPARTMENT_SUCCESS":
       return {
         ...state,
@@ -177,6 +244,32 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         status: payload.status,
       };
     case "CREATE_GENDER_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
+    case "CREATE_STATE_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_STATE_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
+    case "CREATE_COUNTRY_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_COUNTRY_ERROR":
       return {
         ...state,
         message: payload.message,

@@ -91,6 +91,25 @@ const validateCreateGender = (values) => {
   return errors;
 };
 
+const validateCreateState = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+
+  return errors;
+};
+const validateCreateCountry = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+
+  return errors;
+};
+
 export {
   validateAssignUsers,
   validateCreateRole,
@@ -99,4 +118,6 @@ export {
   loginForm,
   validateCreateDepartment,
   validateCreateGender,
+  validateCreateState,
+  validateCreateCountry,
 };
