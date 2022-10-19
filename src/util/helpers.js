@@ -4,13 +4,20 @@ import { storage_type } from "../config";
 function capitalizeFirstLetter(string) {
   return string?.charAt(0)?.toUpperCase() + string.slice(1);
 }
-function filtered_permissions(permissions) {
+function filtered_permissions(permissions, item_key = "for") {
   return permissions?.reduce(function (r, a) {
-    r[a.for] = r[a.for] || [];
-    r[a.for].push(a);
+    r[a[item_key]] = r[a[item_key]] || [];
+    r[a[item_key]].push(a);
     return r;
   }, Object.create(null));
 }
+// function filtered_permissions2(permissions) {
+//   return permissions?.reduce(function (r, a) {
+//     r[a.module] = r[a.module] || [];
+//     r[a.module].push(a);
+//     return r;
+//   }, Object.create(null));
+// }
 
 function isForbiddden(dispatch, error, token, location = null, history = null) {
   if (error.response.status === 403) {
@@ -39,4 +46,5 @@ export {
   filtered_permissions,
   isForbiddden,
   getAppSubdomain,
+  // filtered_permissions2,
 };
