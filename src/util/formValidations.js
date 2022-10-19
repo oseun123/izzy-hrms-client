@@ -90,6 +90,15 @@ const validateCreateGender = (values) => {
 
   return errors;
 };
+const validateCreateCompany = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+
+  return errors;
+};
 
 const validateCreateState = (values) => {
   let errors = {};
@@ -120,4 +129,5 @@ export {
   validateCreateGender,
   validateCreateState,
   validateCreateCountry,
+  validateCreateCompany,
 };

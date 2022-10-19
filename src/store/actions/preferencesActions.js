@@ -189,6 +189,25 @@ const createGender = async (dispatch, request, creds) => {
     dispatch({ type: "CREATE_GENDER_ERROR", payload: resMessage });
   }
 };
+const createCompany = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.post("/api/preferences/companies", creds);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_COMPANY_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_COMPANY_ERROR", payload: resMessage });
+  }
+};
 const deleteGender = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -206,6 +225,27 @@ const deleteGender = async (dispatch, request, creds) => {
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
     const resMessage = error?.response?.data;
     dispatch({ type: "DELETE_GENDER_ERROR", payload: resMessage });
+  }
+};
+const deleteCompany = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.delete(
+      `/api/preferences/companies/${creds.id}`
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "DELETE_COMPANY_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "DELETE_COMPANY_ERROR", payload: resMessage });
   }
 };
 const deleteState = async (dispatch, request, creds) => {
@@ -315,6 +355,28 @@ const updateCountry = async (dispatch, request, creds) => {
     dispatch({ type: "CREATE_COUNTRY_ERROR", payload: resMessage });
   }
 };
+const updateCompany = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.put(
+      `/api/preferences/companies/${creds.company_id}`,
+      creds
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_COMPANY_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_COMPANY_ERROR", payload: resMessage });
+  }
+};
 const createState = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -372,4 +434,7 @@ export {
   deleteCountry,
   updateState,
   updateCountry,
+  createCompany,
+  updateCompany,
+  deleteCompany,
 };

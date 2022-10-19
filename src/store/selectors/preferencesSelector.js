@@ -28,6 +28,10 @@ const system_departments = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_departments
 );
+const system_companys = createSelector(
+  (state) => state.preferences,
+  (preferences) => preferences.system_companys
+);
 const system_genders = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_genders
@@ -90,6 +94,15 @@ const single_system_country = createSelector(
     return preferences.system_countrys.filter((coun) => coun.id === country_id);
   }
 );
+const single_system_company = createSelector(
+  (state) => state.preferences,
+  (_, company_id) => {
+    return parseInt(company_id);
+  },
+  (preferences, company_id) => {
+    return preferences.system_companys.filter((comp) => comp.id === company_id);
+  }
+);
 
 export {
   message_preferences,
@@ -107,4 +120,6 @@ export {
   system_countrys,
   single_system_state,
   single_system_country,
+  single_system_company,
+  system_companys,
 };

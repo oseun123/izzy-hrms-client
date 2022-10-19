@@ -98,6 +98,16 @@ const preferencesCountrypermissions = createSelector(
         permission.menu === 1
     )
 );
+const preferencesCompanypermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Company" &&
+        permission.menu === 1
+    )
+);
 
 const userhaspermission = () =>
   createSelector(
@@ -125,4 +135,5 @@ export {
   preferencesGenderpermissions,
   preferencesStatepermissions,
   preferencesCountrypermissions,
+  preferencesCompanypermissions,
 };

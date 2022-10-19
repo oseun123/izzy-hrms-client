@@ -9,6 +9,7 @@ const initState = {
   system_genders: [],
   system_states: [],
   system_countrys: [],
+  system_companys: [],
 };
 
 const preferencesReducer = (state = initState, { type, payload }) => {
@@ -106,6 +107,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_countrys: [...payload.payload.countrys],
       };
     case "SYSTEM_COUNTRY_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
+    case "SYSTEM_COMPANYS_SUCCESS":
+      return {
+        ...state,
+        system_companys: [...payload.payload.companys],
+      };
+    case "SYSTEM_COMPANYS_ERROR":
       return {
         ...state,
         message: payload.message,
@@ -212,6 +225,26 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+    case "DELETE_COMPANY_SUCCESS": {
+      const deleted_id = parseInt(payload.payload.company);
+      const system_companys = [...state.system_companys];
+      const filtered_companys = system_companys.filter(
+        (company) => company.id !== deleted_id
+      );
+
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+        system_companys: [...filtered_companys],
+      };
+    }
+    case "DELETE_COMPANY_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
 
     case "CREATE_DEPARTMENT_SUCCESS":
       return {
@@ -244,6 +277,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         status: payload.status,
       };
     case "CREATE_GENDER_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_COMPANY_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_COMPANY_ERROR":
       return {
         ...state,
         message: payload.message,

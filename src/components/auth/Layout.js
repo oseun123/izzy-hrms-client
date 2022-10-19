@@ -30,6 +30,10 @@ import {
   EditStates,
   EditCountry,
   CountryDetails,
+  CreateCompany,
+  ViewCompanys,
+  EditCompany,
+  CompanyDetails,
 } from "./layouts/preferences";
 
 const Footer = lazy(() => import("./layouts/footer/Footer"));
@@ -205,6 +209,34 @@ const Layout = () => {
               />
 
               {/* end country */}
+
+              {/* start company */}
+              <HasPermission
+                exact
+                path="/preferences/create-companies"
+                component={CreateCompany}
+                permission="CREATE_COMPANY"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-companies"
+                component={ViewCompanys}
+                permission="VIEW_COMPANY"
+              />
+              <HasPermission
+                exact
+                path="/preferences/edit-companies/:id"
+                component={EditCompany}
+                permission="EDIT_COMPANY"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-companies/:id"
+                component={CompanyDetails}
+                permission="VIEW_COMPANY"
+              />
+
+              {/* end company */}
 
               <Route path="*" component={NoMatch} />
             </Switch>

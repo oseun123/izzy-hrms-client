@@ -441,6 +441,61 @@ const useGetSystemCountry = (enabled, setEnabled, page = 1, size = 10, all) => {
   return { data, refetch };
 };
 
+const useGetSystemCompany = (enabled, setEnabled, page = 1, size = 10, all) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["system_companys", page, size],
+    async () => {
+      const result = await request.get(
+        `/api/preferences/companies?size=${size}&page=${page}&all=${all}`
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 2 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+      dispatch({ type: "START_SPINNER_PREFERENCES" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: "SYSTEM_COMPANYS_SUCCESS", payload: data });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["system_companys", page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      const resMessage = error.response.data;
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: "SYSTEM_COMPANYS_ERROR", payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch };
+};
+
 export {
   useGetSystemPermissions,
   useGetSystemRoles,
@@ -450,4 +505,5 @@ export {
   useGetSystemGender,
   useGetSystemState,
   useGetSystemCountry,
+  useGetSystemCompany,
 };

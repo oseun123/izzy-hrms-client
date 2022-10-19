@@ -9,6 +9,7 @@ import {
   preferencesGenderpermissions,
   preferencesStatepermissions,
   preferencesCountrypermissions,
+  preferencesCompanypermissions,
 } from "../../../../store/selectors/userSelectors";
 
 function Preferences() {
@@ -28,12 +29,18 @@ function Preferences() {
   const country_permissions = useShallowEqualSelector(
     preferencesCountrypermissions
   );
+  const company_permissions = useShallowEqualSelector(
+    preferencesCompanypermissions
+  );
 
   if (
     root_permissions?.length ||
     roles_permissions?.length ||
     department_permissions?.length ||
-    gender_permissions?.length
+    gender_permissions?.length ||
+    state_permissions?.length ||
+    country_permissions?.length ||
+    company_permissions?.length
   ) {
     return (
       <li className="nav-item has-treeview">
@@ -202,6 +209,37 @@ function Preferences() {
                         >
                           <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
                           <p className="dont-close">{country_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* company*/}
+
+          {company_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {company_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {company_permissions.map((company_perm) => {
+                    return (
+                      <li className="nav-item" key={company_perm.id}>
+                        <Link
+                          to={company_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{company_perm.name}</p>
                         </Link>
                       </li>
                     );
