@@ -10,6 +10,7 @@ import {
   preferencesStatepermissions,
   preferencesCountrypermissions,
   preferencesCompanypermissions,
+  preferencesBranchpermissions,
 } from "../../../../store/selectors/userSelectors";
 
 function Preferences() {
@@ -32,6 +33,9 @@ function Preferences() {
   const company_permissions = useShallowEqualSelector(
     preferencesCompanypermissions
   );
+  const branch_permissions = useShallowEqualSelector(
+    preferencesBranchpermissions
+  );
 
   if (
     root_permissions?.length ||
@@ -40,7 +44,8 @@ function Preferences() {
     gender_permissions?.length ||
     state_permissions?.length ||
     country_permissions?.length ||
-    company_permissions?.length
+    company_permissions?.length ||
+    branch_permissions?.length
   ) {
     return (
       <li className="nav-item has-treeview">
@@ -240,6 +245,37 @@ function Preferences() {
                         >
                           <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
                           <p className="dont-close">{company_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* branch*/}
+
+          {branch_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {branch_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {branch_permissions.map((branch_perm) => {
+                    return (
+                      <li className="nav-item" key={branch_perm.id}>
+                        <Link
+                          to={branch_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{branch_perm.name}</p>
                         </Link>
                       </li>
                     );

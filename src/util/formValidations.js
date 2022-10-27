@@ -60,6 +60,48 @@ const validateCreateRole = (values) => {
   }
   return errors;
 };
+const validateCreateBranch = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name.trim() === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+  if (values.hasOwnProperty("address") && values.address.trim() === "") {
+    errors.address = "Address cannot not be empty.";
+  }
+  if (values.hasOwnProperty("company_id") && values.company_id === "") {
+    errors.company_id = " Company cannot be empty.";
+  }
+  if (
+    values.hasOwnProperty("branch_managers") &&
+    values.branch_managers.length === 0
+  ) {
+    errors.branch_managers = "Branch managers cannot be empty.";
+  }
+
+  return errors;
+};
+const validateUpdateBranch = (values) => {
+  let errors = {};
+
+  if (values.hasOwnProperty("name") && values.name.trim() === "") {
+    errors.name = "Name cannot not be empty.";
+  }
+  if (values.hasOwnProperty("address") && values.address.trim() === "") {
+    errors.address = "Address cannot not be empty.";
+  }
+  if (values.hasOwnProperty("company_id") && values.company_id === "") {
+    errors.company_id = " Company cannot be empty.";
+  }
+  // if (
+  //   values.hasOwnProperty("branch_managers") &&
+  //   values.branch_managers.length === 0
+  // ) {
+  //   errors.branch_managers = "Branch managers cannot be empty.";
+  // }
+
+  return errors;
+};
 
 const validateAssignUsers = (values) => {
   let errors = {};
@@ -130,4 +172,6 @@ export {
   validateCreateState,
   validateCreateCountry,
   validateCreateCompany,
+  validateCreateBranch,
+  validateUpdateBranch,
 };

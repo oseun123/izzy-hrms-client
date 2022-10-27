@@ -10,6 +10,7 @@ const initState = {
   system_states: [],
   system_countrys: [],
   system_companys: [],
+  system_branchs: [],
 };
 
 const preferencesReducer = (state = initState, { type, payload }) => {
@@ -124,6 +125,17 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+    case "SYSTEM_BRANCHS_SUCCESS":
+      return {
+        ...state,
+        system_branchs: [...payload.payload.branchs],
+      };
+    case "SYSTEM_BRANCHS_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
     case "DELETE_ROLE_SUCCESS": {
       const deleted_id = parseInt(payload.payload.role);
       const sys_roles = [...state.system_roles];
@@ -157,6 +169,26 @@ const preferencesReducer = (state = initState, { type, payload }) => {
       };
     }
     case "DELETE_DEPARTMENT_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "DELETE_BRANCH_SUCCESS": {
+      const deleted_id = parseInt(payload.payload.branch);
+      const system_branchs = [...state.system_branchs];
+      const filtered_branch = system_branchs.filter(
+        (bran) => bran.id !== deleted_id
+      );
+
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+        system_branchs: [...filtered_branch],
+      };
+    }
+    case "DELETE_BRANCH_ERROR":
       return {
         ...state,
         message: payload.message,
@@ -253,6 +285,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         status: payload.status,
       };
     case "CREATE_DEPARTMENT_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_BRANCH_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "CREATE_BRANCH_ERROR":
       return {
         ...state,
         message: payload.message,

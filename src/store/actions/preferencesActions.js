@@ -21,6 +21,47 @@ const createRole = async (dispatch, request, creds) => {
     dispatch({ type: "CREATE_ROLE_ERROR", payload: resMessage });
   }
 };
+const createBranch = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.post("/api/preferences/branches", creds);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_BRANCH_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_BRANCH_ERROR", payload: resMessage });
+  }
+};
+const updateBranch = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.put(
+      `/api/preferences/branches/${creds.branch_id}`,
+      creds
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "CREATE_BRANCH_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CREATE_BRANCH_ERROR", payload: resMessage });
+  }
+};
 const updateRole = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -248,6 +289,27 @@ const deleteCompany = async (dispatch, request, creds) => {
     dispatch({ type: "DELETE_COMPANY_ERROR", payload: resMessage });
   }
 };
+const deleteBranch = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.delete(
+      `/api/preferences/branches/${creds.id}`
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "DELETE_BRANCH_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "DELETE_BRANCH_ERROR", payload: resMessage });
+  }
+};
 const deleteState = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -437,4 +499,7 @@ export {
   createCompany,
   updateCompany,
   deleteCompany,
+  createBranch,
+  deleteBranch,
+  updateBranch,
 };

@@ -29,3 +29,8 @@ export { default as CreateCompany } from "./menus/preferences/companys/CreateCom
 export { default as ViewCompanys } from "./menus/preferences/companys/ViewCompanys";
 export { default as EditCompany } from "./menus/preferences/companys/EditCompany";
 export { default as CompanyDetails } from "./menus/preferences/companys/CompanyDetails";
+// branch
+export { default as CreateBranch } from "./menus/preferences/branch/CreateBranch";
+export { default as ViewBranch } from "./menus/preferences/branch/ViewBranch";
+export { default as BranchDetails } from "./menus/preferences/branch/BranchDetails";
+export { default as EditBranch } from "./menus/preferences/branch/EditBranch";

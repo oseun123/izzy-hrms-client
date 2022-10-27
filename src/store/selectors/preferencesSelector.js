@@ -32,6 +32,10 @@ const system_companys = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_companys
 );
+const system_branchs = createSelector(
+  (state) => state.preferences,
+  (preferences) => preferences.system_branchs
+);
 const system_genders = createSelector(
   (state) => state.preferences,
   (preferences) => preferences.system_genders
@@ -103,6 +107,15 @@ const single_system_company = createSelector(
     return preferences.system_companys.filter((comp) => comp.id === company_id);
   }
 );
+const single_system_branch = createSelector(
+  (state) => state.preferences,
+  (_, branch_id) => {
+    return parseInt(branch_id);
+  },
+  (preferences, branch_id) => {
+    return preferences.system_branchs.filter((bran) => bran.id === branch_id);
+  }
+);
 
 export {
   message_preferences,
@@ -122,4 +135,6 @@ export {
   single_system_country,
   single_system_company,
   system_companys,
+  system_branchs,
+  single_system_branch,
 };

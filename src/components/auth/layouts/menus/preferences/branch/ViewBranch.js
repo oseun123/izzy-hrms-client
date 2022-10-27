@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card, Button } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { Space, Table, Pagination, Select, Card } from "antd";
+
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   useShallowEqualSelector,
@@ -11,44 +11,42 @@ import {
   // spinner_preferences,
   message_preferences,
   status_preferences,
-  system_departments,
+  system_branchs,
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemDepartment } from "./../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemBranch } from "../../../../../../store/actions/preferencesHooksActions";
 import {
-  deleteDepartment,
+  deleteBranch,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
-import { department_columns } from "./../../../../../../util/tables";
-import { CSVLink } from "react-csv";
+import { branch_columns } from "../../../../../../util/tables";
 const { Option } = Select;
 
-function ViewDepartments() {
+function ViewBranch() {
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [csv_department, setCSVDepartment] = useState([]);
   const dispatch = useDispatch();
-  const { data } = useGetSystemDepartment(enabled, setEnabled, page, size);
+  const { data } = useGetSystemBranch(enabled, setEnabled, page, size);
 
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
-  const departments = useShallowEqualSelector(system_departments);
+  const companys = useShallowEqualSelector(system_branchs);
   const memoUserpermission = useMemo(userhaspermission, []);
-  const delete_dept = useSelector(
-    (state) => memoUserpermission(state, "DELETE_DEPARTMENT"),
+  const delete_branch = useSelector(
+    (state) => memoUserpermission(state, "DELETE_BRANCH"),
     shallowEqual
   );
-  const edit_dept = useSelector(
-    (state) => memoUserpermission(state, "EDIT_DEPARTMENT"),
+  const edit_branch = useSelector(
+    (state) => memoUserpermission(state, "EDIT_BRANCH"),
     shallowEqual
   );
 
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Are you sure you want to delete this department?";
+  const confirm_text = "Are you sure you want to delete this branch?";
   const request = useAxiosPrivate();
 
   useEffect(() => {
@@ -56,22 +54,6 @@ function ViewDepartments() {
       preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (departments.length) {
-      const new_dept = [];
-
-      departments.forEach((item) => {
-        new_dept.push({
-          Name: item.name,
-          // eslint-disable-next-line
-          ["Total users"]: item.users.length,
-        });
-      });
-      setCSVDepartment(new_dept);
-    }
-  }, [departments]);
-
   function handlePagination(page) {
     setPage(page);
 
@@ -83,13 +65,12 @@ function ViewDepartments() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    deleteDepartment(dispatch, request, { id }).then((res) => {
+    deleteBranch(dispatch, request, { id }).then((res) => {
       if (res?.status === "success") {
         setEnabled(true);
       }
     });
   }
-
   return (
     <>
       {/* Content Header (Page header) */}
@@ -100,7 +81,7 @@ function ViewDepartments() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1>View Departments</h1>
+              <h1>View Branch</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
@@ -122,32 +103,18 @@ function ViewDepartments() {
               {/* Default box */}
               <div className="card">
                 <div className="card-header">
-                  <h3 className="card-title">System departments</h3>
-                  <div className="card-tools">
-                    <CSVLink
-                      data={csv_department}
-                      filename={"system_departments.csv"}
-                    >
-                      <Button
-                        type="primary"
-                        icon={<DownloadOutlined />}
-                        size="small"
-                      >
-                        Export csv
-                      </Button>
-                    </CSVLink>
-                  </div>
+                  <h3 className="card-title">System branches</h3>
                 </div>
                 <div className="card-body">
                   <Table
-                    columns={department_columns(
+                    columns={branch_columns(
                       isTabletOrMobile,
                       confirm_text,
                       confirmAction,
-                      delete_dept,
-                      edit_dept
+                      delete_branch,
+                      edit_branch
                     )}
-                    dataSource={departments}
+                    dataSource={companys}
                     rowKey={(record) => record.id}
                     scroll={{
                       x: 786,
@@ -156,6 +123,25 @@ function ViewDepartments() {
                     expandable={{
                       expandedRowRender: (record) => (
                         <>
+                          {record.managers.length ? (
+                            <div className="mb-3">
+                              <Card
+                                size="small"
+                                title="Branch managers"
+                                style={{
+                                  margin: 0,
+                                }}
+                              >
+                                <Space wrap>
+                                  {record.managers.map((manager) => (
+                                    <span className="badge bg-secondary rounded-pill p-1">
+                                      {manager.first_name}
+                                    </span>
+                                  ))}
+                                </Space>
+                              </Card>
+                            </div>
+                          ) : null}
                           {record.users.length ? (
                             <div className="mb-3">
                               <Card
@@ -215,4 +201,4 @@ function ViewDepartments() {
   );
 }
 
-export default ViewDepartments;
+export default ViewBranch;

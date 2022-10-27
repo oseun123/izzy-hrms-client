@@ -34,6 +34,10 @@ import {
   ViewCompanys,
   EditCompany,
   CompanyDetails,
+  CreateBranch,
+  ViewBranch,
+  BranchDetails,
+  EditBranch,
 } from "./layouts/preferences";
 
 const Footer = lazy(() => import("./layouts/footer/Footer"));
@@ -237,6 +241,35 @@ const Layout = () => {
               />
 
               {/* end company */}
+
+              {/* start branch */}
+              <HasPermission
+                exact
+                path="/preferences/create-branches"
+                component={CreateBranch}
+                permission="CREATE_BRANCH"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-branches"
+                component={ViewBranch}
+                permission="VIEW_BRANCH"
+              />
+              <HasPermission
+                exact
+                path="/preferences/view-branches/:id"
+                component={BranchDetails}
+                permission="VIEW_BRANCH"
+              />
+
+              <HasPermission
+                exact
+                path="/preferences/edit-branches/:id"
+                component={EditBranch}
+                permission="EDIT_BRANCH"
+              />
+
+              {/* end branch */}
 
               <Route path="*" component={NoMatch} />
             </Switch>
