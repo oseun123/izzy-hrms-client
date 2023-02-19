@@ -1,12 +1,14 @@
-import React, { lazy, Suspense } from "react";
+import React, { Suspense } from "react";
 import Spinner from "../helpers/Spinner";
 import Header from "./layouts/header/Header";
 import Aside from "./layouts/aside/Aside";
+import Footer from "./layouts/footer/Footer";
 import NoMatch from "./layouts/menus/NoMatch";
 import HasPermission from "../../hoc/HasPermission";
 import { Switch, Route } from "react-router-dom";
-// dashboard components
-import { PersonalDashboard } from "./layouts/dashboard";
+
+import styles from "../styles/layout/Layout.module.css";
+
 //  preferences component
 import {
   CreateRoles,
@@ -40,12 +42,18 @@ import {
   EditBranch,
 } from "./layouts/preferences";
 
-const Footer = lazy(() => import("./layouts/footer/Footer"));
+// Human Resource Component
+import { CreateEmployee } from "./layouts/human_resource";
+
+// dashboard components
+
+import { PersonalDashboard } from "./layouts/dashboard";
+
 const Layout = () => {
   return (
     <Suspense
       fallback={
-        <div style={{ padding: "200px" }}>
+        <div className={styles.spinner_box}>
           <Spinner position="center" size="large" color="secondary" />
         </div>
       }
@@ -270,6 +278,16 @@ const Layout = () => {
               />
 
               {/* end branch */}
+
+              {/* start onboarding*/}
+              <HasPermission
+                exact
+                path="/human-resource/create-employee"
+                component={CreateEmployee}
+                permission="CREATE_EMPLOYEE"
+              />
+
+              {/* end onboarding */}
 
               <Route path="*" component={NoMatch} />
             </Switch>

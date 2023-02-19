@@ -1,0 +1,10 @@
+.spinner_box {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c_no_wrap {
+  white-space: nowrap;
+}

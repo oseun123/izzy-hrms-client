@@ -22,6 +22,7 @@ import {
 import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
 import { role_columns } from "./../../../../../../util/tables";
+import PreferencesHero from "../PreferencesHero";
 const { Option } = Select;
 
 function ViewRoles() {
@@ -70,6 +71,7 @@ function ViewRoles() {
   }
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

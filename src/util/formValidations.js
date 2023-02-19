@@ -160,7 +160,15 @@ const validateCreateCountry = (values) => {
 
   return errors;
 };
+const validateCreateEmployee = (values) => {
+  let errors = {};
 
+  if (values.hasOwnProperty("first_name") && values.first_name.trim() === "") {
+    errors.first_name = "First name cannot not be empty.";
+  }
+
+  return errors;
+};
 export {
   validateAssignUsers,
   validateCreateRole,
@@ -174,4 +182,5 @@ export {
   validateCreateCompany,
   validateCreateBranch,
   validateUpdateBranch,
+  validateCreateEmployee,
 };

@@ -2,7 +2,7 @@
 import { storage_type } from "../config";
 
 function capitalizeFirstLetter(string) {
-  return string?.charAt(0)?.toUpperCase() + string.slice(1);
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : "";
 }
 function filtered_permissions(permissions, item_key = "for") {
   return permissions?.reduce(function (r, a) {

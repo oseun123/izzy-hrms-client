@@ -31,6 +31,7 @@ import Message from "../../../../../helpers/Message";
 import { currentUser } from "../../../../../../store/selectors/userSelectors";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Input, Space } from "antd";
+import PreferencesHero from "../PreferencesHero";
 
 function EditRoles() {
   const auth_user = useShallowEqualSelector(currentUser);
@@ -129,6 +130,7 @@ function EditRoles() {
   return (
     <>
       <div>
+        <PreferencesHero />
         {/* Content Header (Page header) */}
         <section className="content-header">
           {message && status ? (

@@ -10,6 +10,7 @@
     "antd": "^4.22.8",
     "axios": "^0.23.0",
     "classnames": "^2.3.1",
+    "jquery": "^3.6.3",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.1",

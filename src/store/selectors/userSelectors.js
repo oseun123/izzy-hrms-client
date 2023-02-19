@@ -47,6 +47,26 @@ const preferencespermissions = createSelector(
         permission.menu === 1
     )
 );
+const humanresourcepermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Human Resource" &&
+        permission.module === "root" &&
+        permission.menu === 1
+    )
+);
+const humanresourceOnboardingpermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Human Resource" &&
+        permission.module === "Onboarding" &&
+        permission.menu === 1
+    )
+);
 const preferencesRolespermissions = createSelector(
   (state) => state.user,
   (user) =>
@@ -147,4 +167,6 @@ export {
   preferencesCountrypermissions,
   preferencesCompanypermissions,
   preferencesBranchpermissions,
+  humanresourcepermissions,
+  humanresourceOnboardingpermissions,
 };

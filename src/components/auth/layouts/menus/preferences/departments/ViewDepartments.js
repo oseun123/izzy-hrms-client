@@ -24,6 +24,7 @@ import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
 import { department_columns } from "./../../../../../../util/tables";
 import { CSVLink } from "react-csv";
+import PreferencesHero from "../PreferencesHero";
 const { Option } = Select;
 
 function ViewDepartments() {
@@ -92,6 +93,7 @@ function ViewDepartments() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

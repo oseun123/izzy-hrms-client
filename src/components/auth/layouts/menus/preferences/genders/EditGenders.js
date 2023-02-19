@@ -23,6 +23,7 @@ import {
   single_system_gender,
 } from "../../../../../../store/selectors/preferencesSelector";
 import Message from "../../../../../helpers/Message";
+import PreferencesHero from "../PreferencesHero";
 
 function EditGenders() {
   const [enabled, setEnabled] = useState(true);
@@ -79,6 +80,7 @@ function EditGenders() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

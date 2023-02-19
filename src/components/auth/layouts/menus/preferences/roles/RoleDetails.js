@@ -29,6 +29,9 @@ import {
 } from "./../../../../../../util/helpers";
 import { role_details_columns } from "./../../../../../../util/tables";
 import Permissions from "./Permissions";
+
+import PreferencesHero from "../PreferencesHero";
+
 const confirm_text = "Are you sure you want to remove this user?";
 
 function RoleDetails() {
@@ -72,6 +75,7 @@ function RoleDetails() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

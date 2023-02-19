@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Preferences from "./Preferences";
+import HumanResource from "./HumanResource";
 import { useShallowEqualSelector } from "../../../../hooks";
 import { currentUser } from "../../../../store/selectors/userSelectors";
 import { capitalizeFirstLetter } from "../../../../util/helpers";
+import $ from "jquery";
 
 function Aside() {
   const { first_name, last_name } = useShallowEqualSelector(currentUser);
@@ -13,6 +15,11 @@ function Aside() {
   function handleClick(e) {
     let parent = e.target.closest(".has-treeview");
     let child = e.target.closest(".has-treeview ").children[1];
+
+    let grandparent = $("#grandparent");
+
+    grandparent.find("a.active").removeClass("active");
+
     if (parent && parent.classList.contains("menu-open")) {
       if (
         (e.target.tagName === "P" &&
@@ -21,13 +28,36 @@ function Aside() {
           e.target.classList.contains("dont-close")) ||
         (e.target.tagName === "I" && e.target.classList.contains("dont-close"))
       ) {
+        if (parent.parentNode.parentNode.closest(".has-treeview")) {
+          parent.parentNode.parentNode
+            .closest(".has-treeview")
+            .children[0].classList.add("active");
+        } else {
+          parent.children[0].classList.add("active");
+        }
         return false;
       }
       parent.classList.remove("menu-open");
       child.style.display = "none";
+
+      if (parent.parentNode.parentNode.closest(".has-treeview")) {
+        parent.parentNode.parentNode
+          .closest(".has-treeview")
+          .children[0].classList.add("active");
+      } else {
+        parent.children[0].classList.add("active");
+      }
     } else {
       parent.classList.add("menu-open");
       child.style.display = "block";
+
+      if (parent.parentNode.parentNode.closest(".has-treeview")) {
+        parent.parentNode.parentNode
+          .closest(".has-treeview")
+          .children[0].classList.add("active");
+      } else {
+        parent.children[0].classList.add("active");
+      }
     }
   }
 
@@ -38,7 +68,7 @@ function Aside() {
   return (
     <>
       {/* Main Sidebar Container */}
-      <aside className="main-sidebar sidebar-dark-primary elevation-4">
+      <aside className="main-sidebar sidebar-dark-danger elevation-4">
         {/* Brand Logo */}
         <Link to="#" className="brand-link">
           <img
@@ -77,11 +107,13 @@ function Aside() {
               role="menu"
               data-accordion="false"
               onClick={handleClick}
+              id="grandparent"
             >
               {/* Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library */}
 
               <Dashboard />
+              <HumanResource />
               <Preferences />
             </ul>
           </nav>

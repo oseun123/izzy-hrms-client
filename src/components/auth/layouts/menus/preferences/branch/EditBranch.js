@@ -29,6 +29,7 @@ import {
   useGetSystemUsers,
   useGetSystemBranch,
 } from "./../../../../../../store/actions/preferencesHooksActions";
+import PreferencesHero from "../PreferencesHero";
 const { Option } = Select;
 
 function EditBranch() {
@@ -132,6 +133,7 @@ function EditBranch() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

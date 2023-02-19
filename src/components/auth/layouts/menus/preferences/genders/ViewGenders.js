@@ -23,6 +23,7 @@ import {
 import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
 import { gender_columns } from "./../../../../../../util/tables";
+import PreferencesHero from "../PreferencesHero";
 const { Option } = Select;
 
 function ViewGenders() {
@@ -73,6 +74,7 @@ function ViewGenders() {
   }
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

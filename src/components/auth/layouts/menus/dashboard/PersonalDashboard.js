@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { UseRefreshTest } from "../../../../../store/actions/userHooksActions";
 import { Space, Table, Tag } from "antd";
+import DashBoardHero from "./DashBoardHero";
 
 function PersonalDashboard() {
   const [enabled, setEnabled] = useState(false);
@@ -88,6 +89,7 @@ function PersonalDashboard() {
 
   return (
     <>
+      <DashBoardHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         <div className="container-fluid">

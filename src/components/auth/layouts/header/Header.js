@@ -98,6 +98,7 @@ function Header() {
         <ul className="navbar-nav ml-auto">
           {/* Notifications Dropdown Menu */}
           {store_spinner ? <Spinner color="secondary" /> : null}
+
           <li className="nav-item dropdown">
             <Link className="nav-link" data-toggle="dropdown" to={() => false}>
               {capitalizeFirstLetter(profile?.last_name)}{" "}

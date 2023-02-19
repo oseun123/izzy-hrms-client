@@ -126,7 +126,6 @@ const userReducer = (state = initState, { type, payload }) => {
         userpermissions: [],
       };
     case "CURRENT_CLIENT_SUCCESS":
-      console.log(payload);
       return {
         ...state,
         current_cleint: payload.payload.current_cleint,

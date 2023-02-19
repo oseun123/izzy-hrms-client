@@ -21,6 +21,7 @@ import {
   status_preferences,
 } from "../../../../../../store/selectors/preferencesSelector";
 import Message from "../../../../../helpers/Message";
+import PreferencesHero from "../PreferencesHero";
 
 function CreateStates() {
   const initValues = {
@@ -55,6 +56,7 @@ function CreateStates() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

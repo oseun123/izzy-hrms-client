@@ -25,6 +25,8 @@ import Message from "../../../../../helpers/Message";
 import { Input, Button, Space } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 
+import PreferencesHero from "../PreferencesHero";
+
 function CreateRoles() {
   const [enabled, setEnabled] = useState(true);
   const dispatch = useDispatch();
@@ -89,6 +91,8 @@ function CreateRoles() {
   return (
     <>
       <div>
+        <PreferencesHero />
+
         {/* Content Header (Page header) */}
         <section className="content-header">
           {message && status ? (

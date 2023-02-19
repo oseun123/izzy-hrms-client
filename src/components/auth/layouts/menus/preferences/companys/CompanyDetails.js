@@ -15,6 +15,7 @@ import {
 import Message from "../../../../../helpers/Message";
 import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
 import { company_details_columns } from "./../../../../../../util/tables";
+import PreferencesHero from "../PreferencesHero";
 
 function CompanyDetails() {
   const { id } = useParams();
@@ -41,6 +42,7 @@ function CompanyDetails() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

@@ -23,6 +23,7 @@ import {
   single_system_company,
 } from "../../../../../../store/selectors/preferencesSelector";
 import Message from "../../../../../helpers/Message";
+import PreferencesHero from "../PreferencesHero";
 
 function EditCompany() {
   const [enabled, setEnabled] = useState(true);
@@ -78,6 +79,7 @@ function EditCompany() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (

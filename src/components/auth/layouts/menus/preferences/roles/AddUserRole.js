@@ -28,6 +28,7 @@ import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
 import { Select, Button } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import PreferencesHero from "../PreferencesHero";
 
 const { Option } = Select;
 
@@ -115,6 +116,7 @@ function AddUserRole() {
   return (
     <>
       <div>
+        <PreferencesHero />
         {/* Content Header (Page header) */}
         <section className="content-header">
           {message && status ? (

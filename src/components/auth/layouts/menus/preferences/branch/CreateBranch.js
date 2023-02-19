@@ -27,6 +27,7 @@ import {
   useGetSystemCompany,
   useGetSystemUsers,
 } from "./../../../../../../store/actions/preferencesHooksActions";
+import PreferencesHero from "../PreferencesHero";
 const { Option } = Select;
 
 function CreateBranch() {
@@ -59,8 +60,6 @@ function CreateBranch() {
 
   //callback
   function createBranchCallback() {
-    console.log(values);
-
     createBranch(dispatch, request, values).then((res) => {
       if (res?.status === "success") {
         clearForm();
@@ -100,6 +99,7 @@ function CreateBranch() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (
