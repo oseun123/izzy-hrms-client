@@ -2,19 +2,22 @@ import React from "react";
 import dashboardSvg from "../../../../../svg/dashboard.svg";
 import { currentUser } from "../../../../../store/selectors/userSelectors";
 import { useShallowEqualSelector } from "../../../../../hooks";
-
+import Moment from "react-moment";
+import "moment-timezone";
 import { capitalizeFirstLetter } from "../../../../../util/helpers";
 import styles from "../../../../styles/layout/Layout.module.css";
 
 function DashBoardHero() {
-  const { first_name, last_name } = useShallowEqualSelector(currentUser);
+  const { first_name, last_name, last_login } =
+    useShallowEqualSelector(currentUser);
+
   return (
-    <div class="card">
+    <div className="card">
       <section className="content px-2">
-        <div class="container-fluid">
+        <div className="container-fluid">
           <div className=" d-flex justify-content-between align-items-center flex-wrap">
             <div className="left">
-              <p class="h5">
+              <p className="h5">
                 <span className={styles.c_no_wrap}>
                   Welcome back {capitalizeFirstLetter(first_name)}{" "}
                   {capitalizeFirstLetter(last_name)},
@@ -24,11 +27,23 @@ function DashBoardHero() {
                   <i>Dashboard Management</i>
                 </span>
               </p>
-              <p class="lead">
-                <small>
-                  You last logged out on <i>February 16th 2023, 11:58:57 am</i>
-                </small>
-              </p>
+
+              {last_login ? (
+                <p className="lead">
+                  <small>
+                    You last logged in on{" "}
+                    <i>
+                      {" "}
+                      <Moment
+                        tz="Africa/Lagos"
+                        format="MMMM Do YYYY, h:mm:ss a"
+                      >
+                        {last_login}
+                      </Moment>
+                    </i>
+                  </small>
+                </p>
+              ) : null}
             </div>
             <div className="right d-none d-sm-block">
               <img src={dashboardSvg} alt="" width={200} />

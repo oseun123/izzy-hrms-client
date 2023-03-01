@@ -31,8 +31,9 @@ import { role_details_columns } from "./../../../../../../util/tables";
 import Permissions from "./Permissions";
 
 import PreferencesHero from "../PreferencesHero";
+import AminatedLayout from "../../../../../ui/AminatedLayout";
 
-const confirm_text = "Are you sure you want to remove this user?";
+const confirm_text = "Remove user";
 
 function RoleDetails() {
   const auth_user = useShallowEqualSelector(currentUser);
@@ -76,127 +77,130 @@ function RoleDetails() {
   return (
     <>
       <PreferencesHero />
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        {message && status ? (
-          <Message message={message} status={status} />
-        ) : null}
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Role Details</h1>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to="/">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Preferences </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* Main content */}
-      <section className="content">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              {/* Default box */}
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">
-                    User(s) in {role_name && capitalizeFirstLetter(role_name)}{" "}
-                    {default_role ? (
-                      <span className="font-italic font-weight-light">
-                        (Default role)
-                      </span>
-                    ) : null}
-                  </h3>
-                  <div className="card-tools ">
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="collapse"
-                      data-toggle="tooltip"
-                      title="Collapse"
-                    >
-                      <i className="fas fa-minus" />
-                    </button>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <Table
-                    columns={role_details_columns(confirm_text, toremoveUser)}
-                    rowKey={(record) => record.id}
-                    dataSource={users}
-                    scroll={{
-                      x: 786,
-                    }}
-                  />
-                </div>
-                {/* /.card-body */}
 
-                {/* /.card-footer*/}
+      <AminatedLayout>
+        {/* Content Header (Page header) */}
+        <section className="content-header">
+          {message && status ? (
+            <Message message={message} status={status} />
+          ) : null}
+          <div className="container-fluid">
+            <div className="row mb-2">
+              <div className="col-sm-6">
+                <h1>Role Details</h1>
               </div>
-              {/* /.card */}
+              <div className="col-sm-6">
+                <ol className="breadcrumb float-sm-right">
+                  <li className="breadcrumb-item">
+                    <Link to="/">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Preferences </li>
+                </ol>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      {/* /.content */}
-      <section className="content">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              {/* Default box */}
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">
-                    Permission(s) in{" "}
-                    {role_name && capitalizeFirstLetter(role_name)}{" "}
-                    {default_role ? (
-                      <span className="font-italic font-weight-light">
-                        (Default role)
-                      </span>
-                    ) : null}
-                  </h3>
-                  <div className="card-tools ">
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="collapse"
-                      data-toggle="tooltip"
-                      title="Collapse"
-                    >
-                      <i className="fas fa-minus" />
-                    </button>
+          {/* /.container-fluid */}
+        </section>
+        {/* Main content */}
+        <section className="content">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                {/* Default box */}
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">
+                      User(s) in {role_name && capitalizeFirstLetter(role_name)}{" "}
+                      {default_role ? (
+                        <span className="font-italic font-weight-light">
+                          (Default role)
+                        </span>
+                      ) : null}
+                    </h3>
+                    <div className="card-tools ">
+                      <button
+                        type="button"
+                        className="btn btn-tool"
+                        data-card-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse"
+                      >
+                        <i className="fas fa-minus" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="card-body">
-                  {filtered_perm &&
-                    Object.keys(filtered_perm).map((permission, index) => {
-                      return (
-                        <Permissions
-                          index={index}
-                          key={permission}
-                          permission={permission}
-                          all_permissions={filtered_perm}
-                          readonly={true}
-                        />
-                      );
-                    })}
-                </div>
-                {/* /.card-body */}
+                  <div className="card-body">
+                    <Table
+                      columns={role_details_columns(confirm_text, toremoveUser)}
+                      rowKey={(record) => record.id}
+                      dataSource={users}
+                      scroll={{
+                        x: 786,
+                      }}
+                    />
+                  </div>
+                  {/* /.card-body */}
 
-                {/* /.card-footer*/}
+                  {/* /.card-footer*/}
+                </div>
+                {/* /.card */}
               </div>
-              {/* /.card */}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        {/* /.content */}
+        <section className="content">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                {/* Default box */}
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">
+                      Permission(s) in{" "}
+                      {role_name && capitalizeFirstLetter(role_name)}{" "}
+                      {default_role ? (
+                        <span className="font-italic font-weight-light">
+                          (Default role)
+                        </span>
+                      ) : null}
+                    </h3>
+                    <div className="card-tools ">
+                      <button
+                        type="button"
+                        className="btn btn-tool"
+                        data-card-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse"
+                      >
+                        <i className="fas fa-minus" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    {filtered_perm &&
+                      Object.keys(filtered_perm).map((permission, index) => {
+                        return (
+                          <Permissions
+                            index={index}
+                            key={permission}
+                            permission={permission}
+                            all_permissions={filtered_perm}
+                            readonly={true}
+                          />
+                        );
+                      })}
+                  </div>
+                  {/* /.card-body */}
+
+                  {/* /.card-footer*/}
+                </div>
+                {/* /.card */}
+              </div>
+            </div>
+          </div>
+        </section>
+      </AminatedLayout>
     </>
   );
 }

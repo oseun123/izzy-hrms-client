@@ -22,6 +22,8 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 import Message from "../../../../../helpers/Message";
 import PreferencesHero from "../PreferencesHero";
+import styles from "../../../../../styles/layout/Layout.module.css";
+import AminatedLayout from "../../../../../ui/AminatedLayout";
 
 function CreateDepartments() {
   const initValues = {
@@ -57,89 +59,98 @@ function CreateDepartments() {
   return (
     <>
       <PreferencesHero />
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        {message && status ? (
-          <Message message={message} status={status} />
-        ) : null}
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Create Department</h1>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to="/">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Preferences</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* Main content */}
-      <section className="content">
-        {/* Default box */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title">Create a department</h3>
-            <div className="card-tools"></div>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="card-body">
-              <div className="row">
-                <div className="form-group col-md-6 offset-md-3">
-                  <label htmlFor="name">
-                    Name <span className="text-danger">*</span>{" "}
-                  </label>
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    allowClear
-                    value={values.name}
-                    onChange={handleChange}
-                    status={errors.name ? "error" : ""}
-                  />
-
-                  <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.name,
-                      }
-                    )}
-                  >
-                    {errors.name}
-                  </div>
-                </div>
-
-                <div className="form-group col-md-6 offset-md-3">
-                  <Space>
-                    <Button
-                      type="primary"
-                      icon={<PlusCircleOutlined />}
-                      loading={spinner}
-                      htmlType="submit"
-                    >
-                      {" "}
-                      Create
-                    </Button>
-                    <Link to="/preferences/view-departments">
-                      <Button icon={<EyeOutlined />}> View</Button>
-                    </Link>
-                  </Space>
-                </div>
+      <AminatedLayout>
+        {/* Content Header (Page header) */}
+        <section className="content-header">
+          {message && status ? (
+            <Message message={message} status={status} />
+          ) : null}
+          <div className="container-fluid">
+            <div className="row mb-2">
+              <div className="col-sm-6">
+                <h1>Create Department</h1>
+              </div>
+              <div className="col-sm-6">
+                <ol className="breadcrumb float-sm-right">
+                  <li className="breadcrumb-item">
+                    <Link to="/">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Preferences</li>
+                </ol>
               </div>
             </div>
-          </form>
-        </div>
-        {/* /.card */}
-      </section>
-      {/* /.content */}
+          </div>
+          {/* /.container-fluid */}
+        </section>
+        {/* Main content */}
+        <section className="content">
+          {/* Default box */}
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">Create a department</h3>
+              <div className="card-tools"></div>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="card-body">
+                <div className="row">
+                  <div className="form-group col-md-6 offset-md-3">
+                    <label htmlFor="name">
+                      Name <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      allowClear
+                      value={values.name}
+                      onChange={handleChange}
+                      status={errors.name ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.name,
+                        }
+                      )}
+                    >
+                      {errors.name}
+                    </div>
+                  </div>
+
+                  <div className="form-group col-md-6 offset-md-3">
+                    <Space>
+                      <Button
+                        type="primary"
+                        icon={<PlusCircleOutlined />}
+                        loading={spinner}
+                        htmlType="submit"
+                        className={styles.on_hover}
+                      >
+                        {" "}
+                        Create
+                      </Button>
+                      <Link to="/preferences/view-departments">
+                        <Button
+                          icon={<EyeOutlined />}
+                          className={styles.on_hover}
+                        >
+                          {" "}
+                          View
+                        </Button>
+                      </Link>
+                    </Space>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          {/* /.card */}
+        </section>
+        {/* /.content */}
+      </AminatedLayout>
     </>
   );
 }

@@ -14,7 +14,7 @@ function Permissions(props) {
     setFiltered(filtered_permissions(all_permissions[permission], "module"));
   }, [all_permissions, permission]);
   return (
-    <div className="card  card-outline card-secondary  ">
+    <div className="card  card-outline card-secondary collapsed-card ">
       <div className="card-header" id={`headingRole${index}`}>
         <h3 className="card-title font-weight-light">{permission}</h3>
         <div className="card-tools d-flex">
@@ -37,7 +37,7 @@ function Permissions(props) {
             title="Collapse"
             style={{ marginTop: "-4px" }}
           >
-            <i className="fas fa-minus" />
+            <i className="fas fa-plus" />
           </button>
         </div>
       </div>

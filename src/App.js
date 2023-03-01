@@ -6,26 +6,17 @@ import Login from "./components/guest/Login";
 import ResetPassword from "./components/guest/ResetPassword";
 import RequireAuth from "./hoc/RequireAuth";
 import AlreadyAuth from "./hoc/AlreadyAuth";
-import "antd/dist/antd.css";
+import "antd/dist/reset.css";
 import Spinner from "./components/helpers/Spinner";
-import { getAppSubdomain } from "../src/util/helpers";
 import { UseGetCurrentClient } from "../src/store/actions/userHooksActions";
+
+import styles from "./components/styles/layout/Layout.module.css";
+import "./index.css";
 
 function App() {
   const [isloaded, setIsloaded] = useState(false);
-  const [enabled, setEnabled] = useState(false);
-  const [client, setClient] = useState("");
-  const { data, error } = UseGetCurrentClient(enabled, setEnabled, client);
-
-  useEffect(() => {
-    const is_subdomain = getAppSubdomain();
-    if (is_subdomain) {
-      setClient(is_subdomain);
-      setEnabled(true);
-    } else {
-      setIsloaded(true);
-    }
-  }, []);
+  const [enabled, setEnabled] = useState(true);
+  const { data, error } = UseGetCurrentClient(enabled, setEnabled);
 
   useEffect(() => {
     if (data) {
@@ -58,7 +49,7 @@ function App() {
   );
 
   const loading = (
-    <div style={{ padding: "200px" }}>
+    <div className={styles.spinner_box}>
       <Spinner position="center" size="large" color="secondary" />
     </div>
   );

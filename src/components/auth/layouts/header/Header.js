@@ -17,8 +17,11 @@ function Header() {
   const history = useHistory();
   const request = useAxiosPrivate();
 
-  const { first_name, last_name } = useShallowEqualSelector(currentUser);
+  const { first_name, last_name, last_login } =
+    useShallowEqualSelector(currentUser);
+  console.log(last_login);
   const store_message = useShallowEqualSelector(message);
+
   const store_status = useShallowEqualSelector(status);
   const store_spinner = useShallowEqualSelector(spinner);
 

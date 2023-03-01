@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 import { UseRefreshTest } from "../../../../../store/actions/userHooksActions";
 import { Space, Table, Tag } from "antd";
 import DashBoardHero from "./DashBoardHero";
+import LetteredAvatar from "react-lettered-avatar";
+import AminatedLayout from "../../../../ui/AminatedLayout";
+
+const arrayWithColors = [
+  "#2ecc71",
+  "#3498db",
+  "#8e44ad",
+  "#e67e22",
+  "#e74c3c",
+  "#1abc9c",
+  "#2c3e50",
+];
 
 function PersonalDashboard() {
   const [enabled, setEnabled] = useState(false);
@@ -17,7 +29,17 @@ function PersonalDashboard() {
       dataIndex: "name",
       key: "name",
       render: (text) => {
-        return <Link>{text}</Link>;
+        return (
+          <Space>
+            <LetteredAvatar
+              name={text}
+              size={35}
+              backgroundColors={arrayWithColors}
+            />
+
+            <Link>{text}</Link>
+          </Space>
+        );
       },
     },
     {
@@ -66,7 +88,7 @@ function PersonalDashboard() {
   const data = [
     {
       key: "1",
-      name: "John Brown",
+      name: "John",
       age: 32,
       address: "New York No. 1 Lake Park",
       tags: ["nice", "developer"],
@@ -90,49 +112,51 @@ function PersonalDashboard() {
   return (
     <>
       <DashBoardHero />
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Personal Dashboard</h1>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to="/">Dashboard</Link>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* Main content */}
-      <section className="content">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              {/* Default box */}
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">My Records</h3>
-                </div>
-                <div className="card-body">
-                  <button onClick={handleClick}>click</button>
-                  Start creating your amazing application!
-                  <Table columns={columns} dataSource={data} />
-                </div>
-                {/* /.card-body */}
-                <div className="card-footer">Footer</div>
-                {/* /.card-footer*/}
+      <AminatedLayout>
+        {/* Content Header (Page header) */}
+        <section className="content-header">
+          <div className="container-fluid">
+            <div className="row mb-2">
+              <div className="col-sm-6">
+                <h1>Personal Dashboard</h1>
               </div>
-              {/* /.card */}
+              <div className="col-sm-6">
+                <ol className="breadcrumb float-sm-right">
+                  <li className="breadcrumb-item">
+                    <Link to="/">Dashboard</Link>
+                  </li>
+                </ol>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      {/* /.content */}
+          {/* /.container-fluid */}
+        </section>
+        {/* Main content */}
+        <section className="content">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                {/* Default box */}
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">My Records</h3>
+                  </div>
+                  <div className="card-body">
+                    <button onClick={handleClick}>click</button>
+                    Start creating your amazing application!
+                    <Table columns={columns} dataSource={data} />
+                  </div>
+                  {/* /.card-body */}
+                  <div className="card-footer">Footer</div>
+                  {/* /.card-footer*/}
+                </div>
+                {/* /.card */}
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* /.content */}
+      </AminatedLayout>
     </>
   );
 }

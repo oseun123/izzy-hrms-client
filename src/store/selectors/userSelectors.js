@@ -26,6 +26,10 @@ const userpermissions = createSelector(
   (state) => state.user,
   (user) => user.userpermissions
 );
+const current_cleint = createSelector(
+  (state) => state.user,
+  (user) => user.current_cleint
+);
 
 const dashboardpermissions = createSelector(
   (state) => state.user,
@@ -169,4 +173,5 @@ export {
   preferencesBranchpermissions,
   humanresourcepermissions,
   humanresourceOnboardingpermissions,
+  current_cleint,
 };

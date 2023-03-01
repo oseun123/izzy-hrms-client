@@ -44,7 +44,7 @@ const UseRefreshTest = (enabled, setEnabled) => {
 
   return { data, refetch };
 };
-const UseGetCurrentClient = (enabled, setEnabled, client) => {
+const UseGetCurrentClient = (enabled, setEnabled) => {
   const dispatch = useDispatch();
   // const location = useLocation();
   // const history = useHistory();
@@ -53,7 +53,7 @@ const UseGetCurrentClient = (enabled, setEnabled, client) => {
   const { data, error, refetch, isLoading } = useQuery(
     ["current_client"],
     async () => {
-      const result = await request.get(`/api/auth/current_client/${client}`);
+      const result = await request.get(`/api/auth/current_client`);
       return result.data;
     },
     { enabled: enabled, manual: true, retry: 1 }

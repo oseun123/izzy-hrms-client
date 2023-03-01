@@ -26,9 +26,13 @@ import {
 } from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
-import { Select, Button } from "antd";
+import { Select, Button, Space } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import PreferencesHero from "../PreferencesHero";
+import styles from "../../../../../styles/layout/Layout.module.css";
+import AminatedLayout from "../../../../../ui/AminatedLayout";
+import LetteredAvatar from "react-lettered-avatar";
+import { arrayWithColors } from "../../../../../../util/helpers";
 
 const { Option } = Select;
 
@@ -117,142 +121,159 @@ function AddUserRole() {
     <>
       <div>
         <PreferencesHero />
-        {/* Content Header (Page header) */}
-        <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
-          <div className="container-fluid">
-            <div className="row mb-2">
-              <div className="col-sm-6">
-                <h1>Assign Role</h1>
-              </div>
-              <div className="col-sm-6">
-                <ol className="breadcrumb float-sm-right">
-                  <li className="breadcrumb-item">
-                    <Link to="/">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Prefrences</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-          {/* /.container-fluid */}
-        </section>
-        {/* Main content */}
-        <section className="content">
-          {/* Default box */}
-          <form onSubmit={handleSubmit}>
-            <div className="card">
-              <div className="card-header">
-                <h3 className="card-title">Add user to a role</h3>
-              </div>
-              <div className="card-body">
-                <div className="row">
-                  <div className="form-group col-md-4">
-                    <label htmlFor="name">
-                      Roles <span className="text-danger">*</span>
-                    </label>
-                    <Select
-                      style={{
-                        width: "100%",
-                      }}
-                      showSearch
-                      status={errors.role ? "error" : ""}
-                      id="role"
-                      name="role"
-                      allowClear
-                      onChange={handleChangeRole}
-                      filterOption={(input, option) => {
-                        return option.children[1]
-                          .toLowerCase()
-                          .includes(input.toLowerCase());
-                      }}
-                      value={values.role}
-                    >
-                      {all_roles &&
-                        all_roles.map((role) => (
-                          <Option key={role.id} value={role.id}>
-                            {" "}
-                            {role.name}
-                          </Option>
-                        ))}
-                    </Select>
-
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.role,
-                        }
-                      )}
-                    >
-                      {errors.role}
-                    </div>
-                  </div>
-                  <div className="form-group col-md-8">
-                    <label htmlFor="users">
-                      Users <span className="text-danger">*</span>
-                    </label>
-                    <Select
-                      style={{
-                        width: "100%",
-                      }}
-                      status={errors.users ? "error" : ""}
-                      showSearch
-                      id="users"
-                      name="users"
-                      mode="multiple"
-                      allowClear
-                      value={values.users}
-                      onChange={handleChangeUsers}
-                      filterOption={(input, option) => {
-                        return option.children[1]
-                          .toLowerCase()
-                          .includes(input.toLowerCase());
-                      }}
-                    >
-                      {all_users &&
-                        all_users.map((user) => (
-                          <Option key={user.id} value={user.id}>
-                            {" "}
-                            {user.first_name} {user.last_name}
-                          </Option>
-                        ))}
-                    </Select>
-
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.users,
-                        }
-                      )}
-                    >
-                      {errors.users}
-                    </div>
-                  </div>
+        <AminatedLayout>
+          {/* Content Header (Page header) */}
+          <section className="content-header">
+            {message && status ? (
+              <Message message={message} status={status} />
+            ) : null}
+            <div className="container-fluid">
+              <div className="row mb-2">
+                <div className="col-sm-6">
+                  <h1>Assign Role</h1>
                 </div>
-
-                <Button
-                  type="primary"
-                  icon={<PlusCircleOutlined />}
-                  loading={spinner}
-                  htmlType="submit"
-                >
-                  {" "}
-                  Create
-                </Button>
-
-                {/* /.card */}
+                <div className="col-sm-6">
+                  <ol className="breadcrumb float-sm-right">
+                    <li className="breadcrumb-item">
+                      <Link to="/">Dashboard</Link>
+                    </li>
+                    <li className="breadcrumb-item active">Prefrences</li>
+                  </ol>
+                </div>
               </div>
             </div>
-          </form>
-          {/* /.card */}
-        </section>
-        {/* /.content */}
+            {/* /.container-fluid */}
+          </section>
+          {/* Main content */}
+          <section className="content">
+            {/* Default box */}
+            <form onSubmit={handleSubmit}>
+              <div className="card">
+                <div className="card-header">
+                  <h3 className="card-title">Add user to a role</h3>
+                </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="form-group col-md-4">
+                      <label htmlFor="name">
+                        Roles <span className="text-danger">*</span>
+                      </label>
+                      <Select
+                        style={{
+                          width: "100%",
+                        }}
+                        showSearch
+                        status={errors.role ? "error" : ""}
+                        id="role"
+                        name="role"
+                        allowClear
+                        onChange={handleChangeRole}
+                        filterOption={(input, option) => {
+                          return option.children[1]
+                            .toLowerCase()
+                            .includes(input.toLowerCase());
+                        }}
+                        value={values.role}
+                      >
+                        {all_roles &&
+                          all_roles.map((role) => (
+                            <Option key={role.id} value={role.id}>
+                              {" "}
+                              {role.name}
+                            </Option>
+                          ))}
+                      </Select>
+
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.role,
+                          }
+                        )}
+                      >
+                        {errors.role}
+                      </div>
+                    </div>
+                    <div className="form-group col-md-8">
+                      <label htmlFor="users">
+                        Users <span className="text-danger">*</span>
+                      </label>
+                      <Select
+                        style={{
+                          width: "100%",
+                        }}
+                        status={errors.users ? "error" : ""}
+                        showSearch
+                        id="users"
+                        name="users"
+                        mode="multiple"
+                        allowClear
+                        value={values.users}
+                        onChange={handleChangeUsers}
+                        filterOption={(input, option) => {
+                          return option?.label
+                            .toLowerCase()
+                            .includes(input.toLowerCase());
+                        }}
+                      >
+                        {all_users &&
+                          all_users.map((user) => (
+                            <Option
+                              key={user.id}
+                              value={user.id}
+                              label={`${user.first_name} ${user.last_name}`}
+                            >
+                              <Space>
+                                <LetteredAvatar
+                                  name={`${user.first_name || ""} ${
+                                    user.last_name || " "
+                                  }`}
+                                  size={22}
+                                  backgroundColors={arrayWithColors}
+                                />
+                                <span>
+                                  {user.first_name} {user.last_name}
+                                </span>
+                              </Space>
+                            </Option>
+                          ))}
+                      </Select>
+
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.users,
+                          }
+                        )}
+                      >
+                        {errors.users}
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="primary"
+                    icon={<PlusCircleOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
+                    className={styles.on_hover}
+                  >
+                    {" "}
+                    Create
+                  </Button>
+
+                  {/* /.card */}
+                </div>
+              </div>
+            </form>
+            {/* /.card */}
+          </section>
+          {/* /.content */}
+        </AminatedLayout>
       </div>
     </>
   );

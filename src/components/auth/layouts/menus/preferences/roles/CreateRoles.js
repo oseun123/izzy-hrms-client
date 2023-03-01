@@ -24,8 +24,10 @@ import classnames from "classnames";
 import Message from "../../../../../helpers/Message";
 import { Input, Button, Space } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
+import styles from "../../../../../styles/layout/Layout.module.css";
 
 import PreferencesHero from "../PreferencesHero";
+import AminatedLayout from "../../../../../ui/AminatedLayout";
 
 function CreateRoles() {
   const [enabled, setEnabled] = useState(true);
@@ -93,136 +95,148 @@ function CreateRoles() {
       <div>
         <PreferencesHero />
 
-        {/* Content Header (Page header) */}
-        <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
-          <div className="container-fluid">
-            <div className="row mb-2">
-              <div className="col-sm-6">
-                <h1>Create Roles</h1>
-              </div>
-              <div className="col-sm-6">
-                <ol className="breadcrumb float-sm-right">
-                  <li className="breadcrumb-item">
-                    <Link to="/">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Prefrences</li>
-                </ol>
+        <AminatedLayout>
+          {/* Content Header (Page header) */}
+          <section className="content-header">
+            {message && status ? (
+              <Message message={message} status={status} />
+            ) : null}
+            <div className="container-fluid">
+              <div className="row mb-2">
+                <div className="col-sm-6">
+                  <h1>Create Roles</h1>
+                </div>
+                <div className="col-sm-6">
+                  <ol className="breadcrumb float-sm-right">
+                    <li className="breadcrumb-item">
+                      <Link to="/">Dashboard</Link>
+                    </li>
+                    <li className="breadcrumb-item active">Prefrences</li>
+                  </ol>
+                </div>
               </div>
             </div>
-          </div>
-          {/* /.container-fluid */}
-        </section>
-        {/* Main content */}
-        <section className="content">
-          {/* Default box */}
-          <form onSubmit={handleSubmitfist}>
-            <div className="card">
-              <div className="card-header">
-                <h3 className="card-title">Create a role</h3>
-              </div>
-              <div className="card-body">
-                <div className="row">
-                  <div className="form-group col-md-6">
-                    <label htmlFor="name">
-                      Name <span className="text-danger">*</span>
-                    </label>
-                    <Input
-                      type="text"
-                      id="name"
-                      name="name"
-                      allowClear
-                      status={errors.name ? "error" : ""}
-                      onChange={handleChange}
-                      value={values.name}
-                    />
-
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.name,
-                        }
-                      )}
-                    >
-                      {errors.name}
-                    </div>
-                  </div>
-                  <div className="form-group col-md-6 pt-md-3">
-                    <div className="custom-control custom-checkbox">
-                      <input
-                        className="custom-control-input"
-                        type="checkbox"
-                        name="default"
-                        id="default"
-                      />
-                      <label htmlFor="default" className="custom-control-label">
-                        Make Role Default
+            {/* /.container-fluid */}
+          </section>
+          {/* Main content */}
+          <section className="content">
+            {/* Default box */}
+            <form onSubmit={handleSubmitfist}>
+              <div className="card">
+                <div className="card-header">
+                  <h3 className="card-title">Create a role</h3>
+                </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="form-group col-md-6">
+                      <label htmlFor="name">
+                        Name <span className="text-danger">*</span>
                       </label>
+                      <Input
+                        type="text"
+                        id="name"
+                        name="name"
+                        allowClear
+                        status={errors.name ? "error" : ""}
+                        onChange={handleChange}
+                        value={values.name}
+                      />
+
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.name,
+                          }
+                        )}
+                      >
+                        {errors.name}
+                      </div>
                     </div>
-                    <div>
-                      <i className="fa fa-info-circle text-info mr-1"></i>
-                      Checking this field makes this role the default.
+                    <div className="form-group col-md-6 pt-md-3">
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          className="custom-control-input"
+                          type="checkbox"
+                          name="default"
+                          id="default"
+                        />
+                        <label
+                          htmlFor="default"
+                          className="custom-control-label"
+                        >
+                          Make Role Default
+                        </label>
+                      </div>
+                      <div>
+                        <i className="fa fa-info-circle text-info mr-1"></i>
+                        Checking this field makes this role the default.
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="col-12">
-                  <label htmlFor="name">
-                    Permissions <span className="text-danger">*</span>
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        "font-weight-light",
-                        {
-                          "custom-visibible": errors.permissions,
-                        }
-                      )}
+                  <div className="col-12">
+                    <label htmlFor="name">
+                      Permissions <span className="text-danger">*</span>
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          "font-weight-light",
+                          {
+                            "custom-visibible": errors.permissions,
+                          }
+                        )}
+                      >
+                        {errors.permissions}
+                      </div>
+                    </label>
+                  </div>
+                  {all_system_permissions &&
+                    Object.keys(all_system_permissions).map(
+                      (permission, index) => {
+                        return (
+                          <Permissions
+                            index={index}
+                            key={permission}
+                            permission={permission}
+                            all_permissions={all_system_permissions}
+                            handleCheckChange={handleCheckChange}
+                          />
+                        );
+                      }
+                    )}
+
+                  {/* /.card */}
+                  <Space>
+                    <Button
+                      type="primary"
+                      icon={<PlusCircleOutlined />}
+                      loading={spinner}
+                      htmlType="submit"
+                      className={styles.on_hover}
                     >
-                      {errors.permissions}
-                    </div>
-                  </label>
+                      {" "}
+                      Create
+                    </Button>
+                    <Link to="/preferences/view-roles">
+                      <Button
+                        icon={<EyeOutlined />}
+                        className={styles.on_hover}
+                      >
+                        {" "}
+                        View
+                      </Button>
+                    </Link>
+                  </Space>
                 </div>
-                {all_system_permissions &&
-                  Object.keys(all_system_permissions).map(
-                    (permission, index) => {
-                      return (
-                        <Permissions
-                          index={index}
-                          key={permission}
-                          permission={permission}
-                          all_permissions={all_system_permissions}
-                          handleCheckChange={handleCheckChange}
-                        />
-                      );
-                    }
-                  )}
-
-                {/* /.card */}
-                <Space>
-                  <Button
-                    type="primary"
-                    icon={<PlusCircleOutlined />}
-                    loading={spinner}
-                    htmlType="submit"
-                  >
-                    {" "}
-                    Create
-                  </Button>
-                  <Link to="/preferences/view-roles">
-                    <Button icon={<EyeOutlined />}> View</Button>
-                  </Link>
-                </Space>
               </div>
-            </div>
-          </form>
-          {/* /.card */}
-        </section>
-        {/* /.content */}
+            </form>
+            {/* /.card */}
+          </section>
+          {/* /.content */}
+        </AminatedLayout>
       </div>
     </>
   );

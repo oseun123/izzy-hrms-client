@@ -21,6 +21,8 @@ import {
   hrCleanUp,
 } from "../../../../../../store/actions/hrActions";
 import HumanResourceHero from "../HumanResourceHero";
+import AminatedLayout from "../../../../../ui/AminatedLayout";
+import styles from "../../../../../styles/layout/Layout.module.css";
 
 function CreateEmployee() {
   const initValues = {
@@ -57,142 +59,151 @@ function CreateEmployee() {
   return (
     <>
       <HumanResourceHero />
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        {message && status ? (
-          <Message message={message} status={status} />
-        ) : null}
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Create Employee</h1>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active">Human resource</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* Main content */}
-      <section className="content">
-        {/* Default box */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title">Create an employee</h3>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="card-body">
-              <div className="row">
-                <div className="form-group col-md-4 ">
-                  <label htmlFor="first_name">
-                    First name <span className="text-danger">*</span>{" "}
-                  </label>
-                  <Input
-                    type="text"
-                    name="first_name"
-                    id="first_name"
-                    allowClear
-                    value={values.first_name}
-                    onChange={handleChange}
-                    status={errors.first_name ? "error" : ""}
-                  />
-
-                  <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.first_name,
-                      }
-                    )}
-                  >
-                    {errors.first_name}
-                  </div>
-                </div>
-                <div className="form-group col-md-4 ">
-                  <label htmlFor="middle_name">
-                    Middle name <span className="text-danger">*</span>{" "}
-                  </label>
-                  <Input
-                    type="text"
-                    name="middle_name"
-                    id="middle_name"
-                    allowClear
-                    value={values.middle_name}
-                    onChange={handleChange}
-                    status={errors.middle_name ? "error" : ""}
-                  />
-
-                  <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.middle_name,
-                      }
-                    )}
-                  >
-                    {errors.middle_name}
-                  </div>
-                </div>
-                <div className="form-group col-md-4 ">
-                  <label htmlFor="last_name">
-                    Last name <span className="text-danger">*</span>{" "}
-                  </label>
-                  <Input
-                    type="text"
-                    name="last_name"
-                    id="last_name"
-                    allowClear
-                    value={values.last_name}
-                    onChange={handleChange}
-                    status={errors.last_name ? "error" : ""}
-                  />
-
-                  <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.last_name,
-                      }
-                    )}
-                  >
-                    {errors.last_name}
-                  </div>
-                </div>
+      <AminatedLayout>
+        {/* Content Header (Page header) */}
+        <section className="content-header">
+          {message && status ? (
+            <Message message={message} status={status} />
+          ) : null}
+          <div className="container-fluid">
+            <div className="row mb-2">
+              <div className="col-sm-6">
+                <h1>Create Employee</h1>
               </div>
-              <div className="row">
-                <div className="form-group col-md-6 ">
-                  <Space>
-                    <Button
-                      type="primary"
-                      icon={<PlusCircleOutlined />}
-                      loading={spinner}
-                      htmlType="submit"
+              <div className="col-sm-6">
+                <ol className="breadcrumb float-sm-right">
+                  <li className="breadcrumb-item">
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Human resource</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          {/* /.container-fluid */}
+        </section>
+        {/* Main content */}
+        <section className="content">
+          {/* Default box */}
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">Create an employee</h3>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="card-body">
+                <div className="row">
+                  <div className="form-group col-md-4 ">
+                    <label htmlFor="first_name">
+                      First name <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="first_name"
+                      id="first_name"
+                      allowClear
+                      value={values.first_name}
+                      onChange={handleChange}
+                      status={errors.first_name ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.first_name,
+                        }
+                      )}
                     >
-                      {" "}
-                      Create
-                    </Button>
-                    <Link to="/preferences/view-branches">
-                      <Button icon={<EyeOutlined />}> View</Button>
-                    </Link>
-                  </Space>
+                      {errors.first_name}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-4 ">
+                    <label htmlFor="middle_name">
+                      Middle name <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="middle_name"
+                      id="middle_name"
+                      allowClear
+                      value={values.middle_name}
+                      onChange={handleChange}
+                      status={errors.middle_name ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.middle_name,
+                        }
+                      )}
+                    >
+                      {errors.middle_name}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-4 ">
+                    <label htmlFor="last_name">
+                      Last name <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="last_name"
+                      id="last_name"
+                      allowClear
+                      value={values.last_name}
+                      onChange={handleChange}
+                      status={errors.last_name ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.last_name,
+                        }
+                      )}
+                    >
+                      {errors.last_name}
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col-md-6 ">
+                    <Space>
+                      <Button
+                        type="primary"
+                        icon={<PlusCircleOutlined />}
+                        loading={spinner}
+                        htmlType="submit"
+                        className={styles.on_hover}
+                      >
+                        {" "}
+                        Create
+                      </Button>
+                      <Link to="/preferences/view-branches">
+                        <Button
+                          icon={<EyeOutlined />}
+                          className={styles.on_hover}
+                        >
+                          {" "}
+                          View
+                        </Button>
+                      </Link>
+                    </Space>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
-          {/* /.card-body */}
-        </div>
-        {/* /.card */}
-      </section>
-      {/* /.content */}
+            </form>
+            {/* /.card-body */}
+          </div>
+          {/* /.card */}
+        </section>
+        {/* /.content */}
+      </AminatedLayout>
     </>
   );
 }

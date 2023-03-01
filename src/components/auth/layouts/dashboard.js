@@ -1,7 +1,9 @@
-import { lazy } from "react";
+// import { lazy } from "react";
 
-const PersonalDashboard = lazy(() =>
-  import("./menus/dashboard/PersonalDashboard")
-);
+// const PersonalDashboard = lazy(() =>
+//   import("./menus/dashboard/PersonalDashboard")
+// );
 
-export { PersonalDashboard };
+// export { PersonalDashboard };
+
+export { default as PersonalDashboard } from "./menus/dashboard/PersonalDashboard";

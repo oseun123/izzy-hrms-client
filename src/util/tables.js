@@ -1,6 +1,10 @@
 import { Space, Input, Button, Tag, Popconfirm } from "antd";
 import { SearchOutlined, RedoOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import LetteredAvatar from "react-lettered-avatar";
+import { arrayWithColors } from "./helpers";
+
+const desc_text = "Are you sure you want to perform this action?";
 
 const role_details_columns = (confirm_text, removeUser) => {
   return [
@@ -50,6 +54,18 @@ const role_details_columns = (confirm_text, removeUser) => {
       onFilter: (value, record) => {
         return record.first_name.toLowerCase().includes(value.toLowerCase());
       },
+      render: (value, record) => {
+        return (
+          <Space>
+            <LetteredAvatar
+              name={`${value || ""}}`}
+              size={22}
+              backgroundColors={arrayWithColors}
+            />
+            {value}
+          </Space>
+        );
+      },
     },
     {
       title: "Last Name",
@@ -96,6 +112,18 @@ const role_details_columns = (confirm_text, removeUser) => {
       },
       onFilter: (value, record) => {
         return record.last_name.toLowerCase().includes(value.toLowerCase());
+      },
+      render: (value, record) => {
+        return (
+          <Space>
+            <LetteredAvatar
+              name={`${value || ""}}`}
+              size={22}
+              backgroundColors={arrayWithColors}
+            />
+            {value}
+          </Space>
+        );
       },
     },
     {
@@ -158,6 +186,7 @@ const role_details_columns = (confirm_text, removeUser) => {
               <Popconfirm
                 placement="topRight"
                 title={confirm_text}
+                description={desc_text}
                 onConfirm={() => {
                   removeUser(id);
                 }}
@@ -363,6 +392,7 @@ const role_columns = (
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
+                  description={desc_text}
                   onConfirm={() => {
                     // console.log({ id });
                     confirmAction(id);
@@ -435,9 +465,9 @@ const department_columns = (
         return record.name.toLowerCase().includes(value.toLowerCase());
       },
 
-      render: (value, record) => {
-        return value;
-      },
+      // render: (value, record) => {
+      //   return { value };
+      // },
     },
 
     {
@@ -514,6 +544,7 @@ const department_columns = (
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
+                  description={desc_text}
                   onConfirm={() => {
                     // console.log({ id });
                     confirmAction(id);
@@ -580,6 +611,18 @@ const department_details_columns = () => {
       onFilter: (value, record) => {
         return record.first_name.toLowerCase().includes(value.toLowerCase());
       },
+      render: (value, record) => {
+        return (
+          <Space>
+            <LetteredAvatar
+              name={`${value || ""}}`}
+              size={22}
+              backgroundColors={arrayWithColors}
+            />
+            {value}
+          </Space>
+        );
+      },
     },
     {
       title: "Last Name",
@@ -626,6 +669,19 @@ const department_details_columns = () => {
       },
       onFilter: (value, record) => {
         return record.last_name.toLowerCase().includes(value.toLowerCase());
+      },
+
+      render: (value, record) => {
+        return (
+          <Space>
+            <LetteredAvatar
+              name={`${value || ""}}`}
+              size={22}
+              backgroundColors={arrayWithColors}
+            />
+            {value}
+          </Space>
+        );
       },
     },
     {
@@ -1021,6 +1077,7 @@ const state_columns = (
                   }}
                   okText="Yes"
                   cancelText="No"
+                  description={desc_text}
                 >
                   <Tag color="red">Delete</Tag>
                 </Popconfirm>
@@ -1166,6 +1223,7 @@ const country_columns = (
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
+                  description={desc_text}
                   onConfirm={() => {
                     // console.log({ id });
                     confirmAction(id);
@@ -1318,11 +1376,13 @@ const company_columns = (
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
+                  description="Are you sure you want to peform this action?"
                   onConfirm={() => {
                     // console.log({ id });
                     confirmAction(id);
                   }}
                   okText="Yes"
+                  okType="defualt"
                   cancelText="No"
                 >
                   <Tag color="red">Delete</Tag>
@@ -1576,6 +1636,7 @@ const branch_columns = (
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
+                  description={desc_text}
                   onConfirm={() => {
                     // console.log({ id });
                     confirmAction(id);
