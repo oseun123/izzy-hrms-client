@@ -6,6 +6,10 @@ import { setPrivateRequest } from "./requestMethods";
 
 import { hashData } from "./util/hash";
 
+import { useDispatch } from "react-redux";
+
+import { preferencesCleanUp } from "./store/actions/preferencesActions";
+import { resetUsersState } from "./store/actions/userActions";
 function useForm(callback, initState = {}, validate) {
   const [values, setValues] = useState(initState);
   const [errors, setErrors] = useState({});
@@ -102,10 +106,40 @@ function useRefreshToken() {
   return refresh;
 }
 
+function usePreferenceCleanUp() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      preferencesCleanUp(dispatch);
+    };
+  }, [dispatch]);
+}
+function useUserCleanUp() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      resetUsersState(dispatch);
+    };
+  }, [dispatch]);
+}
+
+function useCleanUp() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      resetUsersState(dispatch);
+      preferencesCleanUp(dispatch);
+    };
+  }, [dispatch]);
+}
+
 export {
   useForm,
   useShallowEqualSelector,
   useRerender,
   useAxiosPrivate,
   useRefreshToken,
+  usePreferenceCleanUp,
+  useUserCleanUp,
+  useCleanUp,
 };

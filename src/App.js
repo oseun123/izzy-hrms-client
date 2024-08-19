@@ -8,7 +8,7 @@ import RequireAuth from "./hoc/RequireAuth";
 import AlreadyAuth from "./hoc/AlreadyAuth";
 import "antd/dist/reset.css";
 import Spinner from "./components/helpers/Spinner";
-import { UseGetCurrentClient } from "../src/store/actions/userHooksActions";
+import { useGetCurrentClient } from "../src/store/actions/userHooksActions";
 
 import styles from "./components/styles/layout/Layout.module.css";
 import "./index.css";
@@ -16,7 +16,7 @@ import "./index.css";
 function App() {
   const [isloaded, setIsloaded] = useState(false);
   const [enabled, setEnabled] = useState(true);
-  const { data, error } = UseGetCurrentClient(enabled, setEnabled);
+  const { data, error } = useGetCurrentClient(enabled, setEnabled);
 
   useEffect(() => {
     if (data) {

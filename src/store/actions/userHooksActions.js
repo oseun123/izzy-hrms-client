@@ -44,7 +44,7 @@ const UseRefreshTest = (enabled, setEnabled) => {
 
   return { data, refetch };
 };
-const UseGetCurrentClient = (enabled, setEnabled) => {
+const useGetCurrentClient = (enabled, setEnabled) => {
   const dispatch = useDispatch();
   // const location = useLocation();
   // const history = useHistory();
@@ -92,4 +92,4 @@ const UseGetCurrentClient = (enabled, setEnabled) => {
   return { data, error, refetch };
 };
 
-export { UseRefreshTest, UseGetCurrentClient };
+export { UseRefreshTest, useGetCurrentClient };

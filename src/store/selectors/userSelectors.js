@@ -142,6 +142,16 @@ const preferencesBranchpermissions = createSelector(
         permission.menu === 1
     )
 );
+const preferencesSettingspermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Settings" &&
+        permission.menu === 1
+    )
+);
 
 const userhaspermission = () =>
   createSelector(
@@ -173,5 +183,6 @@ export {
   preferencesBranchpermissions,
   humanresourcepermissions,
   humanresourceOnboardingpermissions,
+  preferencesSettingspermissions,
   current_cleint,
 };

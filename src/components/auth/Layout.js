@@ -40,6 +40,7 @@ import {
   ViewBranch,
   BranchDetails,
   EditBranch,
+  DisplaySettings,
 } from "./layouts/preferences";
 
 // Human Resource Component
@@ -281,6 +282,17 @@ const Layout = () => {
                 />
 
                 {/* end branch */}
+
+                {/* start setting */}
+
+                <HasPermission
+                  exact
+                  path="/preferences/display-settings"
+                  component={DisplaySettings}
+                  permission="SET_DISPLAY"
+                />
+
+                {/* end setting */}
 
                 {/* start onboarding*/}
                 <HasPermission

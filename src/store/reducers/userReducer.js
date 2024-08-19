@@ -109,6 +109,19 @@ const userReducer = (state = initState, { type, payload }) => {
         status: payload.status,
         message: payload.message,
       };
+    case "CLEINT_SETTINGS_SUCCESS":
+      //   console.log(payload);
+      return {
+        ...state,
+        status: payload.status,
+        message: payload.message,
+      };
+    case "CLEINT_SETTINGS_ERROR":
+      return {
+        ...state,
+        status: payload.status,
+        message: payload.message,
+      };
     case "ERROR_SIGNUP":
       return {
         ...state,

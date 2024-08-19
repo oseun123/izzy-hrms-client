@@ -4,12 +4,21 @@ import Dashboard from "./Dashboard";
 import Preferences from "./Preferences";
 import HumanResource from "./HumanResource";
 import { useShallowEqualSelector } from "../../../../hooks";
-import { currentUser } from "../../../../store/selectors/userSelectors";
+import {
+  currentUser,
+  current_cleint,
+} from "../../../../store/selectors/userSelectors";
 import { capitalizeFirstLetter } from "../../../../util/helpers";
 import $ from "jquery";
 
 function Aside() {
   const { first_name, last_name } = useShallowEqualSelector(currentUser);
+  const currentCleint = useShallowEqualSelector(current_cleint);
+
+  const sidebar_variant = JSON.parse(currentCleint?.settings)[0]?.display
+    ?.sidebar_variant;
+  const brand_variant = JSON.parse(currentCleint?.settings)[0]?.display
+    ?.brand_variant;
 
   const [profile, setProfile] = useState({ first_name: "", last_name: "" });
   function handleClick(e) {
@@ -68,9 +77,13 @@ function Aside() {
   return (
     <>
       {/* Main Sidebar Container */}
-      <aside className="main-sidebar sidebar-dark-danger elevation-4">
+      <aside
+        className={`main-sidebar   ${
+          sidebar_variant || "sidebar-dark-primary"
+        }  elevation-4`}
+      >
         {/* Brand Logo */}
-        <Link to="#" className="brand-link">
+        <Link to="#" className={`brand-link ${brand_variant}  `}>
           <img
             src="../../dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"

@@ -1,3 +1,7 @@
 .lettered-avatar {
   font-size: inherit;
 }
+
+[class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+}
