@@ -59,22 +59,54 @@ function useRerender() {
   return setRerender;
 }
 
+// function useAxiosPrivate() {
+//   const refresh = useRefreshToken();
+
+//   useEffect(() => {
+//     const responseIntercept = setPrivateRequest().interceptors.response.use(
+//       (response) => response,
+//       async (error) => {
+//         const prevRequest = { ...error?.config };
+//         console.log({ prevRequest });
+
+//         if (error?.response?.status === 401 && !prevRequest?.sent) {
+//           const newprevRequest = { ...prevRequest, sent: true };
+//           const newAccessToken = await refresh();
+//           newprevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+//           return setPrivateRequest()(newprevRequest);
+//         } else if (error?.response?.status === 403) {
+//           // setPrivateRequest().interceptors.response.eject(responseIntercept);
+//           return Promise.reject(error);
+//         }
+//         return Promise.reject(error);
+//       }
+//     );
+
+//     return () => {
+//       setPrivateRequest().interceptors.response.eject(responseIntercept);
+//     };
+//   }, [refresh]);
+
+//   return setPrivateRequest();
+// }
 function useAxiosPrivate() {
   const refresh = useRefreshToken();
+  const axiosPrivate = setPrivateRequest();
 
   useEffect(() => {
-    const responseIntercept = setPrivateRequest().interceptors.response.use(
+    const responseIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = { ...error?.config };
+        console.log({ prevRequest, error });
 
         if (error?.response?.status === 401 && !prevRequest?.sent) {
-          const newprevRequest = { ...prevRequest, sent: true };
+          prevRequest.sent = true;
           const newAccessToken = await refresh();
-          newprevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          return setPrivateRequest()(newprevRequest);
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return axiosPrivate(prevRequest);
         } else if (error?.response?.status === 403) {
-          // setPrivateRequest().interceptors.response.eject(responseIntercept);
+          axiosPrivate.interceptors.response.eject(responseIntercept);
           return Promise.reject(error);
         }
         return Promise.reject(error);
@@ -82,11 +114,11 @@ function useAxiosPrivate() {
     );
 
     return () => {
-      setPrivateRequest().interceptors.response.eject(responseIntercept);
+      axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [refresh]);
+  }, [refresh, axiosPrivate]);
 
-  return setPrivateRequest();
+  return axiosPrivate;
 }
 
 function useRefreshToken() {

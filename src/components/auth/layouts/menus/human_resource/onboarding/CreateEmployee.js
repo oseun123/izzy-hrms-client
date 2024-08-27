@@ -29,6 +29,15 @@ function CreateEmployee() {
     first_name: "",
     middle_name: "",
     last_name: "",
+    employee_number: "",
+    employment_date: "",
+    employment_type: "",
+    department: "",
+    designation: "",
+    primary_supervisor: "",
+    secondary_supervisor: "",
+    employment_status: "",
+    employee_category: "",
   };
 
   const spinner = useShallowEqualSelector(spinner_hr);
@@ -87,12 +96,14 @@ function CreateEmployee() {
           {/* Default box */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">Create an employee</h3>
+              <h3 className="card-title">
+                Effortlessly create and maintain employee records
+              </h3>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="card-body">
                 <div className="row">
-                  <div className="form-group col-md-4 ">
+                  <div className="form-group col-md-3 ">
                     <label htmlFor="first_name">
                       First name <span className="text-danger">*</span>{" "}
                     </label>
@@ -118,7 +129,7 @@ function CreateEmployee() {
                       {errors.first_name}
                     </div>
                   </div>
-                  <div className="form-group col-md-4 ">
+                  <div className="form-group col-md-3 ">
                     <label htmlFor="middle_name">
                       Middle name <span className="text-danger">*</span>{" "}
                     </label>
@@ -144,7 +155,7 @@ function CreateEmployee() {
                       {errors.middle_name}
                     </div>
                   </div>
-                  <div className="form-group col-md-4 ">
+                  <div className="form-group col-md-3 ">
                     <label htmlFor="last_name">
                       Last name <span className="text-danger">*</span>{" "}
                     </label>
@@ -170,9 +181,245 @@ function CreateEmployee() {
                       {errors.last_name}
                     </div>
                   </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="employment_date">
+                      Employment Date <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="employment_date"
+                      id="employment_date"
+                      allowClear
+                      value={values.employment_date}
+                      onChange={handleChange}
+                      status={errors.employment_date ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.employment_date,
+                        }
+                      )}
+                    >
+                      {errors.employment_date}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="employee_number">
+                      Employee Number <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="employee_number"
+                      id="employee_number"
+                      allowClear
+                      value={values.employee_number}
+                      onChange={handleChange}
+                      status={errors.employee_number ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.employee_number,
+                        }
+                      )}
+                    >
+                      {errors.employee_number}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="employment_type">
+                      Employment type <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="employment_type"
+                      id="employment_type"
+                      allowClear
+                      value={values.employment_type}
+                      onChange={handleChange}
+                      status={errors.employment_type ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.employment_type,
+                        }
+                      )}
+                    >
+                      {errors.employment_type}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="department">
+                      Department <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="department"
+                      id="department"
+                      allowClear
+                      value={values.department}
+                      onChange={handleChange}
+                      status={errors.department ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.department,
+                        }
+                      )}
+                    >
+                      {errors.department}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="designation">
+                      Designation <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="designation"
+                      id="designation"
+                      allowClear
+                      value={values.designation}
+                      onChange={handleChange}
+                      status={errors.designation ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.designation,
+                        }
+                      )}
+                    >
+                      {errors.designation}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="primary_supervisor">
+                      Primary supervisor <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="primary_supervisor"
+                      id="primary_supervisor"
+                      allowClear
+                      value={values.primary_supervisor}
+                      onChange={handleChange}
+                      status={errors.primary_supervisor ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.primary_supervisor,
+                        }
+                      )}
+                    >
+                      {errors.primary_supervisor}
+                    </div>
+                  </div>
+
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="secondary_supervisor">
+                      Secondary supervisor{" "}
+                      <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="secondary_supervisor"
+                      id="secondary_supervisor"
+                      allowClear
+                      value={values.secondary_supervisor}
+                      onChange={handleChange}
+                      status={errors.secondary_supervisor ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.secondary_supervisor,
+                        }
+                      )}
+                    >
+                      {errors.secondary_supervisor}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="employment_status">
+                      Employment Status <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="employment_status"
+                      id="employment_status"
+                      allowClear
+                      value={values.employment_status}
+                      onChange={handleChange}
+                      status={errors.employment_status ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.employment_status,
+                        }
+                      )}
+                    >
+                      {errors.employment_status}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
+                    <label htmlFor="employee_category">
+                      Employee category <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="employee_category"
+                      id="employee_category"
+                      allowClear
+                      value={values.employee_category}
+                      onChange={handleChange}
+                      status={errors.employee_category ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.employee_category,
+                        }
+                      )}
+                    >
+                      {errors.employee_category}
+                    </div>
+                  </div>
                 </div>
                 <div className="row">
-                  <div className="form-group col-md-6 ">
+                  <div className="d-flex justify-content-end  w-100 ">
                     <Space>
                       <Button
                         type="primary"
