@@ -190,6 +190,9 @@ function ViewDepartments() {
                             ) : null}
                           </>
                         ),
+                        rowExpandable: (record) => {
+                          return record.users.length > 0;
+                        },
                       }}
                     />
                     <div className="mt-3 d-flex justify-content-between">

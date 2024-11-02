@@ -388,7 +388,7 @@ const role_columns = (
               </Link>
             ) : null}
             {delete_role ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
@@ -522,6 +522,68 @@ const department_columns = (
     },
 
     {
+      title: "HOD",
+      key: "hod",
+      dataIndex: "hod",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter Hod"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.users.length === parseInt(value);
+      },
+      render: (hod, record) => {
+        return hod > 0 ? (
+          <Space>
+            <LetteredAvatar
+              name={`${record?.headOfDepartment?.fullname || ""}}`}
+              size={22}
+              backgroundColors={arrayWithColors}
+            />
+            {record?.headOfDepartment?.fullname}
+          </Space>
+        ) : (
+          "N/A"
+        );
+      },
+    },
+
+    {
       title: "Action",
       key: "action",
       width: isTabletOrMobile ? 100 : 200,
@@ -540,7 +602,7 @@ const department_columns = (
             ) : null}
 
             {delete_perm ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
@@ -733,6 +795,7 @@ const department_details_columns = () => {
     },
   ];
 };
+
 const company_details_columns = () => {
   return [
     {
@@ -915,7 +978,7 @@ const gender_columns = (
             ) : null}
 
             {delete_perm ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
@@ -1067,7 +1130,7 @@ const state_columns = (
             ) : null}
 
             {delete_perm ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
@@ -1219,7 +1282,7 @@ const country_columns = (
             ) : null}
 
             {delete_perm ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
@@ -1372,7 +1435,7 @@ const company_columns = (
             ) : null}
 
             {delete_perm ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}
@@ -1632,7 +1695,7 @@ const branch_columns = (
             ) : null}
 
             {delete_perm ? (
-              <Link>
+              <Link to="#">
                 <Popconfirm
                   placement="topRight"
                   title={confirm_text}

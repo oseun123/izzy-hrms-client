@@ -16,7 +16,13 @@ function useForm(callback, initState = {}, validate) {
 
   const handleChange = (e, sep = false, creds) => {
     if (sep) {
+      console.log({ r: values });
       setValues((prevValues) => {
+        console.log({
+          prevValues,
+          h: { ...prevValues, [creds.name]: creds.value },
+        });
+
         return { ...prevValues, [creds.name]: creds.value };
       });
     } else {
@@ -25,11 +31,12 @@ function useForm(callback, initState = {}, validate) {
       });
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, creds) => {
     if (e) {
       e.preventDefault();
     }
-    const get_error = validate(values);
+
+    const get_error = creds ? validate(creds) : validate(values);
     if (Object.keys(get_error).length === 0) {
       callback();
       setErrors(get_error);
@@ -46,7 +53,7 @@ function useForm(callback, initState = {}, validate) {
       return rep_obj;
     });
   }
-
+  console.log({ v: values });
   return { handleChange, handleSubmit, errors, values, clearForm };
 }
 function useShallowEqualSelector(selector) {

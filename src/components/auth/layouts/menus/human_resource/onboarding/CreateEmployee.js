@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Input, Button, Space } from "antd";
+import { Input, Button, Space, DatePicker } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import {
@@ -38,6 +38,7 @@ function CreateEmployee() {
     secondary_supervisor: "",
     employment_status: "",
     employee_category: "",
+    work_email: "",
   };
 
   const spinner = useShallowEqualSelector(spinner_hr);
@@ -60,6 +61,11 @@ function CreateEmployee() {
     initValues,
     validateCreateEmployee
   );
+
+  function handleSpecialDateChange(value, name) {
+    // console.log({ name, value: value.format("YYYY-MM-DD") });
+    handleChange("_", true, { name, value: value });
+  }
   useEffect(() => {
     return () => {
       return hrCleanUp(dispatch);
@@ -114,6 +120,7 @@ function CreateEmployee() {
                       allowClear
                       value={values.first_name}
                       onChange={handleChange}
+                      placeholder="first name"
                       status={errors.first_name ? "error" : ""}
                     />
 
@@ -138,6 +145,7 @@ function CreateEmployee() {
                       name="middle_name"
                       id="middle_name"
                       allowClear
+                      placeholder="Middle name"
                       value={values.middle_name}
                       onChange={handleChange}
                       status={errors.middle_name ? "error" : ""}
@@ -165,6 +173,7 @@ function CreateEmployee() {
                       id="last_name"
                       allowClear
                       value={values.last_name}
+                      placeholder="Last name"
                       onChange={handleChange}
                       status={errors.last_name ? "error" : ""}
                     />
@@ -182,16 +191,47 @@ function CreateEmployee() {
                     </div>
                   </div>
                   <div className="form-group col-md-3 ">
+                    <label htmlFor="work_email">
+                      Work email <span className="text-danger">*</span>{" "}
+                    </label>
+                    <Input
+                      type="text"
+                      name="work_email"
+                      id="work_email"
+                      allowClear
+                      placeholder="Work email"
+                      value={values.work_email}
+                      onChange={handleChange}
+                      status={errors.work_email ? "error" : ""}
+                    />
+
+                    <div
+                      className={classnames(
+                        "invalid-feedback",
+                        "custom-feedback",
+                        {
+                          "custom-visibible": errors.work_email,
+                        }
+                      )}
+                    >
+                      {errors.work_email}
+                    </div>
+                  </div>
+                  <div className="form-group col-md-3 ">
                     <label htmlFor="employment_date">
                       Employment Date <span className="text-danger">*</span>{" "}
                     </label>
-                    <Input
+                    <DatePicker
                       type="text"
                       name="employment_date"
                       id="employment_date"
                       allowClear
+                      placeholder="Employment date"
                       value={values.employment_date}
-                      onChange={handleChange}
+                      onChange={(value) =>
+                        handleSpecialDateChange(value, "employment_date")
+                      }
+                      className="w-100"
                       status={errors.employment_date ? "error" : ""}
                     />
 
@@ -218,6 +258,7 @@ function CreateEmployee() {
                       allowClear
                       value={values.employee_number}
                       onChange={handleChange}
+                      placeholder="Employee Number"
                       status={errors.employee_number ? "error" : ""}
                     />
 
@@ -244,6 +285,7 @@ function CreateEmployee() {
                       allowClear
                       value={values.employment_type}
                       onChange={handleChange}
+                      placeholder="Employment type"
                       status={errors.employment_type ? "error" : ""}
                     />
 
@@ -268,6 +310,7 @@ function CreateEmployee() {
                       name="department"
                       id="department"
                       allowClear
+                      placeholder="Department"
                       value={values.department}
                       onChange={handleChange}
                       status={errors.department ? "error" : ""}
@@ -293,6 +336,7 @@ function CreateEmployee() {
                       type="text"
                       name="designation"
                       id="designation"
+                      placeholder="Designation"
                       allowClear
                       value={values.designation}
                       onChange={handleChange}
@@ -320,6 +364,7 @@ function CreateEmployee() {
                       name="primary_supervisor"
                       id="primary_supervisor"
                       allowClear
+                      placeholder=" Primary supervisor"
                       value={values.primary_supervisor}
                       onChange={handleChange}
                       status={errors.primary_supervisor ? "error" : ""}
@@ -348,6 +393,7 @@ function CreateEmployee() {
                       name="secondary_supervisor"
                       id="secondary_supervisor"
                       allowClear
+                      placeholder="Secondary supervisor"
                       value={values.secondary_supervisor}
                       onChange={handleChange}
                       status={errors.secondary_supervisor ? "error" : ""}
@@ -373,6 +419,7 @@ function CreateEmployee() {
                       type="text"
                       name="employment_status"
                       id="employment_status"
+                      placeholder="Employment Status"
                       allowClear
                       value={values.employment_status}
                       onChange={handleChange}
@@ -400,6 +447,7 @@ function CreateEmployee() {
                       name="employee_category"
                       id="employee_category"
                       allowClear
+                      placeholder="Employee category"
                       value={values.employee_category}
                       onChange={handleChange}
                       status={errors.employee_category ? "error" : ""}

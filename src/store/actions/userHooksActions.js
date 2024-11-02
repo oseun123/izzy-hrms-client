@@ -91,5 +91,48 @@ const useGetCurrentClient = (enabled, setEnabled) => {
 
   return { data, error, refetch };
 };
+const useGetAllEmployee = (enabled, setEnabled) => {
+  const dispatch = useDispatch();
+  // const location = useLocation();
+  // const history = useHistory();
+  const queryClient = useQueryClient();
+  const request = useAxiosPrivate();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["all_employee"],
+    async () => {
+      const result = await request.get(`/api/utils/system_users`);
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 1 }
+  );
 
-export { UseRefreshTest, useGetCurrentClient };
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["all_employee"]);
+
+      dispatch({ type: "STOP_SPINNER" });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    // location,
+    // history,
+    queryClient,
+  ]);
+
+  return { data: data?.payload, error, refetch, isLoading };
+};
+
+export { UseRefreshTest, useGetCurrentClient, useGetAllEmployee };
