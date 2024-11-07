@@ -2,7 +2,7 @@
 import { storage_type } from "../config";
 
 function capitalizeFirstLetter(string) {
-  return string?.charAt(0)?.toUpperCase() + string.slice(1);
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : "";
 }
 function filtered_permissions(permissions, item_key = "for") {
   return permissions?.reduce(function (r, a) {
@@ -41,10 +41,22 @@ function getAppSubdomain() {
   const subdomain = host.split(".")[0];
   return host !== subdomain ? subdomain : null;
 }
+
+const arrayWithColors = [
+  "#2ecc71",
+  "#3498db",
+  "#8e44ad",
+  "#e67e22",
+  "#e74c3c",
+  "#1abc9c",
+  "#2c3e50",
+];
+
 export {
   capitalizeFirstLetter,
   filtered_permissions,
   isForbiddden,
   getAppSubdomain,
   // filtered_permissions2,
+  arrayWithColors,
 };

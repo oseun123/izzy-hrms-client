@@ -94,3 +94,20 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "ERROR_RESET_PASSWORD", payload: resMessage });
   }
 };
+
+export const updateCurrentUserSettings = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    const result = await request.put("/api/auth/current_client/update", creds);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "CLEINT_SETTINGS_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+
+    const resMessage = error?.response?.data;
+    dispatch({ type: "CLEINT_SETTINGS_ERROR", payload: resMessage });
+  }
+};

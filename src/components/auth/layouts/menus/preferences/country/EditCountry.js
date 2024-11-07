@@ -23,6 +23,8 @@ import {
   single_system_country,
 } from "../../../../../../store/selectors/preferencesSelector";
 import Message from "../../../../../helpers/Message";
+import PreferencesHero from "../PreferencesHero";
+import styles from "../../../../../styles/layout/Layout.module.css";
 
 function EditCountry() {
   const [enabled, setEnabled] = useState(true);
@@ -78,6 +80,7 @@ function EditCountry() {
 
   return (
     <>
+      <PreferencesHero />
       {/* Content Header (Page header) */}
       <section className="content-header">
         {message && status ? (
@@ -146,12 +149,19 @@ function EditCountry() {
                       icon={<FormOutlined />}
                       loading={spinner}
                       htmlType="submit"
+                      className={styles.on_hover}
                     >
                       {" "}
                       Update
                     </Button>
                     <Link to="/preferences/view-countries">
-                      <Button icon={<EyeOutlined />}> View</Button>
+                      <Button
+                        icon={<EyeOutlined />}
+                        className={styles.on_hover}
+                      >
+                        {" "}
+                        View
+                      </Button>
                     </Link>
                   </Space>
                 </div>

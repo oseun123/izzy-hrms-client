@@ -9,7 +9,7 @@ function Dashboard() {
   if (root_permissions?.length) {
     return (
       <li className="nav-item has-treeview">
-        <Link to={() => false} className="nav-link">
+        <Link to={() => false} className="nav-link  active">
           <i className="nav-icon fas fa-tachometer-alt" />
           <p>
             Dashboard

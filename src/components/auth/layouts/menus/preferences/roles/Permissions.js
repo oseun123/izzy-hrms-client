@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { filtered_permissions } from "../../../../../../util/helpers";
 
+import classnames from "classnames";
+
 import { Divider } from "antd";
 
 function Permissions(props) {
@@ -14,7 +16,11 @@ function Permissions(props) {
     setFiltered(filtered_permissions(all_permissions[permission], "module"));
   }, [all_permissions, permission]);
   return (
-    <div className="card  card-outline card-secondary  ">
+    <div
+      className={classnames("card", "card-outline", "card-secondary", {
+        "collapsed-card": index > 0,
+      })}
+    >
       <div className="card-header" id={`headingRole${index}`}>
         <h3 className="card-title font-weight-light">{permission}</h3>
         <div className="card-tools d-flex">
@@ -37,7 +43,7 @@ function Permissions(props) {
             title="Collapse"
             style={{ marginTop: "-4px" }}
           >
-            <i className="fas fa-minus" />
+            <i className={index > 0 ? "fas fa-plus" : "fas fa-minus"} />
           </button>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import validator from "validator";
+
 const loginForm = (values) => {
   let errors = {};
   if (values.hasOwnProperty("email") && values.email.trim() === "") {
@@ -115,9 +117,10 @@ const validateAssignUsers = (values) => {
   return errors;
 };
 const validateCreateDepartment = (values) => {
+  console.log({ values_her: values });
   let errors = {};
 
-  if (values.hasOwnProperty("name") && values.name === "") {
+  if (values?.name === "") {
     errors.name = "Name cannot not be empty.";
   }
 
@@ -160,7 +163,42 @@ const validateCreateCountry = (values) => {
 
   return errors;
 };
+const validateCreateEmployee = (values) => {
+  let errors = {};
+  console.log({ values });
 
+  if (values.hasOwnProperty("first_name") && values.first_name.trim() === "") {
+    errors.first_name = "First name cannot not be empty.";
+  }
+  if (
+    values.hasOwnProperty("middle_name") &&
+    values.middle_name.trim() === ""
+  ) {
+    errors.middle_name = "Middle name cannot not be empty.";
+  }
+  if (values.hasOwnProperty("last_name") && values.last_name.trim() === "") {
+    errors.last_name = "Last name cannot not be empty.";
+  }
+  if (
+    values.hasOwnProperty("employee_number") &&
+    values.employee_number.trim() === ""
+  ) {
+    errors.employee_number = "Employee number cannot not be empty.";
+  }
+  if (values.hasOwnProperty("work_email") && values.work_email.trim() === "") {
+    errors.work_email = "Work email cannot not be empty.";
+  } else if (!validator.isEmail(values.work_email.trim())) {
+    errors.work_email = "Work email must be a valid email address";
+  }
+
+  if (
+    values.hasOwnProperty("employment_date") &&
+    values.employment_date.trim() === ""
+  ) {
+    errors.employment_date = "Employment date cannot not be empty.";
+  }
+  return errors;
+};
 export {
   validateAssignUsers,
   validateCreateRole,
@@ -174,4 +212,5 @@ export {
   validateCreateCompany,
   validateCreateBranch,
   validateUpdateBranch,
+  validateCreateEmployee,
 };

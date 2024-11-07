@@ -23,6 +23,12 @@ import {
 import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
 import { branch_columns } from "../../../../../../util/tables";
+import PreferencesHero from "../PreferencesHero";
+
+import LetteredAvatar from "react-lettered-avatar";
+
+import { arrayWithColors } from "../../../../../../util/helpers";
+import AminatedLayout from "../../../../../ui/AminatedLayout";
 const { Option } = Select;
 
 function ViewBranch() {
@@ -46,7 +52,7 @@ function ViewBranch() {
   );
 
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Are you sure you want to delete this branch?";
+  const confirm_text = "Delete Branch";
   const request = useAxiosPrivate();
 
   useEffect(() => {
@@ -73,130 +79,144 @@ function ViewBranch() {
   }
   return (
     <>
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        {message && status ? (
-          <Message message={message} status={status} />
-        ) : null}
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>View Branch</h1>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to="/">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Prefrences</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* Main content */}
-      <section className="content">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              {/* Default box */}
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">System branches</h3>
-                </div>
-                <div className="card-body">
-                  <Table
-                    columns={branch_columns(
-                      isTabletOrMobile,
-                      confirm_text,
-                      confirmAction,
-                      delete_branch,
-                      edit_branch
-                    )}
-                    dataSource={companys}
-                    rowKey={(record) => record.id}
-                    scroll={{
-                      x: 786,
-                    }}
-                    pagination={false}
-                    expandable={{
-                      expandedRowRender: (record) => (
-                        <>
-                          {record.managers.length ? (
-                            <div className="mb-3">
-                              <Card
-                                size="small"
-                                title="Branch managers"
-                                style={{
-                                  margin: 0,
-                                }}
-                              >
-                                <Space wrap>
-                                  {record.managers.map((manager) => (
-                                    <span className="badge bg-secondary rounded-pill p-1">
-                                      {manager.first_name}
-                                    </span>
-                                  ))}
-                                </Space>
-                              </Card>
-                            </div>
-                          ) : null}
-                          {record.users.length ? (
-                            <div className="mb-3">
-                              <Card
-                                size="small"
-                                title="Users"
-                                style={{
-                                  margin: 0,
-                                }}
-                              >
-                                <Space wrap>
-                                  {record.users.map((user) => (
-                                    <span className="badge bg-secondary rounded-pill p-1">
-                                      {user.first_name}
-                                    </span>
-                                  ))}
-                                </Space>
-                              </Card>
-                            </div>
-                          ) : null}
-                        </>
-                      ),
-                    }}
-                  />
-                  <div className="mt-3 d-flex justify-content-between">
-                    <Pagination
-                      total={data?.payload?.total_pages}
-                      // showSizeChanger
-                      pageSize={1}
-                      onChange={handlePagination}
-                      // pageSizeOptions={[2, 10, 20, 50, 100]}
-                    />{" "}
-                    <Select
-                      defaultValue={size}
-                      style={{
-                        width: 80,
-                      }}
-                      onChange={handleChange}
-                    >
-                      <Option value="10">10/page</Option>
-                      <Option value="20">20/page</Option>
-                      <Option value="50"> 50/page</Option>
-                      <Option value="100">100/page</Option>
-                    </Select>
-                  </div>
-                </div>
-                {/* /.card-body */}
+      <PreferencesHero />
 
-                {/* /.card-footer*/}
+      <AminatedLayout>
+        {/* Content Header (Page header) */}
+        <section className="content-header">
+          {message && status ? (
+            <Message message={message} status={status} />
+          ) : null}
+          <div className="container-fluid">
+            <div className="row mb-2">
+              <div className="col-sm-6">
+                <h1>View Branch</h1>
               </div>
-              {/* /.card */}
+              <div className="col-sm-6">
+                <ol className="breadcrumb float-sm-right">
+                  <li className="breadcrumb-item">
+                    <Link to="/">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Prefrences</li>
+                </ol>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      {/* /.content */}
+          {/* /.container-fluid */}
+        </section>
+        {/* Main content */}
+        <section className="content">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                {/* Default box */}
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">System branches</h3>
+                  </div>
+                  <div className="card-body">
+                    <Table
+                      columns={branch_columns(
+                        isTabletOrMobile,
+                        confirm_text,
+                        confirmAction,
+                        delete_branch,
+                        edit_branch
+                      )}
+                      dataSource={companys}
+                      rowKey={(record) => record.id}
+                      scroll={{
+                        x: 786,
+                      }}
+                      pagination={false}
+                      expandable={{
+                        expandedRowRender: (record) => (
+                          <>
+                            {record.managers.length ? (
+                              <div className="mb-3">
+                                <Card
+                                  size="small"
+                                  title="Branch managers"
+                                  style={{
+                                    margin: 0,
+                                  }}
+                                >
+                                  <Space wrap size="middle">
+                                    {record.managers.map((manager) => (
+                                      <Space>
+                                        <LetteredAvatar
+                                          name={`${manager.first_name || ""} ${
+                                            manager.last_name || " "
+                                          }`}
+                                          size={22}
+                                          backgroundColors={arrayWithColors}
+                                        />
+                                        <span>
+                                          {manager.first_name}{" "}
+                                          {manager.last_name}
+                                        </span>
+                                      </Space>
+                                    ))}
+                                  </Space>
+                                </Card>
+                              </div>
+                            ) : null}
+                            {record.users.length ? (
+                              <div className="mb-3">
+                                <Card
+                                  size="small"
+                                  title="Users"
+                                  style={{
+                                    margin: 0,
+                                  }}
+                                >
+                                  <Space wrap>
+                                    {record.users.map((user) => (
+                                      <span className="badge bg-secondary rounded-pill p-1">
+                                        {user.first_name}
+                                      </span>
+                                    ))}
+                                  </Space>
+                                </Card>
+                              </div>
+                            ) : null}
+                          </>
+                        ),
+                      }}
+                    />
+                    <div className="mt-3 d-flex justify-content-between">
+                      <Pagination
+                        total={data?.payload?.total_pages}
+                        // showSizeChanger
+                        pageSize={1}
+                        onChange={handlePagination}
+                        // pageSizeOptions={[2, 10, 20, 50, 100]}
+                      />{" "}
+                      <Select
+                        defaultValue={size}
+                        style={{
+                          width: 80,
+                        }}
+                        onChange={handleChange}
+                      >
+                        <Option value="10">10/page</Option>
+                        <Option value="20">20/page</Option>
+                        <Option value="50"> 50/page</Option>
+                        <Option value="100">100/page</Option>
+                      </Select>
+                    </div>
+                  </div>
+                  {/* /.card-body */}
+
+                  {/* /.card-footer*/}
+                </div>
+                {/* /.card */}
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* /.content */}
+      </AminatedLayout>
     </>
   );
 }

@@ -6,13 +6,23 @@ import { setPrivateRequest } from "./requestMethods";
 
 import { hashData } from "./util/hash";
 
+import { useDispatch } from "react-redux";
+
+import { preferencesCleanUp } from "./store/actions/preferencesActions";
+import { resetUsersState } from "./store/actions/userActions";
 function useForm(callback, initState = {}, validate) {
   const [values, setValues] = useState(initState);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e, sep = false, creds) => {
     if (sep) {
+      console.log({ r: values });
       setValues((prevValues) => {
+        console.log({
+          prevValues,
+          h: { ...prevValues, [creds.name]: creds.value },
+        });
+
         return { ...prevValues, [creds.name]: creds.value };
       });
     } else {
@@ -21,11 +31,12 @@ function useForm(callback, initState = {}, validate) {
       });
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, creds) => {
     if (e) {
       e.preventDefault();
     }
-    const get_error = validate(values);
+
+    const get_error = creds ? validate(creds) : validate(values);
     if (Object.keys(get_error).length === 0) {
       callback();
       setErrors(get_error);
@@ -42,7 +53,7 @@ function useForm(callback, initState = {}, validate) {
       return rep_obj;
     });
   }
-
+  console.log({ v: values });
   return { handleChange, handleSubmit, errors, values, clearForm };
 }
 function useShallowEqualSelector(selector) {
@@ -55,22 +66,54 @@ function useRerender() {
   return setRerender;
 }
 
+// function useAxiosPrivate() {
+//   const refresh = useRefreshToken();
+
+//   useEffect(() => {
+//     const responseIntercept = setPrivateRequest().interceptors.response.use(
+//       (response) => response,
+//       async (error) => {
+//         const prevRequest = { ...error?.config };
+//         console.log({ prevRequest });
+
+//         if (error?.response?.status === 401 && !prevRequest?.sent) {
+//           const newprevRequest = { ...prevRequest, sent: true };
+//           const newAccessToken = await refresh();
+//           newprevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+//           return setPrivateRequest()(newprevRequest);
+//         } else if (error?.response?.status === 403) {
+//           // setPrivateRequest().interceptors.response.eject(responseIntercept);
+//           return Promise.reject(error);
+//         }
+//         return Promise.reject(error);
+//       }
+//     );
+
+//     return () => {
+//       setPrivateRequest().interceptors.response.eject(responseIntercept);
+//     };
+//   }, [refresh]);
+
+//   return setPrivateRequest();
+// }
 function useAxiosPrivate() {
   const refresh = useRefreshToken();
+  const axiosPrivate = setPrivateRequest();
 
   useEffect(() => {
-    const responseIntercept = setPrivateRequest().interceptors.response.use(
+    const responseIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = { ...error?.config };
+        console.log({ prevRequest, error });
 
         if (error?.response?.status === 401 && !prevRequest?.sent) {
-          const newprevRequest = { ...prevRequest, sent: true };
+          prevRequest.sent = true;
           const newAccessToken = await refresh();
-          newprevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          return setPrivateRequest()(newprevRequest);
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return axiosPrivate(prevRequest);
         } else if (error?.response?.status === 403) {
-          // setPrivateRequest().interceptors.response.eject(responseIntercept);
+          axiosPrivate.interceptors.response.eject(responseIntercept);
           return Promise.reject(error);
         }
         return Promise.reject(error);
@@ -78,11 +121,11 @@ function useAxiosPrivate() {
     );
 
     return () => {
-      setPrivateRequest().interceptors.response.eject(responseIntercept);
+      axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [refresh]);
+  }, [refresh, axiosPrivate]);
 
-  return setPrivateRequest();
+  return axiosPrivate;
 }
 
 function useRefreshToken() {
@@ -102,10 +145,40 @@ function useRefreshToken() {
   return refresh;
 }
 
+function usePreferenceCleanUp() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      preferencesCleanUp(dispatch);
+    };
+  }, [dispatch]);
+}
+function useUserCleanUp() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      resetUsersState(dispatch);
+    };
+  }, [dispatch]);
+}
+
+function useCleanUp() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      resetUsersState(dispatch);
+      preferencesCleanUp(dispatch);
+    };
+  }, [dispatch]);
+}
+
 export {
   useForm,
   useShallowEqualSelector,
   useRerender,
   useAxiosPrivate,
   useRefreshToken,
+  usePreferenceCleanUp,
+  useUserCleanUp,
+  useCleanUp,
 };

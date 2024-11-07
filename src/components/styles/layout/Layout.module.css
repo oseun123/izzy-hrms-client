@@ -1,0 +1,20 @@
+.spinner_box {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c_no_wrap {
+  white-space: nowrap;
+}
+
+.on_hover:hover {
+  transform: scale(1.03);
+  text-shadow: 0px 0px 8px rgb(255, 255, 255);
+  box-shadow: 0px 0px 8px rgb(255, 255, 255);
+}
+
+.on_hover:focus {
+  outline: none;
+}

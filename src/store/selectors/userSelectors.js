@@ -26,6 +26,10 @@ const userpermissions = createSelector(
   (state) => state.user,
   (user) => user.userpermissions
 );
+const current_cleint = createSelector(
+  (state) => state.user,
+  (user) => user.current_cleint
+);
 
 const dashboardpermissions = createSelector(
   (state) => state.user,
@@ -44,6 +48,26 @@ const preferencespermissions = createSelector(
       (permission) =>
         permission.for === "Preferences" &&
         permission.module === "root" &&
+        permission.menu === 1
+    )
+);
+const humanresourcepermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Human Resource" &&
+        permission.module === "root" &&
+        permission.menu === 1
+    )
+);
+const humanresourceOnboardingpermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Human Resource" &&
+        permission.module === "Onboarding" &&
         permission.menu === 1
     )
 );
@@ -118,6 +142,16 @@ const preferencesBranchpermissions = createSelector(
         permission.menu === 1
     )
 );
+const preferencesSettingspermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Settings" &&
+        permission.menu === 1
+    )
+);
 
 const userhaspermission = () =>
   createSelector(
@@ -147,4 +181,8 @@ export {
   preferencesCountrypermissions,
   preferencesCompanypermissions,
   preferencesBranchpermissions,
+  humanresourcepermissions,
+  humanresourceOnboardingpermissions,
+  preferencesSettingspermissions,
+  current_cleint,
 };

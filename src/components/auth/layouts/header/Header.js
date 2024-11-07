@@ -8,6 +8,7 @@ import {
   message,
   status,
   spinner,
+  current_cleint,
 } from "../../../../store/selectors/userSelectors";
 import { Link, useHistory } from "react-router-dom";
 import Message from "../../../helpers/Message";
@@ -18,7 +19,14 @@ function Header() {
   const request = useAxiosPrivate();
 
   const { first_name, last_name } = useShallowEqualSelector(currentUser);
+
+  const currentCleint = useShallowEqualSelector(current_cleint);
+
+  const { nav_variant_bg, nav_variant } = JSON.parse(currentCleint?.settings)[0]
+    ?.display?.navbar_variant;
+
   const store_message = useShallowEqualSelector(message);
+
   const store_status = useShallowEqualSelector(status);
   const store_spinner = useShallowEqualSelector(spinner);
 
@@ -42,7 +50,9 @@ function Header() {
   return (
     <>
       {/* Navbar */}
-      <nav className="main-header navbar navbar-expand navbar-white navbar-light">
+      <nav
+        className={`main-header navbar navbar-expand ${nav_variant_bg} ${nav_variant}`}
+      >
         {store_message && store_status ? (
           <Message message={store_message} status={store_status} />
         ) : null}
@@ -60,7 +70,7 @@ function Header() {
           </li>
           <li className="nav-item  d-sm-inline-block ">
             <Link onClick={goBack} to="#!" className="nav-link" title="Go back">
-              <i className="fas fa-arrow-left text-primary font-increase "></i>
+              <i className="fas fa-arrow-left  font-increase "></i>
             </Link>
           </li>
           <li className="nav-item  d-sm-inline-block">
@@ -70,17 +80,17 @@ function Header() {
               className="nav-link"
               title="Go forward"
             >
-              <i className="fas fa-arrow-right text-primary font-increase"></i>
+              <i className="fas fa-arrow-right  font-increase"></i>
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
             <Link to="/" className="nav-link" title="My dashboard">
-              <i className="fas fa-tachometer-alt text-secondary font-increase "></i>
+              <i className="fas fa-tachometer-alt  font-increase "></i>
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
             <Link to={() => false} className="nav-link" title="Change Password">
-              <i className="fas fa-unlock-alt text-secondary font-increase" />
+              <i className="fas fa-unlock-alt  font-increase" />
             </Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
@@ -90,7 +100,7 @@ function Header() {
               className="nav-link"
               title="Logout"
             >
-              <i className="fas fa-sign-out-alt text-maroon font-increase" />
+              <i className="fas fa-sign-out-alt  font-increase" />
             </Link>
           </li>
         </ul>
@@ -98,6 +108,7 @@ function Header() {
         <ul className="navbar-nav ml-auto">
           {/* Notifications Dropdown Menu */}
           {store_spinner ? <Spinner color="secondary" /> : null}
+
           <li className="nav-item dropdown">
             <Link className="nav-link" data-toggle="dropdown" to={() => false}>
               {capitalizeFirstLetter(profile?.last_name)}{" "}

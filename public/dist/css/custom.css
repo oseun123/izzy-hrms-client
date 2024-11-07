@@ -35,7 +35,7 @@
   font-size: 12px !important;
 }
 .card-title {
-  font-weight: 500 !important;
+  /* font-weight: 500 !important; */
 }
 .font-weight-light {
   font-weight: 400 !important;
@@ -55,9 +55,12 @@ svg {
 }
 
 label:not(.form-check-label):not(.custom-file-label) {
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* .font-increase {
   font-size: 18px !important;
 } */
+.text-sm {
+  font-size: 0.8rem !important;
+}
