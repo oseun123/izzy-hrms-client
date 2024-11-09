@@ -29,6 +29,7 @@ import LetteredAvatar from "react-lettered-avatar";
 
 import { arrayWithColors } from "../../../../../../util/helpers";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 const { Option } = Select;
 
 function ViewBranch() {
@@ -182,6 +183,9 @@ function ViewBranch() {
                             ) : null}
                           </>
                         ),
+                      }}
+                      locale={{
+                        emptyText: <NoCustomDataIcon />,
                       }}
                     />
                     <div className="mt-3 d-flex justify-content-between">

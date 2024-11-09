@@ -9,6 +9,10 @@ import { ReactQueryDevtools } from "react-query/devtools";
 const client = new QueryClient();
 const container = document.getElementById("root");
 const root = createRoot(container);
+
+if (typeof window.setImmediate === "undefined") {
+  window.setImmediate = (fn) => setTimeout(fn, 0);
+}
 root.render(
   // <React.StrictMode>
   <QueryClientProvider client={client}>
