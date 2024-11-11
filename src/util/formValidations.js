@@ -117,10 +117,9 @@ const validateAssignUsers = (values) => {
   return errors;
 };
 const validateCreateDepartment = (values) => {
-  console.log({ values_her: values });
   let errors = {};
 
-  if (values?.name === "") {
+  if (values.hasOwnProperty("name") && values.name === "") {
     errors.name = "Name cannot not be empty.";
   }
 

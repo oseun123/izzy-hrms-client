@@ -85,70 +85,72 @@ function CreateGenders() {
         </section>
         {/* Main content */}
         <section className="content">
-          {/* Default box */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Create a gender</h3>
-              <div className="card-tools"></div>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="card-body">
-                <div className="row">
-                  <div className="form-group col-md-6 offset-md-3">
-                    <label htmlFor="name">
-                      Name <span className="text-danger">*</span>{" "}
-                    </label>
-                    <Input
-                      type="text"
-                      name="name"
-                      id="name"
-                      allowClear
-                      value={values.name}
-                      onChange={handleChange}
-                      status={errors.name ? "error" : ""}
-                    />
+          <div className="container-fluid">
+            {/* Default box */}
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Create a gender</h3>
+                <div className="card-tools"></div>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="form-group col-md-6 offset-md-3">
+                      <label htmlFor="name">
+                        Name <span className="text-danger">*</span>{" "}
+                      </label>
+                      <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        allowClear
+                        value={values.name}
+                        onChange={handleChange}
+                        status={errors.name ? "error" : ""}
+                      />
 
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.name,
-                        }
-                      )}
-                    >
-                      {errors.name}
-                    </div>
-                  </div>
-
-                  <div className="form-group col-md-6 offset-md-3">
-                    <Space>
-                      <Button
-                        type="primary"
-                        icon={<PlusCircleOutlined />}
-                        loading={spinner}
-                        htmlType="submit"
-                        className={styles.on_hover}
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.name,
+                          }
+                        )}
                       >
-                        {" "}
-                        Create
-                      </Button>
-                      <Link to="/preferences/view-genders">
+                        {errors.name}
+                      </div>
+                    </div>
+
+                    <div className="form-group col-md-6 offset-md-3">
+                      <Space>
                         <Button
-                          icon={<EyeOutlined />}
+                          type="primary"
+                          icon={<PlusCircleOutlined />}
+                          loading={spinner}
+                          htmlType="submit"
                           className={styles.on_hover}
                         >
                           {" "}
-                          View
+                          Create
                         </Button>
-                      </Link>
-                    </Space>
+                        <Link to="/preferences/view-genders">
+                          <Button
+                            icon={<EyeOutlined />}
+                            className={styles.on_hover}
+                          >
+                            {" "}
+                            View
+                          </Button>
+                        </Link>
+                      </Space>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+            {/* /.card */}
           </div>
-          {/* /.card */}
         </section>
         {/* /.content */}
       </AminatedLayout>
