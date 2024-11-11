@@ -25,6 +25,7 @@ import { useMediaQuery } from "react-responsive";
 import { state_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 const { Option } = Select;
 
 function ViewStates() {
@@ -148,6 +149,9 @@ function ViewStates() {
                             ) : null}
                           </>
                         ),
+                      }}
+                      locale={{
+                        emptyText: <NoCustomDataIcon />,
                       }}
                     />
                     <div className="mt-3 d-flex justify-content-between">

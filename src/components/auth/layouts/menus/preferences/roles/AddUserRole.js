@@ -146,131 +146,133 @@ function AddUserRole() {
           </section>
           {/* Main content */}
           <section className="content">
-            {/* Default box */}
-            <form onSubmit={handleSubmit}>
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Add user to a role</h3>
-                </div>
-                <div className="card-body">
-                  <div className="row">
-                    <div className="form-group col-md-4">
-                      <label htmlFor="name">
-                        Roles <span className="text-danger">*</span>
-                      </label>
-                      <Select
-                        style={{
-                          width: "100%",
-                        }}
-                        showSearch
-                        status={errors.role ? "error" : ""}
-                        id="role"
-                        name="role"
-                        allowClear
-                        onChange={handleChangeRole}
-                        filterOption={(input, option) => {
-                          return option.children[1]
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
-                        }}
-                        value={values.role}
-                      >
-                        {all_roles &&
-                          all_roles.map((role) => (
-                            <Option key={role.id} value={role.id}>
-                              {" "}
-                              {role.name}
-                            </Option>
-                          ))}
-                      </Select>
-
-                      <div
-                        className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
-                          {
-                            "custom-visibible": errors.role,
-                          }
-                        )}
-                      >
-                        {errors.role}
-                      </div>
-                    </div>
-                    <div className="form-group col-md-8">
-                      <label htmlFor="users">
-                        Users <span className="text-danger">*</span>
-                      </label>
-                      <Select
-                        style={{
-                          width: "100%",
-                        }}
-                        status={errors.users ? "error" : ""}
-                        showSearch
-                        id="users"
-                        name="users"
-                        mode="multiple"
-                        allowClear
-                        value={values.users}
-                        onChange={handleChangeUsers}
-                        filterOption={(input, option) => {
-                          return option?.label
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
-                        }}
-                      >
-                        {all_users &&
-                          all_users.map((user) => (
-                            <Option
-                              key={user.id}
-                              value={user.id}
-                              label={`${user.first_name} ${user.last_name}`}
-                            >
-                              <Space>
-                                <LetteredAvatar
-                                  name={`${user.first_name || ""} ${
-                                    user.last_name || " "
-                                  }`}
-                                  size={22}
-                                  backgroundColors={arrayWithColors}
-                                />
-                                <span>
-                                  {user.first_name} {user.last_name}
-                                </span>
-                              </Space>
-                            </Option>
-                          ))}
-                      </Select>
-
-                      <div
-                        className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
-                          {
-                            "custom-visibible": errors.users,
-                          }
-                        )}
-                      >
-                        {errors.users}
-                      </div>
-                    </div>
+            <div className="container-fluid">
+              {/* Default box */}
+              <form onSubmit={handleSubmit}>
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">Add user to a role</h3>
                   </div>
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="form-group col-md-4">
+                        <label htmlFor="name">
+                          Roles <span className="text-danger">*</span>
+                        </label>
+                        <Select
+                          style={{
+                            width: "100%",
+                          }}
+                          showSearch
+                          status={errors.role ? "error" : ""}
+                          id="role"
+                          name="role"
+                          allowClear
+                          onChange={handleChangeRole}
+                          filterOption={(input, option) => {
+                            return option.children[1]
+                              .toLowerCase()
+                              .includes(input.toLowerCase());
+                          }}
+                          value={values.role}
+                        >
+                          {all_roles &&
+                            all_roles.map((role) => (
+                              <Option key={role.id} value={role.id}>
+                                {" "}
+                                {role.name}
+                              </Option>
+                            ))}
+                        </Select>
 
-                  <Button
-                    type="primary"
-                    icon={<PlusCircleOutlined />}
-                    loading={spinner}
-                    htmlType="submit"
-                    className={styles.on_hover}
-                  >
-                    {" "}
-                    Create
-                  </Button>
+                        <div
+                          className={classnames(
+                            "invalid-feedback",
+                            "custom-feedback",
+                            {
+                              "custom-visibible": errors.role,
+                            }
+                          )}
+                        >
+                          {errors.role}
+                        </div>
+                      </div>
+                      <div className="form-group col-md-8">
+                        <label htmlFor="users">
+                          Users <span className="text-danger">*</span>
+                        </label>
+                        <Select
+                          style={{
+                            width: "100%",
+                          }}
+                          status={errors.users ? "error" : ""}
+                          showSearch
+                          id="users"
+                          name="users"
+                          mode="multiple"
+                          allowClear
+                          value={values.users}
+                          onChange={handleChangeUsers}
+                          filterOption={(input, option) => {
+                            return option?.label
+                              .toLowerCase()
+                              .includes(input.toLowerCase());
+                          }}
+                        >
+                          {all_users &&
+                            all_users.map((user) => (
+                              <Option
+                                key={user.id}
+                                value={user.id}
+                                label={`${user.first_name} ${user.last_name}`}
+                              >
+                                <Space>
+                                  <LetteredAvatar
+                                    name={`${user.first_name || ""} ${
+                                      user.last_name || " "
+                                    }`}
+                                    size={22}
+                                    backgroundColors={arrayWithColors}
+                                  />
+                                  <span>
+                                    {user.first_name} {user.last_name}
+                                  </span>
+                                </Space>
+                              </Option>
+                            ))}
+                        </Select>
 
-                  {/* /.card */}
+                        <div
+                          className={classnames(
+                            "invalid-feedback",
+                            "custom-feedback",
+                            {
+                              "custom-visibible": errors.users,
+                            }
+                          )}
+                        >
+                          {errors.users}
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button
+                      type="primary"
+                      icon={<PlusCircleOutlined />}
+                      loading={spinner}
+                      htmlType="submit"
+                      className={styles.on_hover}
+                    >
+                      {" "}
+                      Create
+                    </Button>
+
+                    {/* /.card */}
+                  </div>
                 </div>
-              </div>
-            </form>
-            {/* /.card */}
+              </form>
+              {/* /.card */}
+            </div>
           </section>
           {/* /.content */}
         </AminatedLayout>

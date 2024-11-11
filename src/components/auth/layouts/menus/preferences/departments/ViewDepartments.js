@@ -28,6 +28,7 @@ import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import LetteredAvatar from "react-lettered-avatar";
 import styles from "../../../../../styles/layout/Layout.module.css";
+import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 const { Option } = Select;
 
 function ViewDepartments() {
@@ -193,6 +194,9 @@ function ViewDepartments() {
                         rowExpandable: (record) => {
                           return record.users.length > 0;
                         },
+                      }}
+                      locale={{
+                        emptyText: <NoCustomDataIcon />,
                       }}
                     />
                     <div className="mt-3 d-flex justify-content-between">

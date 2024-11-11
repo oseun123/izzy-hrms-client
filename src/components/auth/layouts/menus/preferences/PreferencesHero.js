@@ -11,7 +11,7 @@ function PreferencesHero() {
     useShallowEqualSelector(currentUser);
 
   return (
-    <div className="card">
+    <div className="card rounded-0">
       <section className="content px-2">
         <div className="container-fluid">
           <div className=" d-flex justify-content-between align-items-center flex-wrap">

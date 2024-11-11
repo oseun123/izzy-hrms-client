@@ -67,7 +67,6 @@ function CreateDepartments() {
     console.log({ value, name });
     handleChange("_", true, { name, value });
   }
-  console.log({ values });
 
   return (
     <>
@@ -97,111 +96,113 @@ function CreateDepartments() {
         </section>
         {/* Main content */}
         <section className="content">
-          {/* Default box */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Create a department</h3>
-              <div className="card-tools"></div>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="card-body">
-                <div className="row d-flex justify-content-center">
-                  <div className="form-group col-md-3 ">
-                    <label htmlFor="name">
-                      Name <span className="text-danger">*</span>{" "}
-                    </label>
-                    <Input
-                      type="text"
-                      name="name"
-                      id="name"
-                      allowClear
-                      value={values.name}
-                      onChange={handleChange}
-                      status={errors.name ? "error" : ""}
-                    />
+          <div className="container-fluid">
+            {/* Default box */}
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Create a department</h3>
+                <div className="card-tools"></div>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="card-body">
+                  <div className="row d-flex justify-content-center">
+                    <div className="form-group col-md-3 ">
+                      <label htmlFor="name">
+                        Name <span className="text-danger">*</span>{" "}
+                      </label>
+                      <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        allowClear
+                        value={values.name}
+                        onChange={handleChange}
+                        status={errors.name ? "error" : ""}
+                      />
 
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.name,
-                        }
-                      )}
-                    >
-                      {errors.name}
-                    </div>
-                  </div>
-                  <div className="form-group col-md-3">
-                    <label htmlFor="name">HOD</label>
-                    <Select
-                      name="hod"
-                      id="hod"
-                      value={values.hod}
-                      loading={isLoading ? true : false}
-                      showSearch
-                      className="w-100"
-                      onChange={(value) => handleSelect(value, "hod")}
-                      optionFilterProp="children"
-                      filterOption={(input, option) => {
-                        return (option?.value ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase());
-                      }}
-                    >
-                      <option value="">--</option>
-                      {data && Object.keys(data).length
-                        ? data?.system_users.map((item) => {
-                            return (
-                              <option key={item.id} value={item.id}>
-                                {item.fullname}
-                              </option>
-                            );
-                          })
-                        : null}
-                    </Select>
-
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.hod,
-                        }
-                      )}
-                    >
-                      {errors.hod}
-                    </div>
-                  </div>
-
-                  <div className="form-group col-md-6 offset-md-3">
-                    <Space>
-                      <Button
-                        type="primary"
-                        icon={<PlusCircleOutlined />}
-                        loading={spinner}
-                        htmlType="submit"
-                        className={styles.on_hover}
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.name,
+                          }
+                        )}
                       >
-                        {" "}
-                        Create
-                      </Button>
-                      <Link to="/preferences/view-departments">
+                        {errors.name}
+                      </div>
+                    </div>
+                    <div className="form-group col-md-3">
+                      <label htmlFor="name">HOD</label>
+                      <Select
+                        name="hod"
+                        id="hod"
+                        value={values.hod}
+                        loading={isLoading ? true : false}
+                        showSearch
+                        className="w-100"
+                        onChange={(value) => handleSelect(value, "hod")}
+                        optionFilterProp="children"
+                        filterOption={(input, option) => {
+                          return (option?.value ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase());
+                        }}
+                      >
+                        <option value="">--</option>
+                        {data && Object.keys(data).length
+                          ? data?.system_users.map((item) => {
+                              return (
+                                <option key={item.id} value={item.id}>
+                                  {item.fullname}
+                                </option>
+                              );
+                            })
+                          : null}
+                      </Select>
+
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.hod,
+                          }
+                        )}
+                      >
+                        {errors.hod}
+                      </div>
+                    </div>
+
+                    <div className="form-group col-md-6 offset-md-3">
+                      <Space>
                         <Button
-                          icon={<EyeOutlined />}
+                          type="primary"
+                          icon={<PlusCircleOutlined />}
+                          loading={spinner}
+                          htmlType="submit"
                           className={styles.on_hover}
                         >
                           {" "}
-                          View
+                          Create
                         </Button>
-                      </Link>
-                    </Space>
+                        <Link to="/preferences/view-departments">
+                          <Button
+                            icon={<EyeOutlined />}
+                            className={styles.on_hover}
+                          >
+                            {" "}
+                            View
+                          </Button>
+                        </Link>
+                      </Space>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+            {/* /.card */}
           </div>
-          {/* /.card */}
         </section>
         {/* /.content */}
       </AminatedLayout>

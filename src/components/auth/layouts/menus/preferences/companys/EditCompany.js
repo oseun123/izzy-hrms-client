@@ -108,71 +108,73 @@ function EditCompany() {
         </section>
         {/* Main content */}
         <section className="content">
-          {/* Default box */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Edit a company</h3>
-              <div className="card-tools"></div>
-            </div>
-            <form onSubmit={handleSubmitfist}>
-              <div className="card-body">
-                <div className="row">
-                  <div className="form-group col-md-6 offset-md-3">
-                    <label htmlFor="name">
-                      Name <span className="text-danger">*</span>{" "}
-                    </label>
-                    <Input
-                      type="text"
-                      name="name"
-                      id="name"
-                      allowClear
-                      value={values.name}
-                      onChange={handleChange}
-                      status={errors.name ? "error" : ""}
-                      defaultValue={nam}
-                    />
+          <div className="container-fluid">
+            {/* Default box */}
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Edit a company</h3>
+                <div className="card-tools"></div>
+              </div>
+              <form onSubmit={handleSubmitfist}>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="form-group col-md-6 offset-md-3">
+                      <label htmlFor="name">
+                        Name <span className="text-danger">*</span>{" "}
+                      </label>
+                      <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        allowClear
+                        value={values.name}
+                        onChange={handleChange}
+                        status={errors.name ? "error" : ""}
+                        defaultValue={nam}
+                      />
 
-                    <div
-                      className={classnames(
-                        "invalid-feedback",
-                        "custom-feedback",
-                        {
-                          "custom-visibible": errors.name,
-                        }
-                      )}
-                    >
-                      {errors.name}
-                    </div>
-                  </div>
-
-                  <div className="form-group col-md-6 offset-md-3">
-                    <Space>
-                      <Button
-                        type="primary"
-                        icon={<FormOutlined />}
-                        loading={spinner}
-                        htmlType="submit"
-                        className={styles.on_hover}
+                      <div
+                        className={classnames(
+                          "invalid-feedback",
+                          "custom-feedback",
+                          {
+                            "custom-visibible": errors.name,
+                          }
+                        )}
                       >
-                        {" "}
-                        Update
-                      </Button>
-                      <Link to="/preferences/view-companies">
+                        {errors.name}
+                      </div>
+                    </div>
+
+                    <div className="form-group col-md-6 offset-md-3">
+                      <Space>
                         <Button
-                          icon={<EyeOutlined />}
+                          type="primary"
+                          icon={<FormOutlined />}
+                          loading={spinner}
+                          htmlType="submit"
                           className={styles.on_hover}
                         >
                           {" "}
-                          View
+                          Update
                         </Button>
-                      </Link>
-                    </Space>
+                        <Link to="/preferences/view-companies">
+                          <Button
+                            icon={<EyeOutlined />}
+                            className={styles.on_hover}
+                          >
+                            {" "}
+                            View
+                          </Button>
+                        </Link>
+                      </Space>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+            {/* /.card */}
           </div>
-          {/* /.card */}
         </section>
         {/* /.content */}
       </AminatedLayout>
