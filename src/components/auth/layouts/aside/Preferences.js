@@ -12,6 +12,9 @@ import {
   preferencesCompanypermissions,
   preferencesBranchpermissions,
   preferencesSettingspermissions,
+  preferencesDesignationpermissions,
+  preferencesEmpCategorypermissions,
+  preferencesEmpStatuspermissions,
 } from "../../../../store/selectors/userSelectors";
 
 function Preferences() {
@@ -40,6 +43,15 @@ function Preferences() {
   const settings_permissions = useShallowEqualSelector(
     preferencesSettingspermissions
   );
+  const designation_permissions = useShallowEqualSelector(
+    preferencesDesignationpermissions
+  );
+  const empcategory_permissions = useShallowEqualSelector(
+    preferencesEmpCategorypermissions
+  );
+  const empstatus_permissions = useShallowEqualSelector(
+    preferencesEmpStatuspermissions
+  );
 
   if (
     root_permissions?.length ||
@@ -50,7 +62,10 @@ function Preferences() {
     country_permissions?.length ||
     company_permissions?.length ||
     branch_permissions?.length ||
-    settings_permissions?.length
+    settings_permissions?.length ||
+    designation_permissions?.length ||
+    empcategory_permissions?.length ||
+    empstatus_permissions?.length
   ) {
     return (
       <li className="nav-item has-treeview">
@@ -289,6 +304,96 @@ function Preferences() {
               </li>
             </>
           ) : null}
+          {/* designation */}
+          {designation_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {designation_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {designation_permissions.map((design_perm) => {
+                    return (
+                      <li className="nav-item" key={design_perm.id}>
+                        <Link
+                          to={design_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{design_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* employee category */}
+          {empcategory_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {empcategory_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {empcategory_permissions.map((empcat_perm) => {
+                    return (
+                      <li className="nav-item" key={empcat_perm.id}>
+                        <Link
+                          to={empcat_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{empcat_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* employee status */}
+          {empstatus_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {empstatus_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {empstatus_permissions.map((empstatus_perm) => {
+                    return (
+                      <li className="nav-item" key={empstatus_perm.id}>
+                        <Link
+                          to={empstatus_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{empstatus_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+
           {settings_permissions.length ? (
             <>
               <li className="nav-item has-treeview">

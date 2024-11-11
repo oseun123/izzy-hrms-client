@@ -165,6 +165,38 @@ const userhaspermission = () =>
     }
   );
 
+const preferencesDesignationpermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Designation" &&
+        permission.menu === 1
+    )
+);
+const preferencesEmpCategorypermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Employee Category" &&
+        permission.menu === 1
+    )
+);
+
+const preferencesEmpStatuspermissions = createSelector(
+  (state) => state.user,
+  (user) =>
+    user.userpermissions?.filter(
+      (permission) =>
+        permission.for === "Preferences" &&
+        permission.module === "Employee Status" &&
+        permission.menu === 1
+    )
+);
+
 export {
   currentUser,
   message,
@@ -184,5 +216,8 @@ export {
   humanresourcepermissions,
   humanresourceOnboardingpermissions,
   preferencesSettingspermissions,
+  preferencesDesignationpermissions,
   current_cleint,
+  preferencesEmpCategorypermissions,
+  preferencesEmpStatuspermissions,
 };
