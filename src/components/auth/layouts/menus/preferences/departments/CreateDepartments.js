@@ -25,6 +25,8 @@ import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActions";
+import LetteredAvatar from "react-lettered-avatar";
+import { arrayWithColors } from "../../../../../../util/helpers";
 
 function CreateDepartments() {
   const [enabled, setEnabled] = useState(true);
@@ -144,7 +146,7 @@ function CreateDepartments() {
                         onChange={(value) => handleSelect(value, "hod")}
                         optionFilterProp="children"
                         filterOption={(input, option) => {
-                          return (option?.value ?? "")
+                          return (option?.label ?? "")
                             .toLowerCase()
                             .includes(input.toLowerCase());
                         }}
@@ -153,8 +155,20 @@ function CreateDepartments() {
                         {data && Object.keys(data).length
                           ? data?.system_users.map((item) => {
                               return (
-                                <option key={item.id} value={item.id}>
-                                  {item.fullname}
+                                <option
+                                  key={item.id}
+                                  value={item.id}
+                                  label={item.fullname}
+                                >
+                                  <Space>
+                                    <LetteredAvatar
+                                      name={item.fullname}
+                                      size={25}
+                                      backgroundColors={arrayWithColors}
+                                    />
+
+                                    {item.fullname}
+                                  </Space>
                                 </option>
                               );
                             })

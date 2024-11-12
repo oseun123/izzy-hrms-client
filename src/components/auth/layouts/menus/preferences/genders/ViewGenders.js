@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card } from "antd";
+import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
 import LetteredAvatar from "react-lettered-avatar";
 import { arrayWithColors } from "../../../../../../util/helpers";
 
@@ -27,6 +27,7 @@ import { useMediaQuery } from "react-responsive";
 import { gender_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 const { Option } = Select;
 
 function ViewGenders() {
@@ -34,7 +35,12 @@ function ViewGenders() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const dispatch = useDispatch();
-  const { data } = useGetSystemGender(enabled, setEnabled, page, size);
+  const { data, isLoading } = useGetSystemGender(
+    enabled,
+    setEnabled,
+    page,
+    size
+  );
 
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
@@ -113,76 +119,85 @@ function ViewGenders() {
                     <h3 className="card-title">System genders</h3>
                   </div>
                   <div className="card-body">
-                    <Table
-                      columns={gender_columns(
-                        isTabletOrMobile,
-                        confirm_text,
-                        confirmAction,
-                        delete_gender,
-                        edit_gender
-                      )}
-                      dataSource={genders}
-                      rowKey={(record) => record.id}
-                      scroll={{
-                        x: 786,
-                      }}
-                      pagination={false}
-                      expandable={{
-                        expandedRowRender: (record) => (
-                          <>
-                            {record.users.length ? (
-                              <div className="mb-3">
-                                <Card
-                                  size="small"
-                                  title="Users"
-                                  style={{
-                                    margin: 0,
-                                  }}
-                                >
-                                  <Space wrap size="middle">
-                                    {record.users.map((user) => (
-                                      <Space>
-                                        <LetteredAvatar
-                                          name={`${user.first_name || ""} ${
-                                            user.last_name || " "
-                                          }`}
-                                          size={22}
-                                          backgroundColors={arrayWithColors}
-                                        />
-                                        <span>
-                                          {user.first_name} {user.last_name}
-                                        </span>
+                    {isLoading ? (
+                      <Skeleton active />
+                    ) : (
+                      <>
+                        <Table
+                          columns={gender_columns(
+                            isTabletOrMobile,
+                            confirm_text,
+                            confirmAction,
+                            delete_gender,
+                            edit_gender
+                          )}
+                          dataSource={genders}
+                          rowKey={(record) => record.id}
+                          scroll={{
+                            x: 786,
+                          }}
+                          pagination={false}
+                          expandable={{
+                            expandedRowRender: (record) => (
+                              <>
+                                {record.users.length ? (
+                                  <div className="mb-3">
+                                    <Card
+                                      size="small"
+                                      title="Users"
+                                      style={{
+                                        margin: 0,
+                                      }}
+                                    >
+                                      <Space wrap size="middle">
+                                        {record.users.map((user) => (
+                                          <Space>
+                                            <LetteredAvatar
+                                              name={`${user.first_name || ""} ${
+                                                user.last_name || " "
+                                              }`}
+                                              size={22}
+                                              backgroundColors={arrayWithColors}
+                                            />
+                                            <span>
+                                              {user.first_name} {user.last_name}
+                                            </span>
+                                          </Space>
+                                        ))}
                                       </Space>
-                                    ))}
-                                  </Space>
-                                </Card>
-                              </div>
-                            ) : null}
-                          </>
-                        ),
-                      }}
-                    />
-                    <div className="mt-3 d-flex justify-content-between">
-                      <Pagination
-                        total={data?.payload?.total_pages}
-                        // showSizeChanger
-                        pageSize={1}
-                        onChange={handlePagination}
-                        // pageSizeOptions={[2, 10, 20, 50, 100]}
-                      />{" "}
-                      <Select
-                        defaultValue={size}
-                        style={{
-                          width: 80,
-                        }}
-                        onChange={handleChange}
-                      >
-                        <Option value="10">10/page</Option>
-                        <Option value="20">20/page</Option>
-                        <Option value="50"> 50/page</Option>
-                        <Option value="100">100/page</Option>
-                      </Select>
-                    </div>
+                                    </Card>
+                                  </div>
+                                ) : null}
+                              </>
+                            ),
+                            rowExpandable: (record) => {
+                              return record.users.length > 0;
+                            },
+                          }}
+                          locale={{ emptyText: <NoCustomDataIcon /> }}
+                        />
+                        <div className="mt-3 d-flex justify-content-between">
+                          <Pagination
+                            total={data?.payload?.total_pages}
+                            current={page}
+                            pageSize={1}
+                            onChange={handlePagination}
+                          />{" "}
+                          <Select
+                            defaultValue={size}
+                            style={{
+                              width: 80,
+                            }}
+                            onChange={handleChange}
+                          >
+                            <Option value="10">10/page</Option>
+                            <Option value="20">20/page</Option>
+                            <Option value="50"> 50/page</Option>
+                            <Option value="100">100/page</Option>
+                          </Select>
+                        </div>
+                      </>
+                    )}
                   </div>
                   {/* /.card-body */}
 

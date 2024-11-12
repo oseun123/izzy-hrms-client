@@ -216,7 +216,7 @@ const useGetSystemRoles = (enabled, setEnabled, page = 1, size = 10, all) => {
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 const useGetSystemDepartment = (
   enabled,
@@ -276,7 +276,7 @@ const useGetSystemDepartment = (
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 const useGetSystemGender = (enabled, setEnabled, page = 1, size = 10, all) => {
   const location = useLocation();
@@ -330,7 +330,7 @@ const useGetSystemGender = (enabled, setEnabled, page = 1, size = 10, all) => {
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 
 const useGetSystemDesignation = (
@@ -444,7 +444,7 @@ const useGetSystemState = (enabled, setEnabled, page = 1, size = 10, all) => {
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 const useGetSystemCountry = (enabled, setEnabled, page = 1, size = 10, all) => {
   const location = useLocation();
@@ -498,7 +498,7 @@ const useGetSystemCountry = (enabled, setEnabled, page = 1, size = 10, all) => {
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 
 const useGetSystemCompany = (enabled, setEnabled, page = 1, size = 10, all) => {
@@ -553,7 +553,7 @@ const useGetSystemCompany = (enabled, setEnabled, page = 1, size = 10, all) => {
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 const useGetSystemBranch = (enabled, setEnabled, page = 1, size = 10, all) => {
   const location = useLocation();
@@ -607,7 +607,7 @@ const useGetSystemBranch = (enabled, setEnabled, page = 1, size = 10, all) => {
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 
 export {
