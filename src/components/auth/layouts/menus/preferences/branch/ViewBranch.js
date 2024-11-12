@@ -149,7 +149,7 @@ function ViewBranch() {
                                           name={`${manager.first_name || ""} ${
                                             manager.last_name || " "
                                           }`}
-                                          size={22}
+                                          size={25}
                                           backgroundColors={arrayWithColors}
                                         />
                                         <span>

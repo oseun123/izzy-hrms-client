@@ -18,11 +18,6 @@ function useForm(callback, initState = {}, validate) {
     if (sep) {
       console.log({ r: values });
       setValues((prevValues) => {
-        console.log({
-          prevValues,
-          h: { ...prevValues, [creds.name]: creds.value },
-        });
-
         return { ...prevValues, [creds.name]: creds.value };
       });
     } else {
@@ -53,7 +48,7 @@ function useForm(callback, initState = {}, validate) {
       return rep_obj;
     });
   }
-  console.log({ v: values });
+
   return { handleChange, handleSubmit, errors, values, clearForm };
 }
 function useShallowEqualSelector(selector) {

@@ -29,6 +29,7 @@ import AminatedLayout from "../../../../../ui/AminatedLayout";
 import LetteredAvatar from "react-lettered-avatar";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { arrayWithColors } from "../../../../../../util/helpers";
 const { Option } = Select;
 
 function ViewDepartments() {
@@ -177,8 +178,9 @@ function ViewDepartments() {
                                     {record.users.map((user) => (
                                       <Space>
                                         <LetteredAvatar
-                                          size={22}
+                                          size={25}
                                           name={`${user.first_name} ${user.last_name}`}
+                                          backgroundColors={arrayWithColors}
                                         />
                                         <span>
                                           {user.first_name} {user.last_name}

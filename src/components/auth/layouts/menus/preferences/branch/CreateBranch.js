@@ -380,7 +380,7 @@ function CreateBranch() {
                                   name={`${user.first_name || ""} ${
                                     user.last_name || " "
                                   }`}
-                                  size={22}
+                                  size={25}
                                   backgroundColors={arrayWithColors}
                                 />
                                 <span>

@@ -36,3 +36,7 @@ export { default as BranchDetails } from "./menus/preferences/branch/BranchDetai
 export { default as EditBranch } from "./menus/preferences/branch/EditBranch";
 // branch
 export { default as DisplaySettings } from "./menus/preferences/settings/DisplaySettings";
+
+// designation
+export { default as CreateDesignation } from "./menus/preferences/designation/CreateDesignation";
+export { default as ViewDesignation } from "./menus/preferences/designation/ViewDesignation";

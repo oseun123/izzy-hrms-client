@@ -90,6 +90,19 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+    case "GENERIC_SUCCESS":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case "GENERIC_ERROR":
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+
     case "SYSTEM_STATES_SUCCESS":
       return {
         ...state,

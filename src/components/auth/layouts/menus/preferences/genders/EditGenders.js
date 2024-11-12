@@ -118,7 +118,7 @@ function EditGenders() {
               <form onSubmit={handleSubmitfist}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-6 offset-md-3">
+                    <div className="form-group col-md-4 offset-md-4">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -146,7 +146,7 @@ function EditGenders() {
                       </div>
                     </div>
 
-                    <div className="form-group col-md-6 offset-md-3">
+                    <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button
                           type="primary"

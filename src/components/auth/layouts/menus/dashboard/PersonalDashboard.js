@@ -33,7 +33,7 @@ function PersonalDashboard() {
           <Space>
             <LetteredAvatar
               name={text}
-              size={35}
+              size={25}
               backgroundColors={arrayWithColors}
             />
 
