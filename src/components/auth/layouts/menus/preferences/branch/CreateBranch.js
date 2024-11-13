@@ -140,7 +140,7 @@ function CreateBranch() {
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-4 ">
+                    <div className="form-group col-md-4  d-flex flex-column">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -152,6 +152,8 @@ function CreateBranch() {
                         value={values.name}
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
+                        className="w-75"
+                        placeholder="Name of branch"
                       />
 
                       <div
@@ -166,7 +168,7 @@ function CreateBranch() {
                         {errors.name}
                       </div>
                     </div>
-                    <div className="form-group col-md-4 ">
+                    <div className="form-group col-md-4 d-flex flex-column ">
                       <label htmlFor="email">Email </label>
                       <Input
                         type="text"
@@ -176,6 +178,8 @@ function CreateBranch() {
                         value={values.email}
                         onChange={handleChange}
                         status={errors.email ? "error" : ""}
+                        className="w-75"
+                        placeholder="Email of branch"
                       />
 
                       <div
@@ -190,7 +194,7 @@ function CreateBranch() {
                         {errors.email}
                       </div>
                     </div>
-                    <div className="form-group col-md-4 ">
+                    <div className="form-group col-md-4 d-flex flex-column ">
                       <label htmlFor="address">
                         Address <span className="text-danger">*</span>{" "}
                       </label>
@@ -201,6 +205,8 @@ function CreateBranch() {
                         value={values.address}
                         onChange={handleChange}
                         status={errors.address ? "error" : ""}
+                        className="w-75"
+                        placeholder="Address of branch"
                       />
 
                       <div
@@ -216,7 +222,7 @@ function CreateBranch() {
                       </div>
                     </div>
 
-                    <div className="form-group col-md-4 ">
+                    <div className="form-group col-md-4   d-flex flex-column ">
                       <label htmlFor="phone_1">Phone 1 </label>
                       <Input
                         type="text"
@@ -226,6 +232,8 @@ function CreateBranch() {
                         value={values.phone_1}
                         onChange={handleChange}
                         status={errors.phone_1 ? "error" : ""}
+                        className="w-75"
+                        placeholder="Primary phone number"
                       />
 
                       <div
@@ -240,7 +248,7 @@ function CreateBranch() {
                         {errors.phone_1}
                       </div>
                     </div>
-                    <div className="form-group col-md-4 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="phone_2">Phone 2 </label>
                       <Input
                         type="text"
@@ -250,6 +258,8 @@ function CreateBranch() {
                         value={values.phone_2}
                         onChange={handleChange}
                         status={errors.phone_2 ? "error" : ""}
+                        className="w-75"
+                        placeholder="Secondary phone number"
                       />
 
                       <div
@@ -264,8 +274,8 @@ function CreateBranch() {
                         {errors.phone_2}
                       </div>
                     </div>
-                    <div className="form-group col-md-4 ">
-                      <label htmlFor="code">Code </label>
+                    <div className="form-group col-md-4  d-flex flex-column">
+                      <label htmlFor="code">RC Number </label>
                       <Input
                         type="text"
                         name="code"
@@ -274,6 +284,8 @@ function CreateBranch() {
                         value={values.code}
                         onChange={handleChange}
                         status={errors.code ? "error" : ""}
+                        className="w-75"
+                        placeholder="Rc number of branch"
                       />
 
                       <div
@@ -289,7 +301,7 @@ function CreateBranch() {
                       </div>
                     </div>
 
-                    <div className="form-group col-md-4 pt-md-3">
+                    <div className="form-group col-md-4 pt-md-3 ">
                       <Checkbox
                         checked={values.headquarters}
                         onChange={handleChangeHeadQuarter}
@@ -298,19 +310,18 @@ function CreateBranch() {
                       </Checkbox>
                       <div>
                         <i className="fa fa-info-circle text-info mr-1"></i>
-                        Checking this field makes this branch an headquarter for
-                        the selected company.
+                        <i>
+                          Checking this field makes this branch an headquarter
+                          for the selected company.
+                        </i>
                       </div>
                     </div>
 
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">
                         Company <span className="text-danger">*</span>
                       </label>
                       <Select
-                        style={{
-                          width: "100%",
-                        }}
                         showSearch
                         status={errors.company_id ? "error" : ""}
                         id="company_id"
@@ -322,7 +333,9 @@ function CreateBranch() {
                             .toLowerCase()
                             .includes(input.toLowerCase());
                         }}
-                        value={values.company_id}
+                        value={values.company_id || null}
+                        placeholder="Company of branch"
+                        className="w-75"
                       >
                         {all_company &&
                           all_company.map((company) => (
@@ -345,21 +358,24 @@ function CreateBranch() {
                         {errors.company_id}
                       </div>
                     </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="branch_managers">
                         Branch managers <span className="text-danger">*</span>
                       </label>
                       <Select
-                        style={{
-                          width: "100%",
-                        }}
+                        className="w-75"
+                        placeholder="Branch contact person(s)"
                         showSearch
                         status={errors.branch_managers ? "error" : ""}
                         id="branch_managers"
                         name="branch_managers"
                         mode="multiple"
                         allowClear
-                        value={values.branch_managers}
+                        value={
+                          values.branch_managers.length
+                            ? values.branch_managers
+                            : null
+                        }
                         onChange={handleChangeUsers}
                         filterOption={(input, option) => {
                           return option?.label
@@ -405,8 +421,8 @@ function CreateBranch() {
                     </div>
                   </div>
 
-                  <div className="row">
-                    <div className="form-group col-md-6 ">
+                  <div className="row text-center">
+                    <div className="form-group col-md-12 ">
                       <Space>
                         <Button
                           type="primary"
