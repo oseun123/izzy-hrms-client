@@ -141,7 +141,7 @@ function CreateDesignation() {
               <form onSubmit={(e) => handleSubmit(e, creds)}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-4 offset-md-4">
+                    <div className="form-group col-md-4 offset-md-4 d-flex flex-column ">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -153,6 +153,8 @@ function CreateDesignation() {
                         value={creds.name}
                         onChange={handleChangeCreds}
                         status={errors.name ? "error" : ""}
+                        className="w-75"
+                        placeholder="Name of designation"
                       />
 
                       <div
@@ -167,7 +169,9 @@ function CreateDesignation() {
                         {errors.name}
                       </div>
                     </div>
+                  </div>
 
+                  <div className="row">
                     <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button

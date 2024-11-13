@@ -43,6 +43,8 @@ import {
   DisplaySettings,
   CreateDesignation,
   ViewDesignation,
+  DesignationDetails,
+  EditDesignation,
 } from "./layouts/preferences";
 
 // Human Resource Component
@@ -310,19 +312,19 @@ const Layout = () => {
                   permission="VIEW_DESIGNATION"
                 />
 
-                {/* <HasPermission
+                <HasPermission
                   exact
-                  path="/preferences/view-branches/:id"
-                  component={BranchDetails}
-                  permission="VIEW_BRANCH"
-                /> */}
+                  path="/preferences/view-designation/:id"
+                  component={DesignationDetails}
+                  permission="VIEW_DESIGNATION"
+                />
 
-                {/* <HasPermission
+                <HasPermission
                   exact
-                  path="/preferences/edit-branches/:id"
-                  component={EditBranch}
-                  permission="EDIT_BRANCH"
-                />  */}
+                  path="/preferences/edit-designation/:id"
+                  component={EditDesignation}
+                  permission="EDIT_DESIGNATION"
+                />
 
                 {/* end branch */}
 

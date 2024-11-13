@@ -414,6 +414,28 @@ const updateGender = async (dispatch, request, creds) => {
     dispatch({ type: "CREATE_GENDER_ERROR", payload: resMessage });
   }
 };
+const updateDesignation = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.put(
+      `/api/preferences/designations/${creds.designation_id}`,
+      creds
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "GENERIC_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+  }
+};
 const updateState = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
@@ -545,4 +567,5 @@ export {
   updateBranch,
   createDesignation,
   deleteDisignation,
+  updateDesignation,
 };

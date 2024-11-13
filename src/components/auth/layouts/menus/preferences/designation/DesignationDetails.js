@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table } from "antd";
-import { useGetSystemState } from "./../../../../../../store/actions/preferencesHooksActions";
+import { Skeleton, Table } from "antd";
+import { useGetSystemDesignation } from "./../../../../../../store/actions/preferencesHooksActions";
 import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
 
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useShallowEqualSelector } from "../../../../../../hooks";
 import {
   message_preferences,
   status_preferences,
-  single_system_state,
 } from "../../../../../../store/selectors/preferencesSelector";
 
 import Message from "../../../../../helpers/Message";
@@ -19,22 +18,27 @@ import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 
-function StateDetails() {
+function DesignationDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
+  const [single_designation, setSingleDesignation] = useState(null);
 
-  useGetSystemState(enabled, setEnabled);
+  const { isLoading, data } = useGetSystemDesignation(enabled, setEnabled);
 
   const dispatch = useDispatch();
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
-  const single_state = useSelector(
-    (state) => single_system_state(state, id),
-    shallowEqual
-  );
 
-  const users = single_state[0]?.users;
-  const state_name = single_state[0]?.name;
+  useEffect(() => {
+    if (data && Object.keys(data).length) {
+      const designations = data?.payload?.designations;
+      const single_des = designations.find(
+        (item) => parseInt(item.id) === parseInt(id)
+      );
+
+      setSingleDesignation(single_des);
+    }
+  }, [data]);
 
   useEffect(() => {
     return () => {
@@ -54,7 +58,7 @@ function StateDetails() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>State Details</h1>
+                <h1>Designation Details</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -78,7 +82,8 @@ function StateDetails() {
                   <div className="card-header">
                     <h3 className="card-title">
                       User(s) in{" "}
-                      {state_name && capitalizeFirstLetter(state_name)}{" "}
+                      {single_designation &&
+                        capitalizeFirstLetter(single_designation?.name)}{" "}
                     </h3>
                     <div className="card-tools ">
                       <button
@@ -93,15 +98,19 @@ function StateDetails() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <Table
-                      columns={department_details_columns()}
-                      rowKey={(record) => record.id}
-                      dataSource={users}
-                      scroll={{
-                        x: 786,
-                      }}
-                      locale={{ emptyText: <NoCustomDataIcon /> }}
-                    />
+                    {isLoading ? (
+                      <Skeleton active />
+                    ) : (
+                      <Table
+                        columns={department_details_columns()}
+                        rowKey={(record) => record.id}
+                        dataSource={single_designation?.users}
+                        scroll={{
+                          x: 786,
+                        }}
+                        locale={{ emptyText: <NoCustomDataIcon /> }}
+                      />
+                    )}
                   </div>
                   {/* /.card-body */}
 
@@ -118,4 +127,4 @@ function StateDetails() {
   );
 }
 
-export default StateDetails;
+export default DesignationDetails;

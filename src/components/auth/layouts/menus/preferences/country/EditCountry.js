@@ -115,7 +115,7 @@ function EditCountry() {
             <form onSubmit={handleSubmitfist}>
               <div className="card-body">
                 <div className="row">
-                  <div className="form-group col-md-6 offset-md-3">
+                  <div className="form-group col-md-4 offset-md-4 d-flex flex-column">
                     <label htmlFor="name">
                       Name <span className="text-danger">*</span>{" "}
                     </label>
@@ -128,6 +128,8 @@ function EditCountry() {
                       onChange={handleChange}
                       status={errors.name ? "error" : ""}
                       defaultValue={nam}
+                      className="w-75"
+                      placeholder="Name of country"
                     />
 
                     <div
@@ -142,8 +144,10 @@ function EditCountry() {
                       {errors.name}
                     </div>
                   </div>
+                </div>
 
-                  <div className="form-group col-md-6 offset-md-3">
+                <div className="row">
+                  <div className="form-group col-md-4 offset-md-4">
                     <Space>
                       <Button
                         type="primary"

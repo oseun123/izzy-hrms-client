@@ -40,3 +40,5 @@ export { default as DisplaySettings } from "./menus/preferences/settings/Display
 // designation
 export { default as CreateDesignation } from "./menus/preferences/designation/CreateDesignation";
 export { default as ViewDesignation } from "./menus/preferences/designation/ViewDesignation";
+export { default as DesignationDetails } from "./menus/preferences/designation/DesignationDetails";
+export { default as EditDesignation } from "./menus/preferences/designation/EditDesignation";

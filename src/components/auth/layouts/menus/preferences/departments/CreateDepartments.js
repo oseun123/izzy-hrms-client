@@ -107,8 +107,8 @@ function CreateDepartments() {
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
-                  <div className="row d-flex justify-content-center">
-                    <div className="form-group col-md-3 ">
+                  <div className="row ">
+                    <div className="form-group col-md-4 d-flex flex-column ">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -120,6 +120,8 @@ function CreateDepartments() {
                         value={values.name}
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
+                        className="w-75"
+                        placeholder="Name of department"
                       />
 
                       <div
@@ -134,15 +136,14 @@ function CreateDepartments() {
                         {errors.name}
                       </div>
                     </div>
-                    <div className="form-group col-md-3">
+                    <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">HOD</label>
                       <Select
                         name="hod"
                         id="hod"
-                        value={values.hod}
+                        value={values.hod || null}
                         loading={isLoading ? true : false}
                         showSearch
-                        className="w-100"
                         onChange={(value) => handleSelect(value, "hod")}
                         optionFilterProp="children"
                         filterOption={(input, option) => {
@@ -150,6 +151,8 @@ function CreateDepartments() {
                             .toLowerCase()
                             .includes(input.toLowerCase());
                         }}
+                        className="w-75"
+                        placeholder="Head of department"
                       >
                         <option value="">--</option>
                         {data && Object.keys(data).length
@@ -187,8 +190,9 @@ function CreateDepartments() {
                         {errors.hod}
                       </div>
                     </div>
-
-                    <div className="form-group col-md-6 offset-md-3">
+                  </div>
+                  <div className="row">
+                    <div className="form-group col-md-4">
                       <Space>
                         <Button
                           type="primary"

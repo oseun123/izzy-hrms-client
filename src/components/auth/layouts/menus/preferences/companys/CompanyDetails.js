@@ -17,6 +17,7 @@ import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
 import { company_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 
 function CompanyDetails() {
   const { id } = useParams();
@@ -100,6 +101,7 @@ function CompanyDetails() {
                       scroll={{
                         x: 786,
                       }}
+                      locale={{ emptyText: <NoCustomDataIcon /> }}
                     />
                   </div>
                   {/* /.card-body */}
