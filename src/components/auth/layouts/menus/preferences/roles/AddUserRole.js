@@ -117,6 +117,8 @@ function AddUserRole() {
     };
   }, [dispatch]);
 
+  console.log({ users });
+
   return (
     <>
       <div>
@@ -154,15 +156,12 @@ function AddUserRole() {
                     <h3 className="card-title">Add user to a role</h3>
                   </div>
                   <div className="card-body">
-                    <div className="row">
-                      <div className="form-group col-md-4">
+                    <div className="row col-md-11">
+                      <div className="form-group col-md-4 d-flex flex-column ">
                         <label htmlFor="name">
                           Roles <span className="text-danger">*</span>
                         </label>
                         <Select
-                          style={{
-                            width: "100%",
-                          }}
                           showSearch
                           status={errors.role ? "error" : ""}
                           id="role"
@@ -174,7 +173,9 @@ function AddUserRole() {
                               .toLowerCase()
                               .includes(input.toLowerCase());
                           }}
-                          value={values.role}
+                          value={values.role || null}
+                          className="w-75"
+                          placeholder="Select role"
                         >
                           {all_roles &&
                             all_roles.map((role) => (
@@ -197,14 +198,11 @@ function AddUserRole() {
                           {errors.role}
                         </div>
                       </div>
-                      <div className="form-group col-md-8">
+                      <div className="form-group col-md-8 d-flex flex-column">
                         <label htmlFor="users">
                           Users <span className="text-danger">*</span>
                         </label>
                         <Select
-                          style={{
-                            width: "100%",
-                          }}
                           status={errors.users ? "error" : ""}
                           showSearch
                           id="users"
@@ -218,6 +216,8 @@ function AddUserRole() {
                               .toLowerCase()
                               .includes(input.toLowerCase());
                           }}
+                          className="w-75"
+                          placeholder="Select users to role"
                         >
                           {all_users &&
                             all_users.map((user) => (
@@ -228,10 +228,8 @@ function AddUserRole() {
                               >
                                 <Space>
                                   <LetteredAvatar
-                                    name={`${user.first_name || ""} ${
-                                      user.last_name || " "
-                                    }`}
-                                    size={22}
+                                    name={user.fullname}
+                                    size={25}
                                     backgroundColors={arrayWithColors}
                                   />
                                   <span>

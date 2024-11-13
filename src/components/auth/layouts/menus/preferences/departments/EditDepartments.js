@@ -72,7 +72,6 @@ function EditDepartments() {
   );
   function handleSubmitfist(e) {
     e.preventDefault();
-    console.log({ creds });
 
     // values.name = document.querySelector("#name").value;
     // values.hod = document.querySelector("#hod").value;
@@ -119,7 +118,6 @@ function EditDepartments() {
     }
   }
 
-  console.log({ creds });
   return (
     <>
       <PreferencesHero />

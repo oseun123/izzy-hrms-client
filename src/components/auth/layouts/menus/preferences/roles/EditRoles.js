@@ -167,7 +167,7 @@ function EditRoles() {
                   </div>
                   <div className="card-body">
                     <div className="row">
-                      <div className="form-group col-md-6">
+                      <div className="form-group col-md-4 d-flex flex-column">
                         <label htmlFor="name">
                           Name <span className="text-danger">*</span>
                         </label>
@@ -180,6 +180,8 @@ function EditRoles() {
                           onChange={handleChange}
                           value={values.name}
                           defaultValue={nam}
+                          className="w-75"
+                          placeholder="Name of role"
                         />
 
                         <div
@@ -249,27 +251,32 @@ function EditRoles() {
                       )}
 
                     {/* /.card */}
-                    <Space>
-                      <Button
-                        type="primary"
-                        icon={<FormOutlined />}
-                        loading={spinner}
-                        htmlType="submit"
-                        className={styles.on_hover}
-                      >
-                        {" "}
-                        Update
-                      </Button>
-                      <Link to="/preferences/view-roles">
-                        <Button
-                          icon={<EyeOutlined />}
-                          className={styles.on_hover}
-                        >
-                          {" "}
-                          View
-                        </Button>
-                      </Link>
-                    </Space>
+
+                    <div className="row mt-4">
+                      <div className="form-group col-md-12 ">
+                        <Space>
+                          <Button
+                            type="primary"
+                            icon={<FormOutlined />}
+                            loading={spinner}
+                            htmlType="submit"
+                            className={styles.on_hover}
+                          >
+                            {" "}
+                            Update
+                          </Button>
+                          <Link to="/preferences/view-roles">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover}
+                            >
+                              {" "}
+                              View
+                            </Button>
+                          </Link>
+                        </Space>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </form>

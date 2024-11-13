@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
+import LetteredAvatar from "react-lettered-avatar";
+import { arrayWithColors } from "../../../../../../util/helpers";
 
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
@@ -11,30 +13,30 @@ import {
   // spinner_preferences,
   message_preferences,
   status_preferences,
-  system_companys,
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemCompany } from "../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemDesignation } from "./../../../../../../store/actions/preferencesHooksActions";
 import {
-  deleteCompany,
+  deleteDisignation,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import Message from "../../../../../helpers/Message";
 import { useMediaQuery } from "react-responsive";
-import { company_columns } from "../../../../../../util/tables";
+import { designation_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
-
 const { Option } = Select;
 
-function ViewCompanys() {
+function ViewDesignation() {
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [designation, setDesignation] = useState([]);
+
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemCompany(
+  const { data, isLoading } = useGetSystemDesignation(
     enabled,
     setEnabled,
     page,
@@ -43,21 +45,27 @@ function ViewCompanys() {
 
   const status = useShallowEqualSelector(status_preferences);
   const message = useShallowEqualSelector(message_preferences);
-  const companys = useShallowEqualSelector(system_companys);
+  //   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
-  const delete_company = useSelector(
-    (state) => memoUserpermission(state, "DELETE_COMPANY"),
-    shallowEqual
-  );
-  const edit_company = useSelector(
-    (state) => memoUserpermission(state, "EDIT_COMPANY"),
-    shallowEqual
-  );
 
+  const delete_designation = useSelector(
+    (state) => memoUserpermission(state, "DELETE_DESIGNATION"),
+    shallowEqual
+  );
+  const edit_designation = useSelector(
+    (state) => memoUserpermission(state, "EDIT_DESIGNATION"),
+    shallowEqual
+  );
+  console.log({ designation, data });
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Delete Company";
+  const confirm_text = "Are you sure you want to delete this designation?";
   const request = useAxiosPrivate();
 
+  useEffect(() => {
+    if (data && Object.keys(data).length) {
+      setDesignation(data?.payload?.designations);
+    }
+  }, [data]);
   useEffect(() => {
     return () => {
       preferencesCleanUp(dispatch);
@@ -74,7 +82,7 @@ function ViewCompanys() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    deleteCompany(dispatch, request, { id }).then((res) => {
+    deleteDisignation(dispatch, request, { id }).then((res) => {
       if (res?.status === "success") {
         setEnabled(true);
       }
@@ -93,7 +101,7 @@ function ViewCompanys() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>View Company</h1>
+                <h1>View Designation</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -115,22 +123,23 @@ function ViewCompanys() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System companies</h3>
+                    <h3 className="card-title">System designation</h3>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
                       <Skeleton active />
                     ) : (
                       <>
+                        {" "}
                         <Table
-                          columns={company_columns(
+                          columns={designation_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
-                            delete_company,
-                            edit_company
+                            delete_designation,
+                            edit_designation
                           )}
-                          dataSource={companys}
+                          dataSource={designation}
                           rowKey={(record) => record.id}
                           scroll={{
                             x: 786,
@@ -139,20 +148,29 @@ function ViewCompanys() {
                           expandable={{
                             expandedRowRender: (record) => (
                               <>
-                                {record.branches.length ? (
+                                {record.users.length ? (
                                   <div className="mb-3">
                                     <Card
                                       size="small"
-                                      title="Branches"
+                                      title="Users"
                                       style={{
                                         margin: 0,
                                       }}
                                     >
-                                      <Space wrap>
-                                        {record.branches.map((branch) => (
-                                          <span className="badge bg-secondary rounded-pill p-1">
-                                            {branch.name}
-                                          </span>
+                                      <Space wrap size="middle">
+                                        {record.users.map((user) => (
+                                          <Space>
+                                            <LetteredAvatar
+                                              name={`${user.first_name || ""} ${
+                                                user.last_name || " "
+                                              }`}
+                                              size={25}
+                                              backgroundColors={arrayWithColors}
+                                            />
+                                            <span>
+                                              {user.first_name} {user.last_name}
+                                            </span>
+                                          </Space>
                                         ))}
                                       </Space>
                                     </Card>
@@ -161,19 +179,19 @@ function ViewCompanys() {
                               </>
                             ),
                             rowExpandable: (record) => {
-                              return record.branches.length > 0;
+                              return record.users.length > 0;
                             },
                           }}
-                          locale={{
-                            emptyText: <NoCustomDataIcon />,
-                          }}
+                          locale={{ emptyText: <NoCustomDataIcon /> }}
                         />
                         <div className="mt-3 d-flex justify-content-between">
                           <Pagination
                             total={data?.payload?.total_pages}
-                            current={page}
+                            // showSizeChanger
                             pageSize={1}
                             onChange={handlePagination}
+                            current={page}
+                            // pageSizeOptions={[2, 10, 20, 50, 100]}
                           />{" "}
                           <Select
                             defaultValue={size}
@@ -206,4 +224,4 @@ function ViewCompanys() {
   );
 }
 
-export default ViewCompanys;
+export default ViewDesignation;

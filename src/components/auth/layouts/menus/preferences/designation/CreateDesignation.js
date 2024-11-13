@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Input, Button, Space } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { validateCreateGender } from "../../../../../../util/formValidations";
 import {
-  createGender,
+  createDesignation,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
@@ -25,7 +24,8 @@ import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 
-function CreateGenders() {
+function CreateDesignation() {
+  const [creds, setCreds] = useState({});
   const initValues = {
     name: "",
   };
@@ -36,25 +36,71 @@ function CreateGenders() {
   const request = useAxiosPrivate();
 
   //callback
-  function createGenderCallback() {
-    createGender(dispatch, request, values).then((res) => {
+  function createDesginationCallback() {
+    createDesignation(dispatch, request, creds).then((res) => {
       if (res?.status === "success") {
         clearForm();
       }
     });
   }
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
-    createGenderCallback,
-    initValues,
-    validateCreateGender
+  //validation
+
+  function validateCreateDesignation(values) {
+    let errors = {};
+
+    if (values.hasOwnProperty("name") && values.name === "") {
+      errors.name = "Name cannot not be empty.";
+    }
+
+    return errors;
+  }
+
+  function clearForm() {
+    setCreds((prev) => {
+      let rep_obj = { ...prev };
+      for (var key of Object.keys(rep_obj)) {
+        rep_obj[key] = initValues[key];
+      }
+      return rep_obj;
+    });
+  }
+
+  function handleChangeCreds(e, sep = false, creds = {}) {
+    if (sep) {
+      setCreds((prevValues) => {
+        if (!creds.name || creds.value === undefined) {
+          console.error("Invalid creds provided:", creds);
+          return prevValues; // Do not update if creds are invalid
+        }
+        return { ...prevValues, [creds.name]: creds.value };
+      });
+    } else if (e && e.target) {
+      setCreds((prevValues) => {
+        return { ...prevValues, [e.target.name]: e.target.value };
+      });
+    } else {
+      console.error("Invalid event provided:", e);
+    }
+  }
+
+  const { errors, handleSubmit } = useForm(
+    createDesginationCallback,
+    creds,
+    validateCreateDesignation
   );
+
+  useEffect(() => {
+    setCreds({ ...initValues });
+  }, []);
 
   useEffect(() => {
     return () => {
       return preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
+
+  console.log({ errors });
 
   return (
     <>
@@ -69,7 +115,7 @@ function CreateGenders() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Create Gender</h1>
+                <h1>Create Designation</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -89,10 +135,10 @@ function CreateGenders() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a gender</h3>
+                <h3 className="card-title">Create a designation</h3>
                 <div className="card-tools"></div>
               </div>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={(e) => handleSubmit(e, creds)}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 offset-md-4">
@@ -104,8 +150,8 @@ function CreateGenders() {
                         name="name"
                         id="name"
                         allowClear
-                        value={values.name}
-                        onChange={handleChange}
+                        value={creds.name}
+                        onChange={handleChangeCreds}
                         status={errors.name ? "error" : ""}
                       />
 
@@ -158,4 +204,4 @@ function CreateGenders() {
   );
 }
 
-export default CreateGenders;
+export default CreateDesignation;
