@@ -139,7 +139,7 @@ function CreateBranch() {
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
-                  <div className="row">
+                  <div className="row col-md-11">
                     <div className="form-group col-md-4  d-flex flex-column">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
@@ -421,7 +421,7 @@ function CreateBranch() {
                     </div>
                   </div>
 
-                  <div className="row text-center">
+                  <div className="row mt-4">
                     <div className="form-group col-md-12 ">
                       <Space>
                         <Button
