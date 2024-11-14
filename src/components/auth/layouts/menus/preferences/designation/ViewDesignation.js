@@ -6,22 +6,16 @@ import { arrayWithColors } from "../../../../../../util/helpers";
 
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
-  useShallowEqualSelector,
   useAxiosPrivate,
+  useCleanUp,
+  usePreferenceNotification,
 } from "../../../../../../hooks";
-import {
-  // spinner_preferences,
-  message_preferences,
-  status_preferences,
-} from "../../../../../../store/selectors/preferencesSelector";
+
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
 import { useGetSystemDesignation } from "./../../../../../../store/actions/preferencesHooksActions";
-import {
-  deleteDisignation,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
-import Message from "../../../../../helpers/Message";
+import { deleteDisignation } from "../../../../../../store/actions/preferencesActions";
+
 import { useMediaQuery } from "react-responsive";
 import { designation_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
@@ -35,6 +29,9 @@ function ViewDesignation() {
   const [size, setSize] = useState(10);
   const [designation, setDesignation] = useState([]);
 
+  useCleanUp();
+  usePreferenceNotification();
+
   const dispatch = useDispatch();
   const { data, isLoading } = useGetSystemDesignation(
     enabled,
@@ -43,8 +40,6 @@ function ViewDesignation() {
     size
   );
 
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
   //   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
 
@@ -66,11 +61,7 @@ function ViewDesignation() {
       setDesignation(data?.payload?.designations);
     }
   }, [data]);
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+
   function handlePagination(page) {
     setPage(page);
 
@@ -95,9 +86,6 @@ function ViewDesignation() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

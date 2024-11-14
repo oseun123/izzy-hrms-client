@@ -4,22 +4,16 @@ import { Input, Button, Space } from "antd";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import {
-  updateDesignation,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
+import { updateDesignation } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
   useShallowEqualSelector,
   useForm,
   useAxiosPrivate,
+  useCleanUp,
+  usePreferenceNotification,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-  message_preferences,
-  status_preferences,
-} from "../../../../../../store/selectors/preferencesSelector";
-import Message from "../../../../../helpers/Message";
+import { spinner_preferences } from "../../../../../../store/selectors/preferencesSelector";
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
@@ -31,11 +25,13 @@ function EditDesignation() {
   const [enabled, setEnabled] = useState(true);
   const [single_designation, setSingleDesignation] = useState(null);
 
+  useCleanUp();
+  usePreferenceNotification();
+
   const { isLoading, data } = useGetSystemDesignation(enabled, setEnabled);
   const dispatch = useDispatch();
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const request = useAxiosPrivate();
 
   //callback
@@ -100,12 +96,6 @@ function EditDesignation() {
     });
   }, [single_designation]);
 
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-
   console.log({ errors });
 
   return (
@@ -115,9 +105,6 @@ function EditDesignation() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -183,7 +170,7 @@ function EditDesignation() {
                         <Button
                           type="primary"
                           icon={<FormOutlined />}
-                          loading={spinner}
+                          loading={spinner || isLoading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >

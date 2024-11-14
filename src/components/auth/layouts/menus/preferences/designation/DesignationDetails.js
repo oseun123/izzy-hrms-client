@@ -2,32 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Skeleton, Table } from "antd";
 import { useGetSystemDesignation } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
-
-import { useDispatch } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
-import {
-  message_preferences,
-  status_preferences,
-} from "../../../../../../store/selectors/preferencesSelector";
-
-import Message from "../../../../../helpers/Message";
 import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
 import { department_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { useCleanUp, usePreferenceNotification } from "../../../../../../hooks";
 
 function DesignationDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
   const [single_designation, setSingleDesignation] = useState(null);
+  useCleanUp();
+  usePreferenceNotification();
 
   const { isLoading, data } = useGetSystemDesignation(enabled, setEnabled);
-
-  const dispatch = useDispatch();
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
@@ -38,13 +27,7 @@ function DesignationDetails() {
 
       setSingleDesignation(single_des);
     }
-  }, [data]);
-
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+  }, [data, id]);
 
   return (
     <>
@@ -52,9 +35,6 @@ function DesignationDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

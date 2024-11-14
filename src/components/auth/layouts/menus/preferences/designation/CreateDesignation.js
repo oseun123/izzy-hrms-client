@@ -4,22 +4,16 @@ import { Input, Button, Space } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import {
-  createDesignation,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
+import { createDesignation } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
   useShallowEqualSelector,
   useForm,
   useAxiosPrivate,
+  useCleanUp,
+  usePreferenceNotification,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-  message_preferences,
-  status_preferences,
-} from "../../../../../../store/selectors/preferencesSelector";
-import Message from "../../../../../helpers/Message";
+import { spinner_preferences } from "../../../../../../store/selectors/preferencesSelector";
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
@@ -29,10 +23,12 @@ function CreateDesignation() {
   const initValues = {
     name: "",
   };
+
+  useCleanUp();
+  usePreferenceNotification();
   const dispatch = useDispatch();
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const request = useAxiosPrivate();
 
   //callback
@@ -92,15 +88,8 @@ function CreateDesignation() {
 
   useEffect(() => {
     setCreds({ ...initValues });
+    // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-
-  console.log({ errors });
 
   return (
     <>
@@ -109,9 +98,6 @@ function CreateDesignation() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -135,7 +121,7 @@ function CreateDesignation() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a designation</h3>
+                <h3 className="card-title">Add new designation</h3>
                 <div className="card-tools"></div>
               </div>
               <form onSubmit={(e) => handleSubmit(e, creds)}>
@@ -184,7 +170,7 @@ function CreateDesignation() {
                           {" "}
                           Create
                         </Button>
-                        <Link to="/preferences/view-genders">
+                        <Link to="/preferences/view-designation">
                           <Button
                             icon={<EyeOutlined />}
                             className={styles.on_hover}
