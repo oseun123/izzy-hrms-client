@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Input, Button, Space } from "antd";
-import { FormOutlined, EyeOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { updateEmpCategory } from "../../../../../../store/actions/preferencesActions";
+import { createEmployeeStatus } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
   useShallowEqualSelector,
@@ -17,34 +17,32 @@ import { spinner_preferences } from "../../../../../../store/selectors/preferenc
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-import { useGetSystemEmpCategory } from "../../../../../../store/actions/preferencesHooksActions";
 
-function EditEmpCategory() {
-  const { id } = useParams();
+function CreateEmpStatus() {
   const [creds, setCreds] = useState({});
-  const [enabled, setEnabled] = useState(true);
-  const [single_emp_cat, setSingleEmpCat] = useState(null);
+  const initValues = {
+    name: "",
+  };
 
   useCleanUp();
   usePreferenceNotification();
-
-  const { isLoading, data } = useGetSystemEmpCategory(enabled, setEnabled);
   const dispatch = useDispatch();
   const spinner = useShallowEqualSelector(spinner_preferences);
 
   const request = useAxiosPrivate();
 
   //callback
-  function editEmpCategoryCallback() {
-    updateEmpCategory(dispatch, request, creds).then((res) => {
+  function createEmployeeStatusCallback() {
+    createEmployeeStatus(dispatch, request, creds).then((res) => {
       if (res?.status === "success") {
+        clearForm();
       }
     });
   }
 
   //validation
 
-  function validateeditEmpCategory(values) {
+  function validateCreateEmployeeStatus(values) {
     let errors = {};
 
     if (values.hasOwnProperty("name") && values.name === "") {
@@ -52,6 +50,16 @@ function EditEmpCategory() {
     }
 
     return errors;
+  }
+
+  function clearForm() {
+    setCreds((prev) => {
+      let rep_obj = { ...prev };
+      for (var key of Object.keys(rep_obj)) {
+        rep_obj[key] = initValues[key];
+      }
+      return rep_obj;
+    });
   }
 
   function handleChangeCreds(e, sep = false, creds = {}) {
@@ -73,28 +81,15 @@ function EditEmpCategory() {
   }
 
   const { errors, handleSubmit } = useForm(
-    editEmpCategoryCallback,
+    createEmployeeStatusCallback,
     creds,
-    validateeditEmpCategory
+    validateCreateEmployeeStatus
   );
 
   useEffect(() => {
-    if (data && Object.keys(data).length) {
-      const employeeCategory = data?.payload?.employeeCategory;
-      const single_cat = employeeCategory.find(
-        (item) => parseInt(item.id) === parseInt(id)
-      );
-
-      setSingleEmpCat(single_cat);
-    }
-  }, [data, id]);
-
-  useEffect(() => {
-    setCreds({
-      name: single_emp_cat?.name,
-      emp_cat_id: single_emp_cat?.id,
-    });
-  }, [single_emp_cat]);
+    setCreds({ ...initValues });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
@@ -106,7 +101,7 @@ function EditEmpCategory() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Edit Employee Category</h1>
+                <h1>Create Employee Status</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -114,7 +109,7 @@ function EditEmpCategory() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences</li>
-                  <li className="breadcrumb-item active">Employee Category</li>
+                  <li className="breadcrumb-item active">Employee Status</li>
                 </ol>
               </div>
             </div>
@@ -127,7 +122,7 @@ function EditEmpCategory() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Modify employee category</h3>
+                <h3 className="card-title">Add new employee status</h3>
                 <div className="card-tools"></div>
               </div>
               <form onSubmit={(e) => handleSubmit(e, creds)}>
@@ -142,11 +137,11 @@ function EditEmpCategory() {
                         name="name"
                         id="name"
                         allowClear
-                        value={creds?.name || null}
+                        value={creds.name}
                         onChange={handleChangeCreds}
                         status={errors.name ? "error" : ""}
                         className="w-75"
-                        placeholder="Name of employee category"
+                        placeholder="Name of employee status"
                       />
 
                       <div
@@ -168,15 +163,15 @@ function EditEmpCategory() {
                       <Space>
                         <Button
                           type="primary"
-                          icon={<FormOutlined />}
-                          loading={spinner || isLoading}
+                          icon={<PlusCircleOutlined />}
+                          loading={spinner}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
                           {" "}
-                          Update
+                          Create
                         </Button>
-                        <Link to="/preferences/view-employee-category">
+                        <Link to="/preferences/view-employee-status">
                           <Button
                             icon={<EyeOutlined />}
                             className={styles.on_hover}
@@ -200,4 +195,4 @@ function EditEmpCategory() {
   );
 }
 
-export default EditEmpCategory;
+export default CreateEmpStatus;

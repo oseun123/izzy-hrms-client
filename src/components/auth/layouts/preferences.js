@@ -48,3 +48,9 @@ export { default as CreateEmpCategory } from "./menus/preferences/employee_categ
 export { default as ViewEmpCategory } from "./menus/preferences/employee_category/ViewEmpCategory";
 export { default as EmpCategoryDetails } from "./menus/preferences/employee_category/EmpCategoryDetails";
 export { default as EditEmpCategory } from "./menus/preferences/employee_category/EditEmpCategory";
+
+// employee category
+export { default as CreateEmpStatus } from "./menus/preferences/employee_status/CreateEmpStatus";
+export { default as ViewEmpStatus } from "./menus/preferences/employee_status/ViewEmpStatus";
+export { default as EmpStatusDetails } from "./menus/preferences/employee_status/EmpStatusDetails";
+export { default as EditEmpStatus } from "./menus/preferences/employee_status/EditEmpStatus";

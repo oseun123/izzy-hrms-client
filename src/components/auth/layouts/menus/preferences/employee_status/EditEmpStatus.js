@@ -4,7 +4,7 @@ import { Input, Button, Space } from "antd";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { updateEmpCategory } from "../../../../../../store/actions/preferencesActions";
+import { updateEmpStatus } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
   useShallowEqualSelector,
@@ -17,26 +17,26 @@ import { spinner_preferences } from "../../../../../../store/selectors/preferenc
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-import { useGetSystemEmpCategory } from "../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemEmpStatus } from "../../../../../../store/actions/preferencesHooksActions";
 
-function EditEmpCategory() {
+function EditEmpStatus() {
   const { id } = useParams();
   const [creds, setCreds] = useState({});
   const [enabled, setEnabled] = useState(true);
-  const [single_emp_cat, setSingleEmpCat] = useState(null);
+  const [single_emp_status, setSingleEmpStatus] = useState(null);
 
   useCleanUp();
   usePreferenceNotification();
 
-  const { isLoading, data } = useGetSystemEmpCategory(enabled, setEnabled);
+  const { isLoading, data } = useGetSystemEmpStatus(enabled, setEnabled);
   const dispatch = useDispatch();
   const spinner = useShallowEqualSelector(spinner_preferences);
 
   const request = useAxiosPrivate();
 
   //callback
-  function editEmpCategoryCallback() {
-    updateEmpCategory(dispatch, request, creds).then((res) => {
+  function editEmpStatusCallback() {
+    updateEmpStatus(dispatch, request, creds).then((res) => {
       if (res?.status === "success") {
       }
     });
@@ -44,7 +44,7 @@ function EditEmpCategory() {
 
   //validation
 
-  function validateeditEmpCategory(values) {
+  function validateeditEmpStatus(values) {
     let errors = {};
 
     if (values.hasOwnProperty("name") && values.name === "") {
@@ -73,28 +73,28 @@ function EditEmpCategory() {
   }
 
   const { errors, handleSubmit } = useForm(
-    editEmpCategoryCallback,
+    editEmpStatusCallback,
     creds,
-    validateeditEmpCategory
+    validateeditEmpStatus
   );
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
-      const employeeCategory = data?.payload?.employeeCategory;
-      const single_cat = employeeCategory.find(
+      const employeeStatus = data?.payload?.employeeStatus;
+      const single_status = employeeStatus.find(
         (item) => parseInt(item.id) === parseInt(id)
       );
 
-      setSingleEmpCat(single_cat);
+      setSingleEmpStatus(single_status);
     }
   }, [data, id]);
 
   useEffect(() => {
     setCreds({
-      name: single_emp_cat?.name,
-      emp_cat_id: single_emp_cat?.id,
+      name: single_emp_status?.name,
+      id: single_emp_status?.id,
     });
-  }, [single_emp_cat]);
+  }, [single_emp_status]);
 
   return (
     <>
@@ -106,7 +106,7 @@ function EditEmpCategory() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Edit Employee Category</h1>
+                <h1>Edit Employee Status(es)</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -114,7 +114,7 @@ function EditEmpCategory() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences</li>
-                  <li className="breadcrumb-item active">Employee Category</li>
+                  <li className="breadcrumb-item active">Employee Status</li>
                 </ol>
               </div>
             </div>
@@ -127,7 +127,7 @@ function EditEmpCategory() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Modify employee category</h3>
+                <h3 className="card-title">Modify employee status</h3>
                 <div className="card-tools"></div>
               </div>
               <form onSubmit={(e) => handleSubmit(e, creds)}>
@@ -146,7 +146,7 @@ function EditEmpCategory() {
                         onChange={handleChangeCreds}
                         status={errors.name ? "error" : ""}
                         className="w-75"
-                        placeholder="Name of employee category"
+                        placeholder="Name of employee status"
                       />
 
                       <div
@@ -176,7 +176,7 @@ function EditEmpCategory() {
                           {" "}
                           Update
                         </Button>
-                        <Link to="/preferences/view-employee-category">
+                        <Link to="/preferences/view-employee-status">
                           <Button
                             icon={<EyeOutlined />}
                             className={styles.on_hover}
@@ -200,4 +200,4 @@ function EditEmpCategory() {
   );
 }
 
-export default EditEmpCategory;
+export default EditEmpStatus;

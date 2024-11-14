@@ -48,6 +48,10 @@ import {
   ViewEmpCategory,
   EmpCategoryDetails,
   EditEmpCategory,
+  CreateEmpStatus,
+  ViewEmpStatus,
+  EmpStatusDetails,
+  EditEmpStatus,
 } from "./layouts/preferences";
 
 // Human Resource Component
@@ -361,6 +365,38 @@ const Layout = () => {
                 />
 
                 {/* end employee category */}
+
+                {/* end designation */}
+
+                {/* start employee status */}
+                <HasPermission
+                  exact
+                  path="/preferences/create-employee-status"
+                  component={CreateEmpStatus}
+                  permission="CREATE_EMPLOYEE_CATEGORY"
+                />
+                <HasPermission
+                  exact
+                  path="/preferences/view-employee-status"
+                  component={ViewEmpStatus}
+                  permission="VIEW_EMPLOYEE_STATUS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-employee-status/:id"
+                  component={EmpStatusDetails}
+                  permission="VIEW_EMPLOYEE_STATUS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/edit-employee-status/:id"
+                  component={EditEmpStatus}
+                  permission="EDIT_EMPLOYEE_STATUS"
+                />
+
+                {/* end employee status */}
 
                 {/* start onboarding*/}
                 <HasPermission
