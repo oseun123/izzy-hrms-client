@@ -8,7 +8,7 @@ const createRole = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/roles", creds);
+    const result = await request.post("/preferences/roles", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -27,7 +27,7 @@ const createBranch = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/branches", creds);
+    const result = await request.post("/preferences/branches", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -47,7 +47,7 @@ const updateBranch = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/branches/${creds.branch_id}`,
+      `/preferences/branches/${creds.branch_id}`,
       creds
     );
 
@@ -69,7 +69,7 @@ const updateRole = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/roles/${creds.role_id}`,
+      `/preferences/roles/${creds.role_id}`,
       creds
     );
 
@@ -91,7 +91,7 @@ const updateDepartment = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/departments/${creds.dept_id}`,
+      `/preferences/departments/${creds.dept_id}`,
       creds
     );
 
@@ -113,7 +113,7 @@ const assignUsers = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/roles-users/${creds.role_id}`,
+      `/preferences/roles-users/${creds.role_id}`,
       creds
     );
 
@@ -135,7 +135,7 @@ const removeUser = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/roles-user/${creds.role_id}`,
+      `/preferences/roles-user/${creds.role_id}`,
       creds
     );
 
@@ -157,7 +157,7 @@ const deleteRole = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(`/api/preferences/roles/${creds.id}`);
+    const result = await request.delete(`/preferences/roles/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -176,9 +176,7 @@ const deleteDepartment = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(
-      `/api/preferences/departments/${creds.id}`
-    );
+    const result = await request.delete(`/preferences/departments/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -198,7 +196,7 @@ const createDepartment = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/departments", creds);
+    const result = await request.post("/preferences/departments", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -217,7 +215,7 @@ const createGender = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/genders", creds);
+    const result = await request.post("/preferences/genders", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -237,7 +235,27 @@ const createDesignation = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/designations", creds);
+    const result = await request.post("/preferences/designations", creds);
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "GENERIC_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+  }
+};
+
+const createEmployeeCategory = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.post("/preferences/employee-category", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -256,7 +274,7 @@ const createCompany = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/companies", creds);
+    const result = await request.post("/preferences/companies", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -275,7 +293,7 @@ const deleteGender = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(`/api/preferences/genders/${creds.id}`);
+    const result = await request.delete(`/preferences/genders/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -295,7 +313,29 @@ const deleteDisignation = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.delete(
-      `/api/preferences/designations/${creds.id}`
+      `/preferences/designations/${creds.id}`
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "GENERIC_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+  }
+};
+
+const deleteEmpCat = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.delete(
+      `/preferences/employee-category/${creds.id}`
     );
 
     dispatch({ type: "STOP_SPINNER" });
@@ -315,9 +355,7 @@ const deleteCompany = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(
-      `/api/preferences/companies/${creds.id}`
-    );
+    const result = await request.delete(`/preferences/companies/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -336,9 +374,7 @@ const deleteBranch = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(
-      `/api/preferences/branches/${creds.id}`
-    );
+    const result = await request.delete(`/preferences/branches/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -357,7 +393,7 @@ const deleteState = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(`/api/preferences/states/${creds.id}`);
+    const result = await request.delete(`/preferences/states/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -376,9 +412,7 @@ const deleteCountry = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.delete(
-      `/api/preferences/countries/${creds.id}`
-    );
+    const result = await request.delete(`/preferences/countries/${creds.id}`);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -399,7 +433,7 @@ const updateGender = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/genders/${creds.gender_id}`,
+      `/preferences/genders/${creds.gender_id}`,
       creds
     );
 
@@ -421,7 +455,7 @@ const updateDesignation = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/designations/${creds.designation_id}`,
+      `/preferences/designations/${creds.designation_id}`,
       creds
     );
 
@@ -443,7 +477,7 @@ const updateState = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/states/${creds.state_id}`,
+      `/preferences/states/${creds.state_id}`,
       creds
     );
 
@@ -465,7 +499,7 @@ const updateCountry = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/countries/${creds.country_id}`,
+      `/preferences/countries/${creds.country_id}`,
       creds
     );
 
@@ -487,7 +521,7 @@ const updateCompany = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/api/preferences/companies/${creds.company_id}`,
+      `/preferences/companies/${creds.company_id}`,
       creds
     );
 
@@ -508,7 +542,7 @@ const createState = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/states", creds);
+    const result = await request.post("/preferences/states", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -527,7 +561,7 @@ const createCountry = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
-    const result = await request.post("/api/preferences/countries", creds);
+    const result = await request.post("/preferences/countries", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
@@ -538,6 +572,29 @@ const createCountry = async (dispatch, request, creds) => {
     dispatch({ type: "STOP_SPINNER_PREFERENCES" });
     const resMessage = error?.response?.data;
     dispatch({ type: "CREATE_COUNTRY_ERROR", payload: resMessage });
+  }
+};
+
+const updateEmpCategory = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: "CLEAR_USERS_ERRORS" });
+    dispatch({ type: "CLEAR_PREFERENCES_ERRORS" });
+    dispatch({ type: "START_SPINNER" });
+    dispatch({ type: "START_SPINNER_PREFERENCES" });
+    const result = await request.put(
+      `/preferences/employee-category/${creds.emp_cat_id}`,
+      creds
+    );
+
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    dispatch({ type: "GENERIC_SUCCESS", payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: "STOP_SPINNER" });
+    dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+    const resMessage = error?.response?.data;
+    dispatch({ type: "GENERIC_ERROR", payload: resMessage });
   }
 };
 export {
@@ -568,4 +625,7 @@ export {
   createDesignation,
   deleteDisignation,
   updateDesignation,
+  createEmployeeCategory,
+  deleteEmpCat,
+  updateEmpCategory,
 };

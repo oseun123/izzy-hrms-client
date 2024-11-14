@@ -14,7 +14,7 @@ const UseRefreshTest = (enabled, setEnabled) => {
   const { data, error, refetch, isLoading } = useQuery(
     ["Test"],
     async () => {
-      const result = await request.get(`/api/auth/test`);
+      const result = await request.get(`/auth/test`);
       return result.data.payload;
     },
     { enabled: enabled, manual: true, retry: 2 }
@@ -53,7 +53,7 @@ const useGetCurrentClient = (enabled, setEnabled) => {
   const { data, error, refetch, isLoading } = useQuery(
     ["current_client"],
     async () => {
-      const result = await request.get(`/api/auth/current_client`);
+      const result = await request.get(`/auth/current_client`);
       return result.data;
     },
     { enabled: enabled, manual: true, retry: 1 }
@@ -100,7 +100,7 @@ const useGetAllEmployee = (enabled, setEnabled) => {
   const { data, error, refetch, isLoading } = useQuery(
     ["all_employee"],
     async () => {
-      const result = await request.get(`/api/utils/system_users`);
+      const result = await request.get(`/utils/system_users`);
       return result.data;
     },
     { enabled: enabled, manual: true, retry: 1 }

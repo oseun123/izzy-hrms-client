@@ -42,3 +42,9 @@ export { default as CreateDesignation } from "./menus/preferences/designation/Cr
 export { default as ViewDesignation } from "./menus/preferences/designation/ViewDesignation";
 export { default as DesignationDetails } from "./menus/preferences/designation/DesignationDetails";
 export { default as EditDesignation } from "./menus/preferences/designation/EditDesignation";
+
+// employee category
+export { default as CreateEmpCategory } from "./menus/preferences/employee_category/CreateEmpCategory";
+export { default as ViewEmpCategory } from "./menus/preferences/employee_category/ViewEmpCategory";
+export { default as EmpCategoryDetails } from "./menus/preferences/employee_category/EmpCategoryDetails";
+export { default as EditEmpCategory } from "./menus/preferences/employee_category/EditEmpCategory";

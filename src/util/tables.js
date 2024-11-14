@@ -625,6 +625,7 @@ const department_columns = (
   ];
 };
 
+// used in many places not just for department so be wary of changes
 const department_details_columns = () => {
   return [
     {
@@ -1124,6 +1125,157 @@ const designation_columns = (
             </Link>
             {edit_dept ? (
               <Link to={`/preferences/edit-designation/${id}`}>
+                <Tag color="cyan">Edit</Tag>
+              </Link>
+            ) : null}
+
+            {delete_perm ? (
+              <Link to="#">
+                <Popconfirm
+                  placement="topRight"
+                  title={confirm_text}
+                  onConfirm={() => {
+                    // console.log({ id });
+                    confirmAction(id);
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Tag color="red">Delete</Tag>
+                </Popconfirm>
+              </Link>
+            ) : null}
+          </Space>
+        );
+      },
+    },
+  ];
+};
+const emp_category_columns = (
+  isTabletOrMobile,
+  confirm_text,
+  confirmAction,
+  delete_perm,
+  edit_dept
+) => {
+  return [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter Name"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.name.toLowerCase().includes(value.toLowerCase());
+      },
+
+      render: (value, record) => {
+        return value;
+      },
+    },
+
+    {
+      title: "Total users",
+      key: "users",
+      dataIndex: "users",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter total users"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.users.length === parseInt(value);
+      },
+      render: (users, record) => {
+        return users?.length;
+      },
+    },
+
+    {
+      title: "Action",
+      key: "action",
+      width: isTabletOrMobile ? 100 : 200,
+      fixed: "right",
+      render: (_, record) => {
+        const { id } = record;
+        return (
+          <Space wrap={isTabletOrMobile}>
+            <Link to={`/preferences/view-employee-category/${id}`}>
+              <Tag color="geekblue">View</Tag>
+            </Link>
+            {edit_dept ? (
+              <Link to={`/preferences/edit-employee-category/${id}`}>
                 <Tag color="cyan">Edit</Tag>
               </Link>
             ) : null}
@@ -1881,4 +2033,5 @@ export {
   company_details_columns,
   branch_columns,
   designation_columns,
+  emp_category_columns,
 };
