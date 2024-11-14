@@ -52,6 +52,7 @@ import {
   ViewEmpStatus,
   EmpStatusDetails,
   EditEmpStatus,
+  GeneralSettings,
 } from "./layouts/preferences";
 
 // Human Resource Component
@@ -301,6 +302,12 @@ const Layout = () => {
                   exact
                   path="/preferences/display-settings"
                   component={DisplaySettings}
+                  permission="SET_DISPLAY"
+                />
+                <HasPermission
+                  exact
+                  path="/preferences/general-settings"
+                  component={GeneralSettings}
                   permission="SET_DISPLAY"
                 />
 

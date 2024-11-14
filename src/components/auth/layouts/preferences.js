@@ -34,8 +34,10 @@ export { default as CreateBranch } from "./menus/preferences/branch/CreateBranch
 export { default as ViewBranch } from "./menus/preferences/branch/ViewBranch";
 export { default as BranchDetails } from "./menus/preferences/branch/BranchDetails";
 export { default as EditBranch } from "./menus/preferences/branch/EditBranch";
-// branch
+
+// settings
 export { default as DisplaySettings } from "./menus/preferences/settings/DisplaySettings";
+export { default as GeneralSettings } from "./menus/preferences/settings/general/GeneralSettings";
 
 // designation
 export { default as CreateDesignation } from "./menus/preferences/designation/CreateDesignation";

@@ -730,6 +730,60 @@ const useGetSystemEmpStatus = (
   return { data, refetch, isLoading };
 };
 
+const useGetEmpNumber = (enabled, setEnabled, page = 1, size = 10, all) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["emp_number"],
+    async () => {
+      const result = await request.get(
+        `/preferences/settings-general-employee-number`
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 2 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+      dispatch({ type: "START_SPINNER_PREFERENCES" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["emp_number"]);
+      isForbiddden(dispatch, error, token, location, history);
+      const resMessage = error.response.data;
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
 export {
   useGetSystemPermissions,
   useGetSystemRoles,
@@ -744,4 +798,5 @@ export {
   useGetSystemDesignation,
   useGetSystemEmpCategory,
   useGetSystemEmpStatus,
+  useGetEmpNumber,
 };
