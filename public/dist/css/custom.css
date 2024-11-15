@@ -64,3 +64,21 @@ label:not(.form-check-label):not(.custom-file-label) {
 .text-sm {
   font-size: 0.8rem !important;
 }
+.text-bold-500 {
+  font-weight: 500 !important;
+}
+
+.custom-icon-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  background-color: #dcd9d4;
+}
+
+.custom-icon-bg svg {
+  color: #1677ff;
+  font-size: 20px;
+}

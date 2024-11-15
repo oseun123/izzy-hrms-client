@@ -1,46 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table } from "antd";
-import { useGetSystemState } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
-
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
-import {
-  message_preferences,
-  status_preferences,
-  single_system_state,
-} from "../../../../../../store/selectors/preferencesSelector";
-
-import Message from "../../../../../helpers/Message";
+import { Skeleton, Table } from "antd";
+import { useGetSystemEmpCategory } from "./../../../../../../store/actions/preferencesHooksActions";
 import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
 import { department_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { useCleanUp, usePreferenceNotification } from "../../../../../../hooks";
 
-function StateDetails() {
+function EmpCategoryDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
+  const [single_emp_cat, setSingleEmpCat] = useState(null);
+  useCleanUp();
+  usePreferenceNotification();
 
-  useGetSystemState(enabled, setEnabled);
-
-  const dispatch = useDispatch();
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
-  const single_state = useSelector(
-    (state) => single_system_state(state, id),
-    shallowEqual
-  );
-
-  const users = single_state[0]?.users;
-  const state_name = single_state[0]?.name;
+  const { isLoading, data } = useGetSystemEmpCategory(enabled, setEnabled);
 
   useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+    if (data && Object.keys(data).length) {
+      const employeeCategory = data?.payload?.employeeCategory;
+      const single_cat = employeeCategory.find(
+        (item) => parseInt(item.id) === parseInt(id)
+      );
+
+      setSingleEmpCat(single_cat);
+    }
+  }, [data, id]);
 
   return (
     <>
@@ -48,13 +35,10 @@ function StateDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>State Details</h1>
+                <h1>Employee Category Details</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -62,6 +46,7 @@ function StateDetails() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences </li>
+                  <li className="breadcrumb-item active">Employee Category </li>
                 </ol>
               </div>
             </div>
@@ -78,7 +63,8 @@ function StateDetails() {
                   <div className="card-header">
                     <h3 className="card-title">
                       User(s) in{" "}
-                      {state_name && capitalizeFirstLetter(state_name)}{" "}
+                      {single_emp_cat &&
+                        capitalizeFirstLetter(single_emp_cat?.name)}{" "}
                     </h3>
                     <div className="card-tools ">
                       <button
@@ -93,15 +79,19 @@ function StateDetails() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <Table
-                      columns={department_details_columns()}
-                      rowKey={(record) => record.id}
-                      dataSource={users}
-                      scroll={{
-                        x: 786,
-                      }}
-                      locale={{ emptyText: <NoCustomDataIcon /> }}
-                    />
+                    {isLoading ? (
+                      <Skeleton active />
+                    ) : (
+                      <Table
+                        columns={department_details_columns()}
+                        rowKey={(record) => record.id}
+                        dataSource={single_emp_cat?.users}
+                        scroll={{
+                          x: 786,
+                        }}
+                        locale={{ emptyText: <NoCustomDataIcon /> }}
+                      />
+                    )}
                   </div>
                   {/* /.card-body */}
 
@@ -118,4 +108,4 @@ function StateDetails() {
   );
 }
 
-export default StateDetails;
+export default EmpCategoryDetails;

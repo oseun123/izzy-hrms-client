@@ -19,7 +19,7 @@ const useGetSystemPermissions = (enabled, setEnabled) => {
   const { data, error, refetch, isLoading } = useQuery(
     ["system_permissions"],
     async () => {
-      const result = await request.get(`/api/preferences/permissions`);
+      const result = await request.get(`/preferences/permissions`);
 
       return result.data;
     },
@@ -70,7 +70,7 @@ const useGetUserPermissions = (enabled, setEnabled, user_id) => {
     ["user_permissions", user_id],
     async () => {
       const result = await request.get(
-        `/api/preferences/user-permissions/${user_id}`
+        `/preferences/user-permissions/${user_id}`
       );
       return result.data;
     },
@@ -121,7 +121,7 @@ const useGetSystemUsers = (enabled, setEnabled) => {
   const { data, error, refetch, isLoading } = useQuery(
     ["system_users"],
     async () => {
-      const result = await request.get(`/api/preferences/users`);
+      const result = await request.get(`/preferences/users`);
 
       return result.data;
     },
@@ -173,7 +173,7 @@ const useGetSystemRoles = (enabled, setEnabled, page = 1, size = 10, all) => {
     ["system_roles", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/roles?size=${size}&page=${page}&all=${all}`
+        `/preferences/roles?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -234,7 +234,7 @@ const useGetSystemDepartment = (
     ["system_departments", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/departments?size=${size}&page=${page}&all=${all}`
+        `/preferences/departments?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -288,7 +288,7 @@ const useGetSystemGender = (enabled, setEnabled, page = 1, size = 10, all) => {
     ["system_genders", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/genders?size=${size}&page=${page}&all=${all}`
+        `/preferences/genders?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -349,7 +349,7 @@ const useGetSystemDesignation = (
     ["system_designation", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/designations?size=${size}&page=${page}&all=${all}`
+        `/preferences/designations?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -402,7 +402,7 @@ const useGetSystemState = (enabled, setEnabled, page = 1, size = 10, all) => {
     ["system_states", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/states?size=${size}&page=${page}&all=${all}`
+        `/preferences/states?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -456,7 +456,7 @@ const useGetSystemCountry = (enabled, setEnabled, page = 1, size = 10, all) => {
     ["system_country", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/countries?size=${size}&page=${page}&all=${all}`
+        `/preferences/countries?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -511,7 +511,7 @@ const useGetSystemCompany = (enabled, setEnabled, page = 1, size = 10, all) => {
     ["system_companys", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/companies?size=${size}&page=${page}&all=${all}`
+        `/preferences/companies?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -565,7 +565,7 @@ const useGetSystemBranch = (enabled, setEnabled, page = 1, size = 10, all) => {
     ["system_branchs", page, size],
     async () => {
       const result = await request.get(
-        `/api/preferences/branches?size=${size}&page=${page}&all=${all}`
+        `/preferences/branches?size=${size}&page=${page}&all=${all}`
       );
 
       return result.data;
@@ -610,6 +610,180 @@ const useGetSystemBranch = (enabled, setEnabled, page = 1, size = 10, all) => {
   return { data, refetch, isLoading };
 };
 
+const useGetSystemEmpCategory = (
+  enabled,
+  setEnabled,
+  page = 1,
+  size = 10,
+  all
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["system_emp_category", page, size],
+    async () => {
+      const result = await request.get(
+        `/preferences/employee-categories?size=${size}&page=${page}&all=${all}`
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 2 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+      dispatch({ type: "START_SPINNER_PREFERENCES" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["system_emp_category", page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      const resMessage = error.response.data;
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemEmpStatus = (
+  enabled,
+  setEnabled,
+  page = 1,
+  size = 10,
+  all
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["system_emp_status", page, size],
+    async () => {
+      const result = await request.get(
+        `/preferences/employee-statuses?size=${size}&page=${page}&all=${all}`
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 2 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+      dispatch({ type: "START_SPINNER_PREFERENCES" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["system_emp_status", page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      const resMessage = error.response.data;
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetEmpNumber = (enabled, setEnabled, page = 1, size = 10, all) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery(
+    ["emp_number"],
+    async () => {
+      const result = await request.get(
+        `/preferences/settings-general-employee-number`
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, manual: true, retry: 2 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+      dispatch({ type: "START_SPINNER_PREFERENCES" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["emp_number"]);
+      isForbiddden(dispatch, error, token, location, history);
+      const resMessage = error.response.data;
+      dispatch({ type: "STOP_SPINNER" });
+      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
 export {
   useGetSystemPermissions,
   useGetSystemRoles,
@@ -622,4 +796,7 @@ export {
   useGetSystemCompany,
   useGetSystemBranch,
   useGetSystemDesignation,
+  useGetSystemEmpCategory,
+  useGetSystemEmpStatus,
+  useGetEmpNumber,
 };

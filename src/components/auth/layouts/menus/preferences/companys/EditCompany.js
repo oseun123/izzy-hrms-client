@@ -118,7 +118,7 @@ function EditCompany() {
               <form onSubmit={handleSubmitfist}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-6 offset-md-3">
+                    <div className="form-group col-md-4 offset-md-4  d-flex flex-column">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -131,6 +131,8 @@ function EditCompany() {
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
                         defaultValue={nam}
+                        className="w-75"
+                        placeholder="Name of company"
                       />
 
                       <div
@@ -145,8 +147,9 @@ function EditCompany() {
                         {errors.name}
                       </div>
                     </div>
-
-                    <div className="form-group col-md-6 offset-md-3">
+                  </div>
+                  <div className="row">
+                    <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button
                           type="primary"

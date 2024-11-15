@@ -27,6 +27,8 @@ import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActions";
+import LetteredAvatar from "react-lettered-avatar";
+import { arrayWithColors } from "../../../../../../util/helpers";
 
 function EditDepartments() {
   const [creds, setCreds] = useState({});
@@ -155,8 +157,8 @@ function EditDepartments() {
               </div>
               <form onSubmit={handleSubmitfist}>
                 <div className="card-body">
-                  <div className="row d-flex justify-content-center ">
-                    <div className="form-group col-md-3">
+                  <div className="row ">
+                    <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -168,7 +170,8 @@ function EditDepartments() {
                         value={creds.name}
                         onChange={handleChangeCreds}
                         status={errors.name ? "error" : ""}
-                        // defaultValue={nam}
+                        className="w-75"
+                        placeholder="Name of department"
                       />
 
                       <div
@@ -183,30 +186,42 @@ function EditDepartments() {
                         {errors.name}
                       </div>
                     </div>
-                    <div className="form-group col-md-3">
+                    <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">HOD</label>
                       <Select
                         name="hod"
                         id="hod"
-                        value={creds.hod}
+                        value={creds.hod || null}
                         loading={isLoading ? true : false}
                         showSearch
-                        className="w-100"
                         onChange={(value) => handleSelect(value, "hod")}
                         optionFilterProp="children"
                         filterOption={(input, option) => {
-                          return (option?.value ?? "")
+                          return (option?.label ?? "")
                             .toLowerCase()
                             .includes(input.toLowerCase());
                         }}
-                        // defaultValue={ho}
+                        className="w-75"
+                        placeholder="Head of department"
                       >
                         <option value="">--</option>
                         {data && Object.keys(data).length
                           ? data?.system_users.map((item) => {
                               return (
-                                <option key={item.id} value={item.id}>
-                                  {item.fullname}
+                                <option
+                                  key={item.id}
+                                  value={item.id}
+                                  label={item.fullname}
+                                >
+                                  <Space>
+                                    <LetteredAvatar
+                                      name={item.fullname}
+                                      size={25}
+                                      backgroundColors={arrayWithColors}
+                                    />
+
+                                    {item.fullname}
+                                  </Space>
                                 </option>
                               );
                             })
@@ -225,8 +240,9 @@ function EditDepartments() {
                         {errors.hod}
                       </div>
                     </div>
-
-                    <div className="form-group col-md-6 offset-md-3">
+                  </div>
+                  <div className="row ">
+                    <div className="form-group col-md-4">
                       <Space>
                         <Button
                           type="primary"

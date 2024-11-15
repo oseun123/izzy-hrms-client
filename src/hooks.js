@@ -10,6 +10,15 @@ import { useDispatch } from "react-redux";
 
 import { preferencesCleanUp } from "./store/actions/preferencesActions";
 import { resetUsersState } from "./store/actions/userActions";
+import {
+  message_preferences,
+  status_preferences,
+} from "./store/selectors/preferencesSelector";
+import { notificationError, notificationSuccess } from "./util/helpers";
+import {
+  message as user_message,
+  status as user_status,
+} from "./store/selectors/userSelectors";
 function useForm(callback, initState = {}, validate) {
   const [values, setValues] = useState(initState);
   const [errors, setErrors] = useState({});
@@ -167,6 +176,48 @@ function useCleanUp() {
   }, [dispatch]);
 }
 
+function useUserNotification() {
+  const [delay, setDelay] = useState(false);
+
+  const status = useShallowEqualSelector(user_status);
+  const message = useShallowEqualSelector(user_message);
+
+  useEffect(() => {
+    if (delay && status === "success") {
+      notificationSuccess(message);
+    } else if (delay && status === "error") {
+      notificationError(message);
+    }
+  }, [status, message, delay]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDelay(true);
+    }, 500);
+  }, []);
+}
+
+function usePreferenceNotification() {
+  const [delay, setDelay] = useState(false);
+
+  const status = useShallowEqualSelector(status_preferences);
+  const message = useShallowEqualSelector(message_preferences);
+
+  useEffect(() => {
+    if (delay && status === "success") {
+      notificationSuccess(message);
+    } else if (delay && status === "error") {
+      notificationError(message);
+    }
+  }, [status, message, delay]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDelay(true);
+    }, 500);
+  }, []);
+}
+
 export {
   useForm,
   useShallowEqualSelector,
@@ -176,4 +227,6 @@ export {
   usePreferenceCleanUp,
   useUserCleanUp,
   useCleanUp,
+  usePreferenceNotification,
+  useUserNotification,
 };

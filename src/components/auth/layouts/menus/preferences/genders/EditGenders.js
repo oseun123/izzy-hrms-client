@@ -118,7 +118,7 @@ function EditGenders() {
               <form onSubmit={handleSubmitfist}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-4 offset-md-4">
+                    <div className="form-group col-md-4 d-flex flex-column offset-md-4">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -131,6 +131,8 @@ function EditGenders() {
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
                         defaultValue={nam}
+                        className="w-75"
+                        placeholder="Name of gender"
                       />
 
                       <div
@@ -145,7 +147,8 @@ function EditGenders() {
                         {errors.name}
                       </div>
                     </div>
-
+                  </div>
+                  <div className="row">
                     <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button

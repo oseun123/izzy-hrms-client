@@ -34,9 +34,25 @@ export { default as CreateBranch } from "./menus/preferences/branch/CreateBranch
 export { default as ViewBranch } from "./menus/preferences/branch/ViewBranch";
 export { default as BranchDetails } from "./menus/preferences/branch/BranchDetails";
 export { default as EditBranch } from "./menus/preferences/branch/EditBranch";
-// branch
+
+// settings
 export { default as DisplaySettings } from "./menus/preferences/settings/DisplaySettings";
+export { default as GeneralSettings } from "./menus/preferences/settings/general/GeneralSettings";
 
 // designation
 export { default as CreateDesignation } from "./menus/preferences/designation/CreateDesignation";
 export { default as ViewDesignation } from "./menus/preferences/designation/ViewDesignation";
+export { default as DesignationDetails } from "./menus/preferences/designation/DesignationDetails";
+export { default as EditDesignation } from "./menus/preferences/designation/EditDesignation";
+
+// employee category
+export { default as CreateEmpCategory } from "./menus/preferences/employee_category/CreateEmpCategory";
+export { default as ViewEmpCategory } from "./menus/preferences/employee_category/ViewEmpCategory";
+export { default as EmpCategoryDetails } from "./menus/preferences/employee_category/EmpCategoryDetails";
+export { default as EditEmpCategory } from "./menus/preferences/employee_category/EditEmpCategory";
+
+// employee category
+export { default as CreateEmpStatus } from "./menus/preferences/employee_status/CreateEmpStatus";
+export { default as ViewEmpStatus } from "./menus/preferences/employee_status/ViewEmpStatus";
+export { default as EmpStatusDetails } from "./menus/preferences/employee_status/EmpStatusDetails";
+export { default as EditEmpStatus } from "./menus/preferences/employee_status/EditEmpStatus";

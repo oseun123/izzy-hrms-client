@@ -43,6 +43,16 @@ import {
   DisplaySettings,
   CreateDesignation,
   ViewDesignation,
+  DesignationDetails,
+  EditDesignation,
+  ViewEmpCategory,
+  EmpCategoryDetails,
+  EditEmpCategory,
+  CreateEmpStatus,
+  ViewEmpStatus,
+  EmpStatusDetails,
+  EditEmpStatus,
+  GeneralSettings,
 } from "./layouts/preferences";
 
 // Human Resource Component
@@ -52,6 +62,7 @@ import { CreateEmployee } from "./layouts/human_resource";
 
 import { PersonalDashboard } from "./layouts/dashboard";
 import { AnimatePresence } from "framer-motion";
+import CreateEmpCategory from "./layouts/menus/preferences/employee_category/CreateEmpCategory";
 
 const Layout = () => {
   const location = useLocation();
@@ -293,6 +304,12 @@ const Layout = () => {
                   component={DisplaySettings}
                   permission="SET_DISPLAY"
                 />
+                <HasPermission
+                  exact
+                  path="/preferences/general-settings"
+                  component={GeneralSettings}
+                  permission="SET_DISPLAY"
+                />
 
                 {/* end setting */}
 
@@ -310,21 +327,83 @@ const Layout = () => {
                   permission="VIEW_DESIGNATION"
                 />
 
-                {/* <HasPermission
+                <HasPermission
                   exact
-                  path="/preferences/view-branches/:id"
-                  component={BranchDetails}
-                  permission="VIEW_BRANCH"
-                /> */}
+                  path="/preferences/view-designation/:id"
+                  component={DesignationDetails}
+                  permission="VIEW_DESIGNATION"
+                />
 
-                {/* <HasPermission
+                <HasPermission
                   exact
-                  path="/preferences/edit-branches/:id"
-                  component={EditBranch}
-                  permission="EDIT_BRANCH"
-                />  */}
+                  path="/preferences/edit-designation/:id"
+                  component={EditDesignation}
+                  permission="EDIT_DESIGNATION"
+                />
 
-                {/* end branch */}
+                {/* end designation */}
+
+                {/* start employee category */}
+                <HasPermission
+                  exact
+                  path="/preferences/create-employee-category"
+                  component={CreateEmpCategory}
+                  permission="CREATE_EMPLOYEE_CATEGORY"
+                />
+                <HasPermission
+                  exact
+                  path="/preferences/view-employee-category"
+                  component={ViewEmpCategory}
+                  permission="VIEW_EMPLOYEE_CATEGORY"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-employee-category/:id"
+                  component={EmpCategoryDetails}
+                  permission="VIEW_EMPLOYEE_CATEGORY"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/edit-employee-category/:id"
+                  component={EditEmpCategory}
+                  permission="EDIT_EMPLOYEE_CATEGORY"
+                />
+
+                {/* end employee category */}
+
+                {/* end designation */}
+
+                {/* start employee status */}
+                <HasPermission
+                  exact
+                  path="/preferences/create-employee-status"
+                  component={CreateEmpStatus}
+                  permission="CREATE_EMPLOYEE_CATEGORY"
+                />
+                <HasPermission
+                  exact
+                  path="/preferences/view-employee-status"
+                  component={ViewEmpStatus}
+                  permission="VIEW_EMPLOYEE_STATUS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-employee-status/:id"
+                  component={EmpStatusDetails}
+                  permission="VIEW_EMPLOYEE_STATUS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/edit-employee-status/:id"
+                  component={EditEmpStatus}
+                  permission="EDIT_EMPLOYEE_STATUS"
+                />
+
+                {/* end employee status */}
 
                 {/* start onboarding*/}
                 <HasPermission

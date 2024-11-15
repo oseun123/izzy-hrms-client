@@ -254,16 +254,18 @@ function AddUserRole() {
                       </div>
                     </div>
 
-                    <Button
-                      type="primary"
-                      icon={<PlusCircleOutlined />}
-                      loading={spinner}
-                      htmlType="submit"
-                      className={styles.on_hover}
-                    >
-                      {" "}
-                      Create
-                    </Button>
+                    <div className="form-group col-md-11 ">
+                      <Button
+                        type="primary"
+                        icon={<PlusCircleOutlined />}
+                        loading={spinner}
+                        htmlType="submit"
+                        className={styles.on_hover}
+                      >
+                        {" "}
+                        Create
+                      </Button>
+                    </div>
 
                     {/* /.card */}
                   </div>

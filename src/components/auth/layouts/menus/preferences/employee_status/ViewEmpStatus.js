@@ -13,52 +13,51 @@ import {
 
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemDesignation } from "./../../../../../../store/actions/preferencesHooksActions";
-import { deleteDisignation } from "../../../../../../store/actions/preferencesActions";
+import { useGetSystemEmpStatus } from "./../../../../../../store/actions/preferencesHooksActions";
+import { deleteEmpStatus } from "../../../../../../store/actions/preferencesActions";
 
 import { useMediaQuery } from "react-responsive";
-import { designation_columns } from "./../../../../../../util/tables";
+import { emp_status_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 const { Option } = Select;
 
-function ViewDesignation() {
+function ViewEmpStatus() {
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [designation, setDesignation] = useState([]);
+  const [emp_status, setEmpStatus] = useState([]);
 
   useCleanUp();
   usePreferenceNotification();
 
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemDesignation(
+  const { data, isLoading } = useGetSystemEmpStatus(
     enabled,
     setEnabled,
     page,
     size
   );
 
-  //   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
 
-  const delete_designation = useSelector(
-    (state) => memoUserpermission(state, "DELETE_DESIGNATION"),
+  const delete_emp_status = useSelector(
+    (state) => memoUserpermission(state, "DELETE_EMPLOYEE_STATUS"),
     shallowEqual
   );
-  const edit_designation = useSelector(
-    (state) => memoUserpermission(state, "EDIT_DESIGNATION"),
+  const edit_emp_status = useSelector(
+    (state) => memoUserpermission(state, "EDIT_EMPLOYEE_STATUS"),
     shallowEqual
   );
-  console.log({ designation, data });
+
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Are you sure you want to delete this designation?";
+  const confirm_text = "Are you sure you want to delete this employee status?";
   const request = useAxiosPrivate();
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
-      setDesignation(data?.payload?.designations);
+      setEmpStatus(data?.payload?.employeeStatus);
     }
   }, [data]);
 
@@ -73,7 +72,7 @@ function ViewDesignation() {
     setEnabled(true);
   }
   function confirmAction(id) {
-    deleteDisignation(dispatch, request, { id }).then((res) => {
+    deleteEmpStatus(dispatch, request, { id }).then((res) => {
       if (res?.status === "success") {
         setEnabled(true);
       }
@@ -89,7 +88,7 @@ function ViewDesignation() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>View Designation</h1>
+                <h1>View Employee Status</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -97,6 +96,7 @@ function ViewDesignation() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Prefrences</li>
+                  <li className="breadcrumb-item active">Employee Status</li>
                 </ol>
               </div>
             </div>
@@ -111,7 +111,7 @@ function ViewDesignation() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System designation</h3>
+                    <h3 className="card-title">List of employee status</h3>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
@@ -120,14 +120,14 @@ function ViewDesignation() {
                       <>
                         {" "}
                         <Table
-                          columns={designation_columns(
+                          columns={emp_status_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
-                            delete_designation,
-                            edit_designation
+                            delete_emp_status,
+                            edit_emp_status
                           )}
-                          dataSource={designation}
+                          dataSource={emp_status}
                           rowKey={(record) => record.id}
                           scroll={{
                             x: 786,
@@ -212,4 +212,4 @@ function ViewDesignation() {
   );
 }
 
-export default ViewDesignation;
+export default ViewEmpStatus;

@@ -17,6 +17,7 @@ import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
 import { department_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 
 function CountryDetails() {
   const { id } = useParams();
@@ -99,6 +100,7 @@ function CountryDetails() {
                       scroll={{
                         x: 786,
                       }}
+                      locale={{ emptyText: <NoCustomDataIcon /> }}
                     />
                   </div>
                   {/* /.card-body */}

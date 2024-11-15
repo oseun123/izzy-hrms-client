@@ -94,7 +94,7 @@ function CreateCountry() {
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-6 offset-md-3">
+                    <div className="form-group col-md-4 offset-md-4 d-flex flex-column">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -106,6 +106,8 @@ function CreateCountry() {
                         value={values.name}
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
+                        className="w-75"
+                        placeholder="Name of country"
                       />
 
                       <div
@@ -120,8 +122,9 @@ function CreateCountry() {
                         {errors.name}
                       </div>
                     </div>
-
-                    <div className="form-group col-md-6 offset-md-3">
+                  </div>
+                  <div className="row">
+                    <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button
                           type="primary"

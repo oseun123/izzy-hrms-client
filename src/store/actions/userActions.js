@@ -13,7 +13,7 @@ export const login = async (dispatch, user, history, location) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
-    const result = await publicRequest.post("/api/auth/sign_in", user);
+    const result = await publicRequest.post("/auth/sign_in", user);
     const hash = hashData(result.data.payload.token);
     const hash_perm = hashData(result.data.payload.user.permissions);
     storage_type.setItem(token, hash);
@@ -33,7 +33,7 @@ export const login = async (dispatch, user, history, location) => {
 export const logOut = async (dispatch, request) => {
   try {
     dispatch({ type: "START_SPINNER" });
-    const result = await request.post("/api/auth/logout");
+    const result = await request.post("/auth/logout");
 
     const payload = {
       status: result.data.status,
@@ -64,7 +64,7 @@ export const requestPasswordLink = async (dispatch, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
-    const result = await publicRequest.post("/api/auth/forget_password", creds);
+    const result = await publicRequest.post("/auth/forget_password", creds);
     const resMessage = result.data;
     dispatch({ type: "REQUEST_PASSWORD_LINK_SUCCESS", payload: resMessage });
     dispatch({ type: "STOP_SPINNER" });
@@ -81,7 +81,7 @@ export const resetPassword = async (dispatch, creds) => {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     const result = await publicRequest.post(
-      `/api/auth/reset_password/${creds.token}`,
+      `/auth/reset_password/${creds.token}`,
       creds
     );
     const resMessage = result.data;
@@ -99,7 +99,7 @@ export const updateCurrentUserSettings = async (dispatch, request, creds) => {
   try {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
-    const result = await request.put("/api/auth/current_client/update", creds);
+    const result = await request.put("/auth/current_client/update", creds);
 
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "CLEINT_SETTINGS_SUCCESS", payload: result.data });

@@ -95,7 +95,7 @@ function CreateGenders() {
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-4 offset-md-4">
+                    <div className="form-group col-md-4 d-flex flex-column offset-md-4">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}
                       </label>
@@ -107,6 +107,8 @@ function CreateGenders() {
                         value={values.name}
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
+                        className="w-75"
+                        placeholder="Name of gender"
                       />
 
                       <div
@@ -121,7 +123,8 @@ function CreateGenders() {
                         {errors.name}
                       </div>
                     </div>
-
+                  </div>
+                  <div className="row">
                     <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button
