@@ -1,15 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { Input, Skeleton, Space, Switch } from "antd";
+import { Input, Skeleton, Switch, Button } from "antd";
 import { useGetEmpNumber } from "../../../../../../../store/actions/preferencesHooksActions";
 
-import { MdEdit, MdFormatBold } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
+import {
+  useAxiosPrivate,
+  useForm,
+  useShallowEqualSelector,
+} from "../../../../../../../hooks";
+import classnames from "classnames";
+import { spinner_preferences } from "../../../../../../../store/selectors/preferencesSelector";
+import {
+  updateNumberPrefix,
+  updateNumberStatus,
+  updateNumberSuffix,
+} from "../../../../../../../store/actions/preferencesActions";
+import { useDispatch } from "react-redux";
 
-function ToggleActiveState({ payload }) {
+function ToggleActiveState({ payload, refetch }) {
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+  const request = useAxiosPrivate();
+  const dispatch = useDispatch();
+
   console.log({ payload });
   function onChange(checked) {
-    console.log(`switch to ${checked}`);
+    setLoading(true);
+    setStatus(checked);
+
+    updateNumberStatus(dispatch, request, { status: checked }).then((res) => {
+      setLoading(false);
+      refetch();
+    });
   }
 
+  useEffect(() => {
+    if (payload && Object.keys(payload).length) {
+      setStatus(payload?.format?.status);
+    }
+  }, [payload]);
+
+  console.log({ status });
   return (
     <>
       <div className="row d-flex justify-content-between align-items-center">
@@ -21,7 +52,12 @@ function ToggleActiveState({ payload }) {
           </small>
         </div>
         <span>
-          <Switch defaultChecked onChange={onChange} />
+          <Switch
+            // defaultValue={status}
+            value={status}
+            onChange={onChange}
+            loading={loading}
+          />
         </span>
       </div>
     </>
@@ -40,14 +76,70 @@ function CurrentEmployeeNumber({ payload }) {
       </div>
       <span
         className=" p-2 shadow text-bold-500 rounded  text-right"
-        style={{ letterSpacing: "3px", width: "120px" }}
+        style={{ letterSpacing: "3px", minWidth: "140px" }}
       >
         {payload?.format_string || "N/A"}
       </span>
     </div>
   );
 }
-function PreffixEmployeeNumber({ payload }) {
+function PrefixEmployeeNumber({ payload, refetch }) {
+  const [prefix, setPrefix] = useState("");
+  const [creds, setCreds] = useState({});
+  const dispatch = useDispatch();
+  const spinner = useShallowEqualSelector(spinner_preferences);
+  const request = useAxiosPrivate();
+
+  //callback
+  function formCallback() {
+    updateNumberPrefix(dispatch, request, creds).then((res) => {
+      if (res?.status === "success") {
+        refetch();
+      }
+    });
+  }
+
+  //validation
+
+  function formValidate(values) {
+    let errors = {};
+
+    if (values.hasOwnProperty("prefix") && values.prefix === "") {
+      errors.prefix = "Prefix cannot not be empty.";
+    }
+
+    return errors;
+  }
+
+  const { errors, handleSubmit } = useForm(formCallback, creds, formValidate);
+
+  function handleChangeCreds(e, sep = false, creds = {}) {
+    if (sep) {
+      setCreds((prevValues) => {
+        if (!creds.name || creds.value === undefined) {
+          return prevValues;
+        }
+        return { ...prevValues, [creds.name]: creds.value };
+      });
+    } else if (e && e.target) {
+      setCreds((prevValues) => {
+        return { ...prevValues, [e.target.name]: e.target.value };
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (payload && Object.keys(payload).length) {
+      setPrefix(payload?.format?.prefix);
+    }
+  }, [payload]);
+
+  useEffect(() => {
+    setCreds({
+      prefix,
+    });
+  }, [prefix]);
+
   return (
     <div className="row d-flex justify-content-between align-items-center mt-3">
       <div className="d-flex flex-column">
@@ -57,18 +149,97 @@ function PreffixEmployeeNumber({ payload }) {
           Customize the prefix for employee numbers to ensure consistency.
         </small>
       </div>
-      <span style={{ width: "120px" }}>
-        <Input
-          addonAfter={<MdEdit style={{ cursor: "pointer", color: "blue" }} />}
-          placeholder="Prefix"
-        />
+      <span style={{ width: "140px" }}>
+        <form onSubmit={(e) => handleSubmit(e, creds)}>
+          <Input
+            addonAfter={
+              <Button
+                htmlType="submit"
+                style={{
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+                icon={<MdEdit style={{ color: "blue" }} />}
+                size="small"
+                loading={spinner}
+              />
+            }
+            placeholder="Prefix"
+            defaultValue={prefix || null}
+            value={creds.prefix || null}
+            onChange={handleChangeCreds}
+            status={errors.prefix ? "error" : ""}
+            name="prefix"
+          />
+        </form>
+        <div
+          className={classnames("invalid-feedback", "custom-feedback", {
+            "custom-visibible": errors.prefix,
+          })}
+        >
+          {errors.prefix}
+        </div>
       </span>
     </div>
   );
 }
-function SuffixEmployeeNumber({ payload }) {
+function SuffixEmployeeNumber({ payload, refetch }) {
+  const [suffix, setSuffix] = useState("");
+  const [creds, setCreds] = useState({});
+  const dispatch = useDispatch();
+  const spinner = useShallowEqualSelector(spinner_preferences);
+  const request = useAxiosPrivate();
+
+  //callback
+  function formCallback() {
+    updateNumberSuffix(dispatch, request, creds).then((res) => {
+      if (res?.status === "success") {
+        refetch();
+      }
+    });
+  }
+
+  //validation
+
+  function formValidate(values) {
+    let errors = {};
+    // no validations
+    return errors;
+  }
+
+  const { errors, handleSubmit } = useForm(formCallback, creds, formValidate);
+
+  function handleChangeCreds(e, sep = false, creds = {}) {
+    if (sep) {
+      setCreds((prevValues) => {
+        if (!creds.name || creds.value === undefined) {
+          return prevValues;
+        }
+        return { ...prevValues, [creds.name]: creds.value };
+      });
+    } else if (e && e.target) {
+      setCreds((prevValues) => {
+        return { ...prevValues, [e.target.name]: e.target.value };
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (payload && Object.keys(payload).length) {
+      setSuffix(payload?.format?.suffix);
+    }
+  }, [payload]);
+
+  useEffect(() => {
+    setCreds({
+      suffix,
+    });
+  }, [suffix]);
+
   return (
-    <div className="row d-flex justify-content-between align-items-center mt-3">
+    <div className="row d-flex justify-content-between align-items-center mt-3 mb-2">
       <div className="d-flex flex-column">
         <label className="text-bold-500 "> Suffix Text</label>
         <small className="d-none d-sm-block">
@@ -76,11 +247,38 @@ function SuffixEmployeeNumber({ payload }) {
           Customize the suffix for employee numbers to ensure consistency.
         </small>
       </div>
-      <span style={{ width: "120px" }}>
-        <Input
-          addonAfter={<MdEdit style={{ cursor: "pointer", color: "blue" }} />}
-          placeholder="Suffix"
-        />
+      <span style={{ width: "140px" }}>
+        <form onSubmit={(e) => handleSubmit(e, creds)}>
+          <Input
+            addonAfter={
+              <Button
+                htmlType="submit"
+                style={{
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+                icon={<MdEdit style={{ color: "blue" }} />}
+                size="small"
+                loading={spinner}
+              />
+            }
+            placeholder="Suffix"
+            defaultValue={suffix || null}
+            value={creds.suffix || null}
+            onChange={handleChangeCreds}
+            status={errors.suffix ? "error" : ""}
+            name="suffix"
+          />
+        </form>
+        <div
+          className={classnames("invalid-feedback", "custom-feedback", {
+            "custom-visibible": errors.suffix,
+          })}
+        >
+          {errors.suffix}
+        </div>
       </span>
     </div>
   );
@@ -90,7 +288,7 @@ function EmployeeNumber() {
   const [enabled, setEnabled] = useState(true);
   const [num_payload, setNumPayload] = useState(null);
 
-  const { isLoading, data } = useGetEmpNumber(enabled, setEnabled);
+  const { isLoading, data, refetch } = useGetEmpNumber(enabled, setEnabled);
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
@@ -106,19 +304,19 @@ function EmployeeNumber() {
           {/* Default box */}
           <div className="card">
             <div className="card-header">
-              <div className="row">
+              <div className="row justify-content-between">
                 <h3 className="card-title">Employe Number Settings</h3>
-              </div>
-              <div className="card-tools">
-                <button
-                  type="button"
-                  className="btn btn-tool"
-                  data-card-widget="collapse"
-                  data-toggle="tooltip"
-                  title="Collapse"
-                >
-                  <i className="fas fa-minus" />
-                </button>
+                <div className="card-tools">
+                  <button
+                    type="button"
+                    className="btn btn-tool"
+                    data-card-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse"
+                  >
+                    <i className="fas fa-minus" />
+                  </button>
+                </div>
               </div>
             </div>
             <div className="card-body">
@@ -126,11 +324,20 @@ function EmployeeNumber() {
                 <Skeleton active />
               ) : (
                 <>
-                  <ToggleActiveState payload={num_payload} />
+                  <ToggleActiveState payload={num_payload} refetch={refetch} />
 
-                  <CurrentEmployeeNumber payload={num_payload} />
-                  <PreffixEmployeeNumber payload={num_payload} />
-                  <SuffixEmployeeNumber payload={num_payload} />
+                  <CurrentEmployeeNumber
+                    payload={num_payload}
+                    refetch={refetch}
+                  />
+                  <PrefixEmployeeNumber
+                    payload={num_payload}
+                    refetch={refetch}
+                  />
+                  <SuffixEmployeeNumber
+                    payload={num_payload}
+                    refetch={refetch}
+                  />
                 </>
               )}
             </div>
