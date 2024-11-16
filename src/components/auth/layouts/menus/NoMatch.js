@@ -25,7 +25,7 @@ function NoMatch() {
           {/* /.container-fluid */}
         </section>
         {/* Main content */}
-        <section className="content">
+        <section className="content col-md-12">
           <div className="error-page">
             <h2 className="headline text-warning"> 404</h2>
             <div className="error-content">

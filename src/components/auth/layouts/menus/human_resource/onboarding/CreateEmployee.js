@@ -91,6 +91,7 @@ function CreateEmployee() {
                     <Link to="/">Home</Link>
                   </li>
                   <li className="breadcrumb-item active">Human resource</li>
+                  <li className="breadcrumb-item active">Onboarding</li>
                 </ol>
               </div>
             </div>
@@ -98,7 +99,7 @@ function CreateEmployee() {
           {/* /.container-fluid */}
         </section>
         {/* Main content */}
-        <section className="content">
+        <section className="content col-md-12">
           <div className="container-fluid">
             {/* Default box */}
             <div className="card">

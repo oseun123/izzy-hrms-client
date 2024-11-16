@@ -150,6 +150,7 @@ function EditRoles() {
                       <Link to="/">Dashboard</Link>
                     </li>
                     <li className="breadcrumb-item active">Prefrences</li>
+                    <li className="breadcrumb-item active">Roles</li>
                   </ol>
                 </div>
               </div>
@@ -157,7 +158,7 @@ function EditRoles() {
             {/* /.container-fluid */}
           </section>
           {/* Main content */}
-          <section className="content">
+          <section className="content col-md-12">
             <div className="container-fluid">
               {/* Default box */}
               <form onSubmit={handleSubmitfist}>
