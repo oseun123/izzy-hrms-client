@@ -122,6 +122,7 @@ function CreateBranch() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences</li>
+                  <li className="breadcrumb-item active">Branch</li>
                 </ol>
               </div>
             </div>
@@ -129,7 +130,7 @@ function CreateBranch() {
           {/* /.container-fluid */}
         </section>
         {/* Main content */}
-        <section className="content">
+        <section className="content col-md-12">
           <div className="container-fluid">
             {/* Default box */}
             <div className="card">

@@ -100,6 +100,7 @@ function EditGenders() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences</li>
+                  <li className="breadcrumb-item active">Gender</li>
                 </ol>
               </div>
             </div>
@@ -107,7 +108,7 @@ function EditGenders() {
           {/* /.container-fluid */}
         </section>
         {/* Main content */}
-        <section className="content">
+        <section className="content col-md-12">
           <div className="container-fluid">
             {/* Default box */}
             <div className="card">

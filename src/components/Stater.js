@@ -24,7 +24,7 @@ function Stater() {
         {/* /.container-fluid */}
       </section>
       {/* Main content */}
-      <section className="content">
+      <section className="content col-md-12">
         {/* Default box */}
         <div className="card">
           <div className="card-header">
