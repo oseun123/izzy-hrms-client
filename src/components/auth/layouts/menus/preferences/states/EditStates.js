@@ -108,7 +108,7 @@ function EditStates() {
           {/* /.container-fluid */}
         </section>
         {/* Main content */}
-        <section className="content">
+        <section className="content col-md-12">
           <div className="container-fluid">
             {/* Default box */}
             <div className="card">
