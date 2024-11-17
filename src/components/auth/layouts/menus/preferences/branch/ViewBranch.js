@@ -25,9 +25,8 @@ import { useMediaQuery } from "react-responsive";
 import { branch_columns } from "../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 
-import LetteredAvatar from "react-lettered-avatar";
+import Avatar from "react-avatar";
 
-import { arrayWithColors } from "../../../../../../util/helpers";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 const { Option } = Select;
@@ -155,12 +154,12 @@ function ViewBranch() {
                                       <Space wrap size="middle">
                                         {record.managers.map((manager) => (
                                           <Space>
-                                            <LetteredAvatar
+                                            <Avatar
                                               name={`${
                                                 manager.first_name || ""
                                               } ${manager.last_name || " "}`}
                                               size={25}
-                                              backgroundColors={arrayWithColors}
+                                              round={true}
                                             />
                                             <span>
                                               {manager.first_name}{" "}

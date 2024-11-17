@@ -24,9 +24,8 @@ import { useMediaQuery } from "react-responsive";
 import { role_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-import LetteredAvatar from "react-lettered-avatar";
+import Avatar from "react-avatar";
 
-import { arrayWithColors } from "../../../../../../util/helpers";
 const { Option } = Select;
 
 function ViewRoles() {
@@ -150,12 +149,12 @@ function ViewRoles() {
                                       <Space wrap size="middle">
                                         {record.users.map((user) => (
                                           <Space>
-                                            <LetteredAvatar
+                                            <Avatar
                                               name={`${user.first_name || ""} ${
                                                 user.last_name || " "
                                               }`}
                                               size={25}
-                                              backgroundColors={arrayWithColors}
+                                              round={true}
                                             />
                                             <span>
                                               {user.first_name} {user.last_name}

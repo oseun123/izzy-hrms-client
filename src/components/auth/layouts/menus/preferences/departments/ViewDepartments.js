@@ -26,10 +26,10 @@ import { department_columns } from "./../../../../../../util/tables";
 import { CSVLink } from "react-csv";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-import LetteredAvatar from "react-lettered-avatar";
+import Avatar from "react-avatar";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
-import { arrayWithColors } from "../../../../../../util/helpers";
+
 const { Option } = Select;
 
 function ViewDepartments() {
@@ -187,10 +187,10 @@ function ViewDepartments() {
                                       <Space size="middle" wrap>
                                         {record.users.map((user) => (
                                           <Space>
-                                            <LetteredAvatar
+                                            <Avatar
                                               size={25}
                                               name={`${user.first_name} ${user.last_name}`}
-                                              backgroundColors={arrayWithColors}
+                                              round={true}
                                             />
                                             <span>
                                               {user.first_name} {user.last_name}

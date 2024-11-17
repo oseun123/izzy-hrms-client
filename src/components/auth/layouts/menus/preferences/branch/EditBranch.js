@@ -32,9 +32,7 @@ import {
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-
-import { arrayWithColors } from "../../../../../../util/helpers";
-import LetteredAvatar from "react-lettered-avatar";
+import Avatar from "react-avatar";
 const { Option } = Select;
 
 function EditBranch() {
@@ -412,12 +410,12 @@ function EditBranch() {
                             >
                               {" "}
                               <Space>
-                                <LetteredAvatar
+                                <Avatar
                                   name={`${user.first_name || ""} ${
                                     user.last_name || " "
                                   }`}
                                   size={25}
-                                  backgroundColors={arrayWithColors}
+                                  round={true}
                                 />
                                 <span>
                                   {user.first_name} {user.last_name}
