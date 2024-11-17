@@ -115,7 +115,7 @@ function EditRoles() {
     document.querySelector("#default").checked = is_default;
   }, [is_default]);
   useEffect(() => {
-    setImmediate(() => {
+    setTimeout(() => {
       const permissions_checkbox = document.querySelectorAll(".perm-role");
       const perm_arry = [];
       permissions?.forEach((permission) => {
@@ -126,7 +126,7 @@ function EditRoles() {
           item.checked = true;
         }
       });
-    });
+    }, 500);
   }, [permissions, all_system_permissions]);
 
   return (

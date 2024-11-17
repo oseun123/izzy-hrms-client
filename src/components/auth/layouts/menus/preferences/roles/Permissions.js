@@ -15,6 +15,7 @@ function Permissions(props) {
   useEffect(() => {
     setFiltered(filtered_permissions(all_permissions[permission], "module"));
   }, [all_permissions, permission]);
+
   return (
     <div
       className={classnames("card", "card-outline", "card-secondary", {

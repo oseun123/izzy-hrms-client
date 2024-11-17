@@ -104,9 +104,7 @@ function CreateEmployee() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">
-                  Effortlessly create and maintain employee records
-                </h3>
+                <h3 className="card-title">Create employee records</h3>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
