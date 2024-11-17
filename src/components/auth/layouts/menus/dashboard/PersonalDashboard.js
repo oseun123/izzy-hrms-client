@@ -5,6 +5,7 @@ import { Space, Table, Tag } from "antd";
 import DashBoardHero from "./DashBoardHero";
 import LetteredAvatar from "react-lettered-avatar";
 import AminatedLayout from "../../../../ui/AminatedLayout";
+import Avatar from "react-avatar";
 
 const arrayWithColors = [
   "#2ecc71",
@@ -31,11 +32,7 @@ function PersonalDashboard() {
       render: (text) => {
         return (
           <Space>
-            <LetteredAvatar
-              name={text}
-              size={25}
-              backgroundColors={arrayWithColors}
-            />
+            <Avatar name={text} size={25} round={true} />
 
             <Link>{text}</Link>
           </Space>
