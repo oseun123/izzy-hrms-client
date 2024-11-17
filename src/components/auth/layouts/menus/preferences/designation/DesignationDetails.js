@@ -46,6 +46,7 @@ function DesignationDetails() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences </li>
+                  <li className="breadcrumb-item active">Designation </li>
                 </ol>
               </div>
             </div>

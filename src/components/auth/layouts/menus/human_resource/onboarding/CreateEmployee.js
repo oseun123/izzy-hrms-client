@@ -91,6 +91,7 @@ function CreateEmployee() {
                     <Link to="/">Home</Link>
                   </li>
                   <li className="breadcrumb-item active">Human resource</li>
+                  <li className="breadcrumb-item active">Onboarding</li>
                 </ol>
               </div>
             </div>

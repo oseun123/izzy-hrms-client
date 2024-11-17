@@ -90,6 +90,7 @@ function CreateDepartments() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences</li>
+                  <li className="breadcrumb-item active">Department</li>
                 </ol>
               </div>
             </div>

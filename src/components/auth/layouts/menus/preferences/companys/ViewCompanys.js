@@ -101,6 +101,7 @@ function ViewCompanys() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Prefrences</li>
+                  <li className="breadcrumb-item active">Company</li>
                 </ol>
               </div>
             </div>

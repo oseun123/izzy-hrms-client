@@ -121,6 +121,7 @@ function ViewDepartments() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Prefrences</li>
+                  <li className="breadcrumb-item active">Department</li>
                 </ol>
               </div>
             </div>
