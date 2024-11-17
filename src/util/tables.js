@@ -1,8 +1,7 @@
 import { Space, Input, Button, Tag, Popconfirm } from "antd";
 import { SearchOutlined, RedoOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import LetteredAvatar from "react-lettered-avatar";
-import { arrayWithColors } from "./helpers";
+import Avatar from "react-avatar";
 
 const desc_text = "Are you sure you want to perform this action?";
 
@@ -57,11 +56,7 @@ const role_details_columns = (confirm_text, removeUser) => {
       render: (value, record) => {
         return (
           <Space>
-            <LetteredAvatar
-              name={`${value || ""}}`}
-              size={22}
-              backgroundColors={arrayWithColors}
-            />
+            <Avatar name={`${value || ""}}`} size={22} round={true} />
             {value}
           </Space>
         );
@@ -116,11 +111,7 @@ const role_details_columns = (confirm_text, removeUser) => {
       render: (value, record) => {
         return (
           <Space>
-            <LetteredAvatar
-              name={`${value || ""}}`}
-              size={22}
-              backgroundColors={arrayWithColors}
-            />
+            <Avatar name={`${value || ""}}`} size={22} round={true} />
             {value}
           </Space>
         );
@@ -570,10 +561,10 @@ const department_columns = (
       render: (hod, record) => {
         return hod > 0 ? (
           <Space>
-            <LetteredAvatar
+            <Avatar
               name={`${record?.headOfDepartment?.fullname || ""}}`}
               size={25}
-              backgroundColors={arrayWithColors}
+              round={true}
             />
             {record?.headOfDepartment?.fullname}
           </Space>
@@ -677,11 +668,7 @@ const department_details_columns = () => {
       render: (value, record) => {
         return (
           <Space>
-            <LetteredAvatar
-              name={`${value || ""}}`}
-              size={22}
-              backgroundColors={arrayWithColors}
-            />
+            <Avatar name={`${value || ""}}`} size={22} round={true} />
             {value}
           </Space>
         );
@@ -737,11 +724,7 @@ const department_details_columns = () => {
       render: (value, record) => {
         return (
           <Space>
-            <LetteredAvatar
-              name={`${value || ""}}`}
-              size={22}
-              backgroundColors={arrayWithColors}
-            />
+            <Avatar name={`${value || ""}}`} size={22} round={true} />
             {value}
           </Space>
         );

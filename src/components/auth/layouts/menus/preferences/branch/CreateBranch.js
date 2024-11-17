@@ -30,9 +30,8 @@ import {
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import styles from "../../../../../styles/layout/Layout.module.css";
-import LetteredAvatar from "react-lettered-avatar";
-
-import { arrayWithColors } from "../../../../../../util/helpers";
+import Avatar from "react-avatar";
+import { AiOutlineBranches } from "react-icons/ai";
 const { Option } = Select;
 
 function CreateBranch() {
@@ -135,7 +134,7 @@ function CreateBranch() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a branch</h3>
+                <h3 className="card-title">Add new branch</h3>
                 <div className="card-tools"></div>
               </div>
               <form onSubmit={handleSubmit}>
@@ -393,12 +392,12 @@ function CreateBranch() {
                             >
                               {" "}
                               <Space>
-                                <LetteredAvatar
+                                <Avatar
                                   name={`${user.first_name || ""} ${
                                     user.last_name || " "
                                   }`}
                                   size={25}
-                                  backgroundColors={arrayWithColors}
+                                  round={true}
                                 />
                                 <span>
                                   {user.first_name} {user.last_name}

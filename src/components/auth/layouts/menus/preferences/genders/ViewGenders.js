@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
-import LetteredAvatar from "react-lettered-avatar";
-import { arrayWithColors } from "../../../../../../util/helpers";
+import Avatar from "react-avatar";
 
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
@@ -153,12 +152,12 @@ function ViewGenders() {
                                       <Space wrap size="middle">
                                         {record.users.map((user) => (
                                           <Space>
-                                            <LetteredAvatar
+                                            <Avatar
                                               name={`${user.first_name || ""} ${
                                                 user.last_name || " "
                                               }`}
                                               size={22}
-                                              backgroundColors={arrayWithColors}
+                                              round={true}
                                             />
                                             <span>
                                               {user.first_name} {user.last_name}

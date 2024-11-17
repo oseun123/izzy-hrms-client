@@ -82,3 +82,10 @@ label:not(.form-check-label):not(.custom-file-label) {
   color: #1677ff;
   font-size: 20px;
 }
+.sb-avatar__text div {
+  font-size: 11px !important;
+}
+
+.b_primary {
+  background-color: #1677ff;
+}

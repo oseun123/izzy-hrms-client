@@ -25,8 +25,7 @@ import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActions";
-import LetteredAvatar from "react-lettered-avatar";
-import { arrayWithColors } from "../../../../../../util/helpers";
+import Avatar from "react-avatar";
 
 function CreateDepartments() {
   const [enabled, setEnabled] = useState(true);
@@ -165,10 +164,10 @@ function CreateDepartments() {
                                   label={item.fullname}
                                 >
                                   <Space>
-                                    <LetteredAvatar
+                                    <Avatar
                                       name={item.fullname}
                                       size={25}
-                                      backgroundColors={arrayWithColors}
+                                      round={true}
                                     />
 
                                     {item.fullname}

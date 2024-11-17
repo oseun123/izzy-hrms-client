@@ -3,19 +3,9 @@ import { Link } from "react-router-dom";
 import { UseRefreshTest } from "../../../../../store/actions/userHooksActions";
 import { Space, Table, Tag } from "antd";
 import DashBoardHero from "./DashBoardHero";
-import LetteredAvatar from "react-lettered-avatar";
+
 import AminatedLayout from "../../../../ui/AminatedLayout";
 import Avatar from "react-avatar";
-
-const arrayWithColors = [
-  "#2ecc71",
-  "#3498db",
-  "#8e44ad",
-  "#e67e22",
-  "#e74c3c",
-  "#1abc9c",
-  "#2c3e50",
-];
 
 function PersonalDashboard() {
   const [enabled, setEnabled] = useState(false);
@@ -32,7 +22,12 @@ function PersonalDashboard() {
       render: (text) => {
         return (
           <Space>
-            <Avatar name={text} size={25} round={true} />
+            <Avatar
+              name={text}
+              size={25}
+              round={true}
+              style={{ fontSize: "100px" }}
+            />
 
             <Link>{text}</Link>
           </Space>
