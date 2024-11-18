@@ -2,7 +2,7 @@ import React from "react";
 import prefrefencesSvg from "../../../../../svg/preferences.svg";
 import { currentUser } from "../../../../../store/selectors/userSelectors";
 import { useShallowEqualSelector } from "../../../../../hooks";
-import Moment from "react-moment";
+
 import { capitalizeFirstLetter } from "../../../../../util/helpers";
 import styles from "../../../../styles/layout/Layout.module.css";
 
@@ -15,30 +15,25 @@ function PreferencesHero() {
       <section className="content px-2">
         <div className="container-fluid">
           <div className=" d-flex justify-content-between align-items-center flex-wrap">
-            <div className="left">
-              <p className="h5">
+            <div
+              className="left d-flex flex-column justify-content-between py-2 py-sm-0 "
+              style={{ height: "90px" }}
+            >
+              <p className="h6 m-0">
                 <span className={styles.c_no_wrap}>
-                  Welcome back {capitalizeFirstLetter(first_name)}{" "}
+                  Welcome {capitalizeFirstLetter(first_name)}{" "}
                   {capitalizeFirstLetter(last_name)},
                 </span>{" "}
-                to{" "}
-                <span className={styles.c_no_wrap}>
-                  <i>Prefrences Management</i>
-                </span>
+              </p>
+
+              <p className="h5 m-0">
+                <span className={styles.c_no_wrap}>Prefrences Management</span>
               </p>
               {last_login ? (
-                <p className="lead">
+                <p className="h6 m-0">
                   <small>
-                    You last logged in on{" "}
-                    <i>
-                      {" "}
-                      <Moment
-                        tz="Africa/Lagos"
-                        format="MMMM Do YYYY, h:mm:ss a"
-                      >
-                        {last_login}
-                      </Moment>
-                    </i>
+                    Tailor system customizations to meet your organization's
+                    unique requirements.
                   </small>
                 </p>
               ) : null}

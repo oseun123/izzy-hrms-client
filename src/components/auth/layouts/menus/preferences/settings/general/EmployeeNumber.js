@@ -3,13 +3,9 @@ import { Input, Skeleton, Switch, Button } from "antd";
 import { useGetEmpNumber } from "../../../../../../../store/actions/preferencesHooksActions";
 
 import { MdEdit } from "react-icons/md";
-import {
-  useAxiosPrivate,
-  useForm,
-  useShallowEqualSelector,
-} from "../../../../../../../hooks";
+import { useAxiosPrivate, useForm } from "../../../../../../../hooks";
 import classnames from "classnames";
-import { spinner_preferences } from "../../../../../../../store/selectors/preferencesSelector";
+
 import {
   updateNumberPrefix,
   updateNumberStatus,
@@ -86,13 +82,15 @@ function CurrentEmployeeNumber({ payload }) {
 function PrefixEmployeeNumber({ payload, refetch }) {
   const [prefix, setPrefix] = useState("");
   const [creds, setCreds] = useState({});
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
   const request = useAxiosPrivate();
 
   //callback
   function formCallback() {
+    setLoading(true);
     updateNumberPrefix(dispatch, request, creds).then((res) => {
+      setLoading(false);
       if (res?.status === "success") {
         refetch();
       }
@@ -163,7 +161,7 @@ function PrefixEmployeeNumber({ payload, refetch }) {
                 }}
                 icon={<MdEdit style={{ color: "blue" }} />}
                 size="small"
-                loading={spinner}
+                loading={loading}
               />
             }
             placeholder="Prefix"
@@ -188,13 +186,16 @@ function PrefixEmployeeNumber({ payload, refetch }) {
 function SuffixEmployeeNumber({ payload, refetch }) {
   const [suffix, setSuffix] = useState("");
   const [creds, setCreds] = useState({});
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
+
   const request = useAxiosPrivate();
 
   //callback
   function formCallback() {
+    setLoading(true);
     updateNumberSuffix(dispatch, request, creds).then((res) => {
+      setLoading(false);
       if (res?.status === "success") {
         refetch();
       }
@@ -261,7 +262,7 @@ function SuffixEmployeeNumber({ payload, refetch }) {
                 }}
                 icon={<MdEdit style={{ color: "blue" }} />}
                 size="small"
-                loading={spinner}
+                loading={loading}
               />
             }
             placeholder="Suffix"
