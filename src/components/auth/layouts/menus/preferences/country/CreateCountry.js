@@ -140,7 +140,7 @@ function CreateCountry() {
                         <Link to="/preferences/view-countries">
                           <Button
                             icon={<EyeOutlined />}
-                            className={styles.on_hover}
+                            className={styles.on_hover_secondary}
                           >
                             {" "}
                             View

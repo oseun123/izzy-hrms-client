@@ -229,7 +229,7 @@ function CreateRoles() {
                           <Link to="/preferences/view-roles">
                             <Button
                               icon={<EyeOutlined />}
-                              className={styles.on_hover}
+                              className={styles.on_hover_secondary}
                             >
                               {" "}
                               View

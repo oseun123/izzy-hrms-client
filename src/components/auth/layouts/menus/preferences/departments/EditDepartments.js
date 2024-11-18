@@ -257,7 +257,7 @@ function EditDepartments() {
                         <Link to="/preferences/view-departments">
                           <Button
                             icon={<EyeOutlined />}
-                            className={styles.on_hover}
+                            className={styles.on_hover_secondary}
                           >
                             {" "}
                             View

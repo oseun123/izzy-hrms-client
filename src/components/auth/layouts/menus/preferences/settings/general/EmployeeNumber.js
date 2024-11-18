@@ -19,7 +19,6 @@ function ToggleActiveState({ payload, refetch }) {
   const request = useAxiosPrivate();
   const dispatch = useDispatch();
 
-  console.log({ payload });
   function onChange(checked) {
     setLoading(true);
     setStatus(checked);
@@ -36,7 +35,6 @@ function ToggleActiveState({ payload, refetch }) {
     }
   }, [payload]);
 
-  console.log({ status });
   return (
     <>
       <div className="row d-flex justify-content-between align-items-center">

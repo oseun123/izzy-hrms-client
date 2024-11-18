@@ -9,10 +9,26 @@
   white-space: nowrap;
 }
 
+.on_hover {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
 .on_hover:hover {
   transform: scale(1.03);
   text-shadow: 0px 0px 8px rgb(255, 255, 255);
   box-shadow: 0px 0px 8px rgb(255, 255, 255);
+}
+.on_hover_secondary:hover {
+  transform: scale(1.03);
+  text-shadow: 0px 0px 8px rgb(255, 255, 255);
+  box-shadow: 0px 0px 8px rgb(255, 255, 255);
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+.on_hover_secondary:active {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
 
 .on_hover:focus {

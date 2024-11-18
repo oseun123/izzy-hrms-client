@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NavBarVariant from "./NavBarVariant";
+
 import {
   // current_cleint,
   message,
@@ -16,7 +16,7 @@ import { useGetCurrentClient } from "./../../../../../../store/actions/userHooks
 import LightSideBarVariant from "./LightSidebarVariant";
 
 import { useCleanUp } from "../../../../../../hooks";
-import BranLogo from "./BrandLogo";
+
 function DisplaySettings() {
   useCleanUp();
   const [enabled, setEnabled] = useState(true);
@@ -56,10 +56,11 @@ function DisplaySettings() {
         </section>
 
         <div className="row m-0">
-          <NavBarVariant
+          <LightSideBarVariant
             currentCleint={currentCleint}
             setEnabled={setEnabled}
           />
+
           <DarkSideBarVariant
             currentCleint={currentCleint}
             setEnabled={setEnabled}
@@ -69,14 +70,14 @@ function DisplaySettings() {
         {/* /.content */}
         {/* Main content */}
 
-        <div className="row m-0">
-          <LightSideBarVariant
+        {/* <div className="row m-0">
+          <NavBarVariant
             currentCleint={currentCleint}
             setEnabled={setEnabled}
           />
 
           <BranLogo currentCleint={currentCleint} setEnabled={setEnabled} />
-        </div>
+        </div> */}
 
         {/* /.content */}
       </AminatedLayout>

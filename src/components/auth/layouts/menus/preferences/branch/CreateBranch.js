@@ -437,7 +437,7 @@ function CreateBranch() {
                         <Link to="/preferences/view-branches">
                           <Button
                             icon={<EyeOutlined />}
-                            className={styles.on_hover}
+                            className={styles.on_hover_secondary}
                           >
                             {" "}
                             View
