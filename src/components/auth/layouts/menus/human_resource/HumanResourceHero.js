@@ -2,7 +2,7 @@ import React from "react";
 import humanResourceSvg from "../../../../../svg/human_resource.svg";
 import { currentUser } from "../../../../../store/selectors/userSelectors";
 import { useShallowEqualSelector } from "../../../../../hooks";
-import Moment from "react-moment";
+
 import { capitalizeFirstLetter } from "../../../../../util/helpers";
 
 import styles from "../../../../styles/layout/Layout.module.css";
@@ -15,30 +15,27 @@ function HumanResourceHero() {
       <section className="content px-2">
         <div className="container-fluid">
           <div className=" d-flex justify-content-between align-items-center flex-wrap">
-            <div className="left">
-              <p className="h5 ">
+            <div
+              className="  left d-flex flex-column justify-content-between py-2 py-sm-0 "
+              style={{ height: "90px" }}
+            >
+              <p className="h6 m-0">
                 <span className={styles.c_no_wrap}>
-                  Welcome back {capitalizeFirstLetter(first_name)}{" "}
+                  Welcome {capitalizeFirstLetter(first_name)}{" "}
                   {capitalizeFirstLetter(last_name)},
                 </span>{" "}
-                to{" "}
+              </p>
+
+              <p className="h5 m-0">
                 <span className={styles.c_no_wrap}>
-                  <i>Human Resource Management</i>
+                  Human Resource Management
                 </span>
               </p>
               {last_login ? (
-                <p className="lead">
+                <p className="h6 m-0">
                   <small>
-                    You last logged in on{" "}
-                    <i>
-                      {" "}
-                      <Moment
-                        tz="Africa/Lagos"
-                        format="MMMM Do YYYY, h:mm:ss a"
-                      >
-                        {last_login}
-                      </Moment>
-                    </i>
+                    Manage and develop your workforce to meet organizational
+                    goals effectively
                   </small>
                 </p>
               ) : null}

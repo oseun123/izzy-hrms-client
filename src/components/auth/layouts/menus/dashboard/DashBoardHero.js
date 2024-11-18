@@ -16,21 +16,23 @@ function DashBoardHero() {
       <section className="content px-2">
         <div className="container-fluid">
           <div className=" d-flex justify-content-between align-items-center flex-wrap">
-            <div className="left">
-              <p className="h5">
+            <div
+              className="left d-flex flex-column justify-content-between py-2 py-sm-0 "
+              style={{ height: "90px" }}
+            >
+              <p className="h6 m-0">
                 <span className={styles.c_no_wrap}>
-                  Welcome back {capitalizeFirstLetter(first_name)}{" "}
+                  Welcome {capitalizeFirstLetter(first_name)}{" "}
                   {capitalizeFirstLetter(last_name)},
                 </span>{" "}
-                to{" "}
-                <span className={styles.c_no_wrap}>
-                  <i>Dashboard Management</i>
-                </span>
+              </p>
+              <p className="h5 m-0">
+                <span className={styles.c_no_wrap}>Dashboard Management</span>
               </p>
 
               {last_login ? (
-                <p className="lead">
-                  <small>
+                <p className="h6 m-0">
+                  <small className="m-0">
                     You last logged in on{" "}
                     <i>
                       {" "}
