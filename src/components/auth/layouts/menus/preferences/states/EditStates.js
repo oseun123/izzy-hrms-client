@@ -167,7 +167,7 @@ function EditStates() {
                         <Link to="/preferences/view-states">
                           <Button
                             icon={<EyeOutlined />}
-                            className={styles.on_hover}
+                            className={styles.on_hover_secondary}
                           >
                             {" "}
                             View

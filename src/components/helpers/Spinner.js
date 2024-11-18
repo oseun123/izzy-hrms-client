@@ -38,10 +38,10 @@ const Spinner = ({ size, position, color, spinner, ...others }) => {
   );
 };
 
-Spinner.defaultProps = {
-  size: "small",
-  position: "right",
-  color: "warning",
-};
+// Spinner.defaultProps = {
+//   size: "small",
+//   position: "right",
+//   color: "warning",
+// };
 
 export default Spinner;

@@ -181,7 +181,7 @@ function EditDesignation() {
                         <Link to="/preferences/view-designation">
                           <Button
                             icon={<EyeOutlined />}
-                            className={styles.on_hover}
+                            className={styles.on_hover_secondary}
                           >
                             {" "}
                             View
