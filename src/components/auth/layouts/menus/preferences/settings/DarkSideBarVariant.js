@@ -49,6 +49,33 @@ const navbar_light_skins = [
   "sidebar-light-secondary",
 ];
 
+const brand_dark_skins = [
+  "navbar-primary",
+  "navbar-secondary",
+  "navbar-info",
+  "navbar-success",
+  "navbar-danger",
+  "navbar-maroon",
+  "navbar-indigo",
+  "navbar-purple",
+  "navbar-pink",
+  "navbar-navy",
+  "navbar-lightblue",
+  "navbar-teal",
+  "navbar-cyan",
+  "navbar-dark",
+  "navbar-gray-dark",
+  "navbar-gray",
+  "navbar-fuchsia",
+];
+
+const brand_light_skins = [
+  "navbar-light",
+  "navbar-warning",
+  "navbar-white",
+  "navbar-orange",
+];
+
 function DarkSideBarVariant({ currentCleint, setEnabled }) {
   const dispatch = useDispatch();
   const resquest = useAxiosPrivate();
@@ -70,6 +97,15 @@ function DarkSideBarVariant({ currentCleint, setEnabled }) {
 
     sidebar.addClass(selected_color);
 
+    // for brand logo
+
+    const brand_header = $(".brand-link");
+
+    const brand_all_colors = brand_dark_skins.concat(brand_light_skins);
+    brand_all_colors.map((color) => brand_header.removeClass(color));
+
+    brand_header.addClass("navbar-dark");
+
     setSideDarkVariant(selected_color);
   }
 
@@ -79,6 +115,7 @@ function DarkSideBarVariant({ currentCleint, setEnabled }) {
       current_settings[0].display = {
         ...current_settings[0].display,
         sidebar_variant: side_dark_variant,
+        brand_variant: "navbar-dark",
       };
       setSettings(JSON.stringify(current_settings));
     }
@@ -108,7 +145,7 @@ function DarkSideBarVariant({ currentCleint, setEnabled }) {
           {/* Default box */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">Dark Sidebar Variants</h3>
+              <h3 className="card-title">Dark Theme Variants</h3>
               <div className="card-tools">
                 <button
                   type="button"

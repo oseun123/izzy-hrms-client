@@ -88,7 +88,7 @@ function CreateEmployee() {
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item">
-                    <Link to="/">Home</Link>
+                    <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Human resource</li>
                   <li className="breadcrumb-item active">Onboarding</li>
@@ -104,12 +104,12 @@ function CreateEmployee() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create employee records</h3>
+                <h3 className="card-title">Add new employee record</h3>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
-                  <div className="row">
-                    <div className="form-group col-md-3 ">
+                  <div className="row col-md-11">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="first_name">
                         First name <span className="text-danger">*</span>{" "}
                       </label>
@@ -118,6 +118,7 @@ function CreateEmployee() {
                         name="first_name"
                         id="first_name"
                         allowClear
+                        className="w-75"
                         value={values.first_name}
                         onChange={handleChange}
                         placeholder="first name"
@@ -136,7 +137,7 @@ function CreateEmployee() {
                         {errors.first_name}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="middle_name">
                         Middle name <span className="text-danger">*</span>{" "}
                       </label>
@@ -145,6 +146,7 @@ function CreateEmployee() {
                         name="middle_name"
                         id="middle_name"
                         allowClear
+                        className="w-75"
                         placeholder="Middle name"
                         value={values.middle_name}
                         onChange={handleChange}
@@ -163,7 +165,7 @@ function CreateEmployee() {
                         {errors.middle_name}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="last_name">
                         Last name <span className="text-danger">*</span>{" "}
                       </label>
@@ -172,6 +174,7 @@ function CreateEmployee() {
                         name="last_name"
                         id="last_name"
                         allowClear
+                        className="w-75"
                         value={values.last_name}
                         placeholder="Last name"
                         onChange={handleChange}
@@ -190,7 +193,7 @@ function CreateEmployee() {
                         {errors.last_name}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="work_email">
                         Work email <span className="text-danger">*</span>{" "}
                       </label>
@@ -199,6 +202,7 @@ function CreateEmployee() {
                         name="work_email"
                         id="work_email"
                         allowClear
+                        className="w-75"
                         placeholder="Work email"
                         value={values.work_email}
                         onChange={handleChange}
@@ -217,7 +221,7 @@ function CreateEmployee() {
                         {errors.work_email}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="employment_date">
                         Employment Date <span className="text-danger">*</span>{" "}
                       </label>
@@ -226,12 +230,12 @@ function CreateEmployee() {
                         name="employment_date"
                         id="employment_date"
                         allowClear
+                        className="w-75"
                         placeholder="Employment date"
                         value={values.employment_date}
                         onChange={(value) =>
                           handleSpecialDateChange(value, "employment_date")
                         }
-                        className="w-100"
                         status={errors.employment_date ? "error" : ""}
                       />
 
@@ -247,7 +251,7 @@ function CreateEmployee() {
                         {errors.employment_date}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="employee_number">
                         Employee Number <span className="text-danger">*</span>{" "}
                       </label>
@@ -256,6 +260,7 @@ function CreateEmployee() {
                         name="employee_number"
                         id="employee_number"
                         allowClear
+                        className="w-75"
                         value={values.employee_number}
                         onChange={handleChange}
                         placeholder="Employee Number"
@@ -274,7 +279,7 @@ function CreateEmployee() {
                         {errors.employee_number}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="employment_type">
                         Employment type <span className="text-danger">*</span>{" "}
                       </label>
@@ -283,6 +288,7 @@ function CreateEmployee() {
                         name="employment_type"
                         id="employment_type"
                         allowClear
+                        className="w-75"
                         value={values.employment_type}
                         onChange={handleChange}
                         placeholder="Employment type"
@@ -301,7 +307,7 @@ function CreateEmployee() {
                         {errors.employment_type}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="department">
                         Department <span className="text-danger">*</span>{" "}
                       </label>
@@ -310,6 +316,7 @@ function CreateEmployee() {
                         name="department"
                         id="department"
                         allowClear
+                        className="w-75"
                         placeholder="Department"
                         value={values.department}
                         onChange={handleChange}
@@ -328,7 +335,7 @@ function CreateEmployee() {
                         {errors.department}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="designation">
                         Designation <span className="text-danger">*</span>{" "}
                       </label>
@@ -338,6 +345,7 @@ function CreateEmployee() {
                         id="designation"
                         placeholder="Designation"
                         allowClear
+                        className="w-75"
                         value={values.designation}
                         onChange={handleChange}
                         status={errors.designation ? "error" : ""}
@@ -355,7 +363,7 @@ function CreateEmployee() {
                         {errors.designation}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="primary_supervisor">
                         Primary supervisor{" "}
                         <span className="text-danger">*</span>{" "}
@@ -365,6 +373,7 @@ function CreateEmployee() {
                         name="primary_supervisor"
                         id="primary_supervisor"
                         allowClear
+                        className="w-75"
                         placeholder=" Primary supervisor"
                         value={values.primary_supervisor}
                         onChange={handleChange}
@@ -384,7 +393,7 @@ function CreateEmployee() {
                       </div>
                     </div>
 
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="secondary_supervisor">
                         Secondary supervisor{" "}
                         <span className="text-danger">*</span>{" "}
@@ -394,6 +403,7 @@ function CreateEmployee() {
                         name="secondary_supervisor"
                         id="secondary_supervisor"
                         allowClear
+                        className="w-75"
                         placeholder="Secondary supervisor"
                         value={values.secondary_supervisor}
                         onChange={handleChange}
@@ -412,7 +422,7 @@ function CreateEmployee() {
                         {errors.secondary_supervisor}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="employment_status">
                         Employment Status <span className="text-danger">*</span>{" "}
                       </label>
@@ -422,6 +432,7 @@ function CreateEmployee() {
                         id="employment_status"
                         placeholder="Employment Status"
                         allowClear
+                        className="w-75"
                         value={values.employment_status}
                         onChange={handleChange}
                         status={errors.employment_status ? "error" : ""}
@@ -439,7 +450,7 @@ function CreateEmployee() {
                         {errors.employment_status}
                       </div>
                     </div>
-                    <div className="form-group col-md-3 ">
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="employee_category">
                         Employee category <span className="text-danger">*</span>{" "}
                       </label>
@@ -448,6 +459,7 @@ function CreateEmployee() {
                         name="employee_category"
                         id="employee_category"
                         allowClear
+                        className="w-75"
                         placeholder="Employee category"
                         value={values.employee_category}
                         onChange={handleChange}
@@ -467,8 +479,8 @@ function CreateEmployee() {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="d-flex justify-content-end  w-100 ">
+                  <div className="row mt-4">
+                    <div className="form-group col-md-12">
                       <Space>
                         <Button
                           type="primary"
