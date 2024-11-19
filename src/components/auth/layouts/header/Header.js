@@ -25,6 +25,7 @@ function Header() {
   const { nav_variant_bg, nav_variant } = JSON.parse(currentCleint?.settings)[0]
     ?.display?.navbar_variant;
 
+  console.log({ nav_variant_bg, nav_variant });
   const store_message = useShallowEqualSelector(message);
 
   const store_status = useShallowEqualSelector(status);
