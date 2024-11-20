@@ -8,3 +8,4 @@
 // export { CreateEmployee };
 
 export { default as CreateEmployee } from "./menus/human_resource/onboarding/CreateEmployee";
+export { default as ViewEmployee } from "./menus/human_resource/onboarding/ViewEmployee";

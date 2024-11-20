@@ -1,5 +1,5 @@
 import React from "react";
-import dashboardSvg from "../../../../../svg/dashboard.svg";
+import personalSvg from "../../../../../svg/personal.svg";
 import { currentUser } from "../../../../../store/selectors/userSelectors";
 import { useShallowEqualSelector } from "../../../../../hooks";
 import Moment from "react-moment";
@@ -7,7 +7,7 @@ import "moment-timezone";
 import { capitalizeFirstLetter } from "../../../../../util/helpers";
 import styles from "../../../../styles/layout/Layout.module.css";
 
-function DashBoardHero() {
+function PersonalHero() {
   const { first_name, last_name, last_login } =
     useShallowEqualSelector(currentUser);
 
@@ -27,7 +27,7 @@ function DashBoardHero() {
                 </span>{" "}
               </p>
               <p className="h5 m-0">
-                <span className={styles.c_no_wrap}>Dashboard Management</span>
+                <span className={styles.c_no_wrap}>Personal Management</span>
               </p>
 
               {last_login ? (
@@ -48,7 +48,7 @@ function DashBoardHero() {
               ) : null}
             </div>
             <div className="right d-none d-sm-block">
-              <img src={dashboardSvg} alt="" width={200} />
+              <img src={personalSvg} alt="" width={200} />
             </div>
           </div>
         </div>
@@ -57,4 +57,4 @@ function DashBoardHero() {
   );
 }
 
-export default DashBoardHero;
+export default PersonalHero;

@@ -36,7 +36,7 @@ const dashboardpermissions = createSelector(
   (user) =>
     user.userpermissions?.filter(
       (permission) =>
-        permission.for === "Dashboard" &&
+        permission.for === "Personal" &&
         permission.module === "root" &&
         permission.menu === 1
     )

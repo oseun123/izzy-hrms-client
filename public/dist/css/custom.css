@@ -158,3 +158,53 @@ a:hover {
 .nav-link.active {
   color: #fff !important;
 }
+.icon__color {
+  /* color: var(--primary); */
+  font-size: 19px;
+}
+
+.space__align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.space__align > svg {
+  /* color: var(--primary); */
+  font-size: 19px;
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs
+  .ant-tabs-tab.ant-tabs-tab-active
+  .ant-tabs-tab-btn {
+  color: var(--primary);
+  text-shadow: 0 0 0.25px var(--primary);
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs .ant-tabs-tab:hover {
+  color: var(--primary);
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs
+  .ant-tabs-tab-btn:focus:not(:focus-visible),
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs
+  .ant-tabs-tab-remove:focus:not(:focus-visible),
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs .ant-tabs-tab-btn:active,
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs
+  .ant-tabs-tab-remove:active {
+  color: var(--primary);
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-tabs .ant-tabs-ink-bar {
+  background: var(--primary);
+}
+
+/* .card-title {
+  color: var(--primary);
+} */
+
+.color__border {
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rbg), 0.1) !important;
+}

@@ -56,11 +56,11 @@ import {
 } from "./layouts/preferences";
 
 // Human Resource Component
-import { CreateEmployee } from "./layouts/human_resource";
+import { CreateEmployee, ViewEmployee } from "./layouts/human_resource";
 
 // dashboard components
 
-import { PersonalDashboard } from "./layouts/dashboard";
+import { PersonalDashboard, Profile } from "./layouts/personal";
 import { AnimatePresence } from "framer-motion";
 import CreateEmpCategory from "./layouts/menus/preferences/employee_category/CreateEmpCategory";
 
@@ -82,14 +82,20 @@ const Layout = () => {
           <div className="content-wrapper">
             <AnimatePresence exitBeforeEnter>
               <Switch location={location} key={location.pathname}>
-                {/* dashboard */}
+                {/* personal */}
                 <Route
                   exact
                   path="/"
                   component={PersonalDashboard}
                   permission="PERSONAL_DASHBOARD"
                 />
-                {/* end dashboard */}
+                <Route
+                  exact
+                  path="/personal/profile"
+                  component={Profile}
+                  permission="PERSONAL_PROFILE"
+                />
+                {/* end personal */}
 
                 {/* roles */}
                 <HasPermission
@@ -411,6 +417,12 @@ const Layout = () => {
                   path="/human-resource/create-employee"
                   component={CreateEmployee}
                   permission="CREATE_EMPLOYEE"
+                />
+                <HasPermission
+                  exact
+                  path="/human-resource/view-employee"
+                  component={ViewEmployee}
+                  permission="VIEW_EMPLOYEE"
                 />
 
                 {/* end onboarding */}

@@ -5,6 +5,7 @@ import { FormOutlined } from "@ant-design/icons";
 import { useAxiosPrivate } from "../../../../../../hooks";
 
 import { useDispatch } from "react-redux";
+import { AiOutlineSkin } from "react-icons/ai";
 
 import $ from "jquery";
 
@@ -145,7 +146,12 @@ function LightSideBarVariant({ currentCleint, setEnabled }) {
           {/* Default box */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">Light Theme Variants</h3>
+              <h3 className="card-title">
+                <span className="space__align ">
+                  <AiOutlineSkin className="icon__color" />
+                  Light Theme Variants
+                </span>
+              </h3>
               <div className="card-tools">
                 <button
                   type="button"

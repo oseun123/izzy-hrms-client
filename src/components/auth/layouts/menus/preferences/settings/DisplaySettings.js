@@ -66,20 +66,6 @@ function DisplaySettings() {
             setEnabled={setEnabled}
           />
         </div>
-
-        {/* /.content */}
-        {/* Main content */}
-
-        {/* <div className="row m-0">
-          <NavBarVariant
-            currentCleint={currentCleint}
-            setEnabled={setEnabled}
-          />
-
-          <BranLogo currentCleint={currentCleint} setEnabled={setEnabled} />
-        </div> */}
-
-        {/* /.content */}
       </AminatedLayout>
     </>
   );
