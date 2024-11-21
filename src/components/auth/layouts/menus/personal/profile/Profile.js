@@ -5,6 +5,8 @@ import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { ImProfile } from "react-icons/im";
 import { Tabs } from "antd";
 import BioData from "./BioData";
+import Financial from "./Financial";
+import NextOfKin from "./NextOfKin";
 
 function Profile() {
   const onChange = (key) => {
@@ -19,7 +21,7 @@ function Profile() {
     {
       key: "2",
       label: "Financial",
-      children: "Content of Tab Financial",
+      children: <Financial />,
     },
     {
       key: "3",
@@ -34,7 +36,7 @@ function Profile() {
     {
       key: "5",
       label: "Next Of Kin",
-      children: "Content of Tab Next Of Kin",
+      children: <NextOfKin />,
     },
     {
       key: "6",
@@ -45,6 +47,16 @@ function Profile() {
       key: "7",
       label: "Dependants",
       children: "Content of Tab Dependants",
+    },
+    {
+      key: "8",
+      label: "References",
+      children: "Content of Tab References",
+    },
+    {
+      key: "9",
+      label: "Company properties",
+      children: "Content of Tab Company properties",
     },
   ];
   return (

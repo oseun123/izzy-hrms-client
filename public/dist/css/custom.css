@@ -208,3 +208,91 @@ a:hover {
   border: 3px solid var(--primary);
   box-shadow: 0 0 0 2px rgba(var(--primary-rbg), 0.1) !important;
 }
+
+.on_hover {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+.on_hover:hover {
+  transform: scale(1.03);
+  text-shadow: 0px 0px 8px rgb(255, 255, 255);
+  box-shadow: 0px 0px 8px rgb(255, 255, 255);
+  border-color: var(--primary);
+}
+.on_hover:active {
+  border-color: var(--primary) !important;
+}
+
+.on_hover_secondary:hover {
+  transform: scale(1.03);
+  text-shadow: 0px 0px 8px rgb(255, 255, 255);
+  box-shadow: 0px 0px 8px rgb(255, 255, 255);
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+.on_hover_secondary:active {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.on_hover:focus {
+  outline: none;
+}
+
+label {
+  font-size: 12px !important;
+}
+
+.icon__title {
+  color: var(--primary);
+  font-size: 19px;
+}
+
+.icon__title:hover {
+  transform: scale(1.03);
+  color: var(--primary);
+  filter: brightness(0.85);
+  cursor: pointer;
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-btn-default:not(
+    :disabled
+  ):not(.ant-btn-disabled):hover {
+  border-color: var(--primary);
+}
+
+button:focus {
+  outline: none;
+}
+
+.card__list {
+  min-width: 200px;
+  min-height: 250px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.card__list:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23) !important;
+}
+
+.card__bottom p {
+  font-size: 17px;
+}
+.row__list {
+  display: flex;
+  gap: 15px;
+}
+
+.card__mid .sb-avatar__text div {
+  font-size: 20px !important;
+}
+.i__con {
+  font-size: 70px;
+  color: var(--primary);
+}
