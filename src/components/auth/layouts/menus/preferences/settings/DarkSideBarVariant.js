@@ -5,6 +5,7 @@ import { FormOutlined } from "@ant-design/icons";
 import { useAxiosPrivate } from "../../../../../../hooks";
 
 import { useDispatch } from "react-redux";
+import { AiFillSkin } from "react-icons/ai";
 
 import $ from "jquery";
 
@@ -145,7 +146,12 @@ function DarkSideBarVariant({ currentCleint, setEnabled }) {
           {/* Default box */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">Dark Theme Variants</h3>
+              <h3 className="card-title">
+                {" "}
+                <span className="space__align">
+                  <AiFillSkin className="icon__color" /> Dark Theme Variants
+                </span>
+              </h3>
               <div className="card-tools">
                 <button
                   type="button"

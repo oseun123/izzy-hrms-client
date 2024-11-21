@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { UseRefreshTest } from "../../../../../store/actions/userHooksActions";
 import { Space, Table, Tag } from "antd";
-import DashBoardHero from "./DashBoardHero";
+import PersonalHero from "./PersonalHero";
 
 import AminatedLayout from "../../../../ui/AminatedLayout";
 import Avatar from "react-avatar";
@@ -103,7 +103,7 @@ function PersonalDashboard() {
 
   return (
     <>
-      <DashBoardHero />
+      <PersonalHero />
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">

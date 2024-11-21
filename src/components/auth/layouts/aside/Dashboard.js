@@ -12,7 +12,7 @@ function Dashboard() {
         <Link to={() => false} className="nav-link  active">
           <i className="nav-icon fas fa-tachometer-alt" />
           <p>
-            Dashboard
+            Personal
             <i className="right fas fa-angle-left" />
           </p>
         </Link>
