@@ -58,7 +58,13 @@ const Login = () => {
                 <Message message={message} status={status} />
               ) : null}
 
-              <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
+              <Spinner
+                color="secondary"
+                d-hidden
+                mb-2
+                spinner={spinner}
+                position={"right"}
+              />
               <form onSubmit={handleSubmit}>
                 <div className="input-group mb-3">
                   <Input
