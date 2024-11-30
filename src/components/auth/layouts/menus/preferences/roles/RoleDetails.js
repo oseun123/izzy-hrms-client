@@ -16,13 +16,12 @@ import {
   useAxiosPrivate,
 } from "../../../../../../hooks";
 import {
-  message_preferences,
-  status_preferences,
+ 
   single_system_role,
 } from "../../../../../../store/selectors/preferencesSelector";
 
 import { currentUser } from "../../../../../../store/selectors/userSelectors";
-import Message from "../../../../../helpers/Message";
+
 import {
   capitalizeFirstLetter,
   filtered_permissions,
@@ -45,8 +44,7 @@ function RoleDetails() {
   useGetUserPermissions(enabledUserPerm, setEnabledUserPerm, auth_user.id);
   const request = useAxiosPrivate();
   const dispatch = useDispatch();
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const single_role = useSelector(
     (state) => single_system_role(state, id),
     shallowEqual
@@ -81,9 +79,7 @@ function RoleDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+       
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

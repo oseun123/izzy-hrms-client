@@ -17,12 +17,10 @@ import {
 } from "../../../../../../hooks";
 import {
   spinner_preferences,
-  message_preferences,
-  status_preferences,
   system_companys,
   system_users,
 } from "../../../../../../store/selectors/preferencesSelector";
-import Message from "../../../../../helpers/Message";
+
 import {
   useGetSystemCompany,
   useGetSystemUsers,
@@ -31,7 +29,7 @@ import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import Avatar from "react-avatar";
-import { AiOutlineBranches } from "react-icons/ai";
+
 const { Option } = Select;
 
 function CreateBranch() {
@@ -56,8 +54,7 @@ function CreateBranch() {
   useGetSystemCompany(enabledcompany, setEnabledCompany, "_", "_", "all");
   useGetSystemUsers(enableduser, setEnabledUser);
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const companys = useShallowEqualSelector(system_companys);
   const users = useShallowEqualSelector(system_users);
   const request = useAxiosPrivate();
@@ -107,9 +104,7 @@ function CreateBranch() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+        
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -139,7 +134,7 @@ function CreateBranch() {
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
-                  <div className="row col-md-11">
+                  <div className="row ">
                     <div className="form-group col-md-4  d-flex flex-column">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{" "}

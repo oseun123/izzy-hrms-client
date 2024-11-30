@@ -28,7 +28,7 @@ function Permissions(props) {
           <div className="form-check ">
             {!readonly && (
               <input
-                className="form-check-input"
+                className="form-check-input is-check"
                 type="checkbox"
                 value={`chk-${index}`}
                 title="check all permissions"

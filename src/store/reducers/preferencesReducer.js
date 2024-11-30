@@ -377,6 +377,19 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         message: payload.message,
         status: payload.status,
       };
+        case "CLEINT_SETTINGS_SUCCESS":
+      //   console.log(payload);
+      return {
+        ...state,
+        status: payload.status,
+        message: payload.message,
+      };
+    case "CLEINT_SETTINGS_ERROR":
+      return {
+        ...state,
+        status: payload.status,
+        message: payload.message,
+      };
 
     default:
       return state;

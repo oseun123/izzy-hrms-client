@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
-import { useForm } from "../../hooks";
-import Message from "./../helpers/Message";
+import { useCleanUp, useForm, useUserNotification } from "../../hooks";
 import Spinner from "./../helpers/Spinner";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import classnames from "classnames";
-
 import { useDispatch, useSelector } from "react-redux";
 import { loginForm } from "../../util/formValidations";
 import { login } from "./../../store/actions/userActions";
@@ -17,6 +15,8 @@ import styles from "../styles/layout/Layout.module.css";
 import AminatedLayout from "../ui/AminatedLayout";
 
 const Login = () => {
+  useUserNotification();
+  useCleanUp();
   const initLoginUser = {
     email: "",
     password: "",
@@ -24,7 +24,8 @@ const Login = () => {
 
   const currentCleint = useShallowEqualSelector(current_cleint);
 
-  const { spinner, message, status } = useSelector((state) => state.user);
+
+  const { spinner } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -54,15 +55,11 @@ const Login = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Sign in to start your session</p>
-              {message && status ? (
-                <Message message={message} status={status} />
-              ) : null}
+              
 
               <Spinner
-                color="secondary"
                 d-hidden
                 mb-2
-                spinner={spinner}
                 position={"right"}
               />
               <form onSubmit={handleSubmit}>

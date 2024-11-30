@@ -5,13 +5,12 @@ import { useDispatch } from "react-redux";
 import { useShallowEqualSelector, useAxiosPrivate } from "../../../../hooks";
 import {
   currentUser,
-  message,
-  status,
+
   spinner,
   current_cleint,
 } from "../../../../store/selectors/userSelectors";
 import { Link, useHistory } from "react-router-dom";
-import Message from "../../../helpers/Message";
+
 import { capitalizeFirstLetter } from "../../../../util/helpers";
 
 function Header() {
@@ -25,10 +24,8 @@ function Header() {
   const { nav_variant_bg, nav_variant } = JSON.parse(currentCleint?.settings)[0]
     ?.display?.navbar_variant;
 
-  console.log({ nav_variant_bg, nav_variant });
-  const store_message = useShallowEqualSelector(message);
 
-  const store_status = useShallowEqualSelector(status);
+
   const store_spinner = useShallowEqualSelector(spinner);
 
   const [profile, setProfile] = useState({ first_name: "", last_name: "" });
@@ -54,9 +51,7 @@ function Header() {
       <nav
         className={`main-header navbar navbar-expand ${nav_variant_bg} ${nav_variant}`}
       >
-        {store_message && store_status ? (
-          <Message message={store_message} status={store_status} />
-        ) : null}
+        
         {/* Left navbar links */}
         <ul className="navbar-nav">
           <li className="nav-item">
@@ -108,7 +103,7 @@ function Header() {
 
         <ul className="navbar-nav ml-auto">
           {/* Notifications Dropdown Menu */}
-          {store_spinner ? <Spinner color="secondary" /> : null}
+          {store_spinner ? <Spinner  /> : null}
 
           <li className="nav-item dropdown">
             <Link className="nav-link" data-toggle="dropdown" to={() => false}>

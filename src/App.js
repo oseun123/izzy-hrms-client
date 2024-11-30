@@ -272,7 +272,7 @@ function App() {
 
   const loading = (
     <div className={styles.spinner_box}>
-      <Spinner position="center" size="large" color="secondary" />
+      <Spinner position="center" size="large" />
     </div>
   );
   if (isloaded) {

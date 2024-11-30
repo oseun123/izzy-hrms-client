@@ -11,7 +11,7 @@ import {
   useForm,
   useAxiosPrivate,
   useCleanUp,
-  usePreferenceNotification,
+
 } from "../../../../../../hooks";
 import { spinner_preferences } from "../../../../../../store/selectors/preferencesSelector";
 import PreferencesHero from "../PreferencesHero";
@@ -26,7 +26,7 @@ function EditEmpStatus() {
   const [single_emp_status, setSingleEmpStatus] = useState(null);
 
   useCleanUp();
-  usePreferenceNotification();
+
 
   const { isLoading, data } = useGetSystemEmpStatus(enabled, setEnabled);
   const dispatch = useDispatch();
