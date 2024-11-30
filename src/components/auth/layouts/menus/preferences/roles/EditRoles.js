@@ -9,8 +9,7 @@ import {
 } from "../../../../../../hooks";
 import {
   spinner_preferences,
-  message_preferences,
-  status_preferences,
+
   system_permissions,
   single_system_role,
 } from "../../../../../../store/selectors/preferencesSelector";
@@ -27,7 +26,7 @@ import {
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
-import Message from "../../../../../helpers/Message";
+
 import { currentUser } from "../../../../../../store/selectors/userSelectors";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Input, Space } from "antd";
@@ -46,8 +45,7 @@ function EditRoles() {
   useGetSystemPermissions(enabled, setEnabled);
   useGetUserPermissions(enabledUserPerm, setEnabledUserPerm, auth_user.id);
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const all_system_permissions = useShallowEqualSelector(system_permissions);
   const single_role = useSelector(
     (state) => single_system_role(state, id),
@@ -136,9 +134,7 @@ function EditRoles() {
         <AminatedLayout>
           {/* Content Header (Page header) */}
           <section className="content-header">
-            {message && status ? (
-              <Message message={message} status={status} />
-            ) : null}
+         
             <div className="container-fluid">
               <div className="row mb-2">
                 <div className="col-sm-6">

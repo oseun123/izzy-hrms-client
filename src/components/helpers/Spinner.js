@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 
-const Spinner = ({ size, position, color, spinner, ...others }) => {
+const Spinner = ({ size, position, ...others }) => {
   let style = null;
 
   const className = classnames({
@@ -10,15 +10,6 @@ const Spinner = ({ size, position, color, spinner, ...others }) => {
     "text-right": position === "right",
     "d-flex justify-content-center align-items-center": position === "center",
     "text-left": position === "left",
-    "text-primary": color === "primary",
-    "text-secondary": color === "secondary",
-    "text-success": color === "success",
-    "text-danger": color === "danger",
-    "text-warning": color === "warning",
-    "text-info": color === "info",
-    "text-light": color === "light",
-    "text-dark": color === "dark",
-    "d-visible": spinner,
   });
   if (size === "large") {
     style = {
@@ -30,7 +21,7 @@ const Spinner = ({ size, position, color, spinner, ...others }) => {
   return (
     <React.Fragment>
       <div className={className}>
-        <div className="spinner-border" role="status" style={style}>
+        <div className="spinner-border spinner-color" role="status" style={style}>
           <span className="sr-only">Loading...</span>
         </div>
       </div>

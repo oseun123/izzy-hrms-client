@@ -1,12 +1,13 @@
 import React from "react";
 import prefrefencesSvg from "../../../../../svg/preferences.svg";
 import { currentUser } from "../../../../../store/selectors/userSelectors";
-import { useShallowEqualSelector } from "../../../../../hooks";
+import { usePreferenceNotification, useShallowEqualSelector } from "../../../../../hooks";
 
 import { capitalizeFirstLetter } from "../../../../../util/helpers";
 import styles from "../../../../styles/layout/Layout.module.css";
 
 function PreferencesHero() {
+  usePreferenceNotification();
   const { first_name, last_name, last_login } =
     useShallowEqualSelector(currentUser);
 

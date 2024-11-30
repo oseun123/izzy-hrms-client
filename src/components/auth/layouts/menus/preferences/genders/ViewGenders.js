@@ -10,8 +10,6 @@ import {
 } from "../../../../../../hooks";
 import {
   // spinner_preferences,
-  message_preferences,
-  status_preferences,
   system_genders,
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
@@ -21,7 +19,7 @@ import {
   deleteGender,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
-import Message from "../../../../../helpers/Message";
+
 import { useMediaQuery } from "react-responsive";
 import { gender_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
@@ -41,8 +39,6 @@ function ViewGenders() {
     size
   );
 
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_gender = useSelector(
@@ -87,9 +83,7 @@ function ViewGenders() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+        
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

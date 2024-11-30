@@ -17,13 +17,12 @@ import {
 } from "../../../../../../hooks";
 import {
   spinner_preferences,
-  message_preferences,
-  status_preferences,
+
   system_companys,
   system_users,
   single_system_branch,
 } from "../../../../../../store/selectors/preferencesSelector";
-import Message from "../../../../../helpers/Message";
+
 import {
   useGetSystemCompany,
   useGetSystemUsers,
@@ -51,8 +50,7 @@ function EditBranch() {
   useGetSystemUsers(enableduser, setEnabledUser);
   useGetSystemBranch(enabledbranch, setEnabledBranch);
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+ 
   const companys = useShallowEqualSelector(system_companys);
   const users = useShallowEqualSelector(system_users);
   const request = useAxiosPrivate();
@@ -141,9 +139,7 @@ function EditBranch() {
 
       <AminatedLayout>
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

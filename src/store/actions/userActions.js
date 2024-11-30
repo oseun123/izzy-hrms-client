@@ -100,7 +100,6 @@ export const updateCurrentUserSettings = async (dispatch, request, creds) => {
     dispatch({ type: "CLEAR_USERS_ERRORS" });
     dispatch({ type: "START_SPINNER" });
     const result = await request.put("/auth/current_client/update", creds);
-
     dispatch({ type: "STOP_SPINNER" });
     dispatch({ type: "CLEINT_SETTINGS_SUCCESS", payload: result.data });
     return result.data;

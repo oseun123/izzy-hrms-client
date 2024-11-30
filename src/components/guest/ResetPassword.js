@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import Message from "./../helpers/Message";
+
 import Spinner from "./../helpers/Spinner";
 import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import {
   resetPassword,
   resetUsersState,
 } from "../../store/actions/userActions";
-import { useForm } from "../../hooks";
+import { useCleanUp, useForm, useUserNotification } from "../../hooks";
 import { validatResetPassword } from "../../util/formValidations";
 import { Input, Button } from "antd";
 import { LockOutlined, SyncOutlined } from "@ant-design/icons";
@@ -19,6 +19,9 @@ import styles from "../styles/layout/Layout.module.css";
 import AminatedLayout from "../ui/AminatedLayout";
 
 const ResetPassword = () => {
+
+  useUserNotification();
+  useCleanUp();
   const { token } = useParams();
   const initData = {
     password: "",
@@ -29,7 +32,7 @@ const ResetPassword = () => {
   const currentCleint = useShallowEqualSelector(current_cleint);
 
   const dispatch = useDispatch();
-  const { spinner, message, status } = useSelector((state) => state.user);
+  const { spinner } = useSelector((state) => state.user);
   // callback
   const ResetPasswordFromForm = () => {
     resetPassword(dispatch, values).then((res) => {
@@ -57,9 +60,7 @@ const ResetPassword = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Enter your new password </p>
-              {message && status ? (
-                <Message message={message} status={status} />
-              ) : null}
+              
               <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
               <form onSubmit={handleSubmit}>
                 <div className="input-group mb-3">

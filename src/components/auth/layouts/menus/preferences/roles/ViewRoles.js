@@ -9,8 +9,7 @@ import {
 } from "../../../../../../hooks";
 import {
   // spinner_preferences,
-  message_preferences,
-  status_preferences,
+
   system_roles,
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
@@ -19,7 +18,7 @@ import {
   deleteRole,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
-import Message from "../../../../../helpers/Message";
+
 import { useMediaQuery } from "react-responsive";
 import { role_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
@@ -39,8 +38,7 @@ function ViewRoles() {
     page,
     size
   );
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const roles = useShallowEqualSelector(system_roles);
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const confirm_text = "Delete role";
@@ -84,9 +82,7 @@ function ViewRoles() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+      
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

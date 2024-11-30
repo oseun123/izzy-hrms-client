@@ -8,9 +8,7 @@ import {
   useAxiosPrivate,
 } from "../../../../../../hooks";
 import {
-  // spinner_preferences,
-  message_preferences,
-  status_preferences,
+
   system_departments,
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
@@ -20,7 +18,7 @@ import {
   deleteDepartment,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
-import Message from "../../../../../helpers/Message";
+
 import { useMediaQuery } from "react-responsive";
 import { department_columns } from "./../../../../../../util/tables";
 import { CSVLink } from "react-csv";
@@ -45,8 +43,7 @@ function ViewDepartments() {
     size
   );
 
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const departments = useShallowEqualSelector(system_departments);
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_dept = useSelector(
@@ -107,9 +104,7 @@ function ViewDepartments() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+       
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

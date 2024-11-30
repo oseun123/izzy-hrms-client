@@ -95,7 +95,7 @@ function notificationError(description, duration = 5) {
   });
 }
 
-function notificationSuccess(description, duration = 560) {
+function notificationSuccess(description, duration = 5) {
   notification.success({
     message: "Success",
     description: description,

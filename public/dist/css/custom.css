@@ -296,3 +296,56 @@ button:focus {
   font-size: 70px;
   color: var(--primary);
 }
+
+.ant-notification-notice {
+  min-width: 150px !important; /* Adjust width */
+  padding: 10px !important; /* Adjust padding */
+}
+
+.spinner-color{
+  color: var(--primary) !important;
+}
+:where(.css-dev-only-do-not-override-1x0dypw).ant-pagination .ant-pagination-item-active:hover a{
+
+   color:var(--primary) !important;
+}
+ .ant-pagination-item-active {
+
+   border-color: var(--primary) !important;
+   color:var(--primary) !important;
+}
+:where(.css-dev-only-do-not-override-1x0dypw).ant-pagination .ant-pagination-item-active a {
+   color:var(--primary) !important;
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color:var(--primary) !important;
+    text-shadow: 0 0 0.25px var(--primary) !important;
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-tabs .ant-tabs-tab-btn:focus:not(:focus-visible), :where(.css-dev-only-do-not-override-1x0dypw).ant-tabs .ant-tabs-tab-remove:focus:not(:focus-visible), :where(.css-dev-only-do-not-override-1x0dypw).ant-tabs .ant-tabs-tab-btn:active, :where(.css-dev-only-do-not-override-1x0dypw).ant-tabs .ant-tabs-tab-remove:active {
+    color:var(--primary) !important;
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-tabs .ant-tabs-tab:hover {
+    color:var(--primary) !important;
+}
+.ant-tabs-ink-bar {
+  background-color:var(--primary) !important;
+}
+
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-picker-outlined:hover {
+    border-color: var(--primary) !important;
+   
+}
+:where(.css-dev-only-do-not-override-1x0dypw).ant-input-outlined:focus, :where(.css-dev-only-do-not-override-1x0dypw).ant-input-outlined:focus-within {
+   border-color: var(--primary) !important;
+   box-shadow: 0 0 0 2px rgba(var(--primary-rbg), 0.1)
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-picker-outlined:focus, :where(.css-dev-only-do-not-override-1x0dypw).ant-picker-outlined:focus-within {
+
+    border-color: var(--primary) !important;
+   box-shadow: 0 0 0 2px rgba(var(--primary-rbg), 0.1)
+}

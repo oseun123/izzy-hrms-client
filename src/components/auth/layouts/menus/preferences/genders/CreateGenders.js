@@ -17,10 +17,9 @@ import {
 } from "../../../../../../hooks";
 import {
   spinner_preferences,
-  message_preferences,
-  status_preferences,
+  
 } from "../../../../../../store/selectors/preferencesSelector";
-import Message from "../../../../../helpers/Message";
+
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
@@ -31,8 +30,7 @@ function CreateGenders() {
   };
   const dispatch = useDispatch();
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+  
   const request = useAxiosPrivate();
 
   //callback
@@ -63,9 +61,7 @@ function CreateGenders() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+          
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

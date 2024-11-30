@@ -5,14 +5,12 @@ import { useGetSystemBranch } from "./../../../../../../store/actions/preference
 import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
 
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useShallowEqualSelector } from "../../../../../../hooks";
+
 import {
-  message_preferences,
-  status_preferences,
+  
   single_system_branch,
 } from "../../../../../../store/selectors/preferencesSelector";
 
-import Message from "../../../../../helpers/Message";
 import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
 import { department_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
@@ -26,8 +24,7 @@ function BranchDetails() {
   useGetSystemBranch(enabled, setEnabled);
 
   const dispatch = useDispatch();
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+ 
   const single_branch = useSelector(
     (state) => single_system_branch(state, id),
     shallowEqual
@@ -50,9 +47,7 @@ function BranchDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

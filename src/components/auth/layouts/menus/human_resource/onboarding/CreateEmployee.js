@@ -108,7 +108,7 @@ function CreateEmployee() {
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
-                  <div className="row col-md-11">
+                  <div className="row ">
                     <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="first_name">
                         First name <span className="text-danger">*</span>{" "}

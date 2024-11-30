@@ -8,8 +8,7 @@ import {
 } from "../../../../../../hooks";
 import {
   spinner_preferences,
-  message_preferences,
-  status_preferences,
+
   system_roles,
   system_users,
 } from "../../../../../../store/selectors/preferencesSelector";
@@ -25,7 +24,7 @@ import {
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import classnames from "classnames";
-import Message from "../../../../../helpers/Message";
+
 import { Select, Button, Space } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import PreferencesHero from "../PreferencesHero";
@@ -46,8 +45,7 @@ function AddUserRole() {
   useGetSystemRoles(enabledrole, setEnabledRole, "_", "_", "all");
   useGetSystemUsers(enableduser, setEnabledUser);
   const spinner = useShallowEqualSelector(spinner_preferences);
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+
   const roles = useShallowEqualSelector(system_roles);
   const users = useShallowEqualSelector(system_users);
   const request = useAxiosPrivate();
@@ -125,9 +123,7 @@ function AddUserRole() {
         <AminatedLayout>
           {/* Content Header (Page header) */}
           <section className="content-header">
-            {message && status ? (
-              <Message message={message} status={status} />
-            ) : null}
+          
             <div className="container-fluid">
               <div className="row mb-2">
                 <div className="col-sm-6">

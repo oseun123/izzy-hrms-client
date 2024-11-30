@@ -9,8 +9,7 @@ import {
 } from "../../../../../../hooks";
 import {
   // spinner_preferences,
-  message_preferences,
-  status_preferences,
+ 
   system_branchs,
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
@@ -20,7 +19,7 @@ import {
   deleteBranch,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
-import Message from "../../../../../helpers/Message";
+
 import { useMediaQuery } from "react-responsive";
 import { branch_columns } from "../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
@@ -43,8 +42,7 @@ function ViewBranch() {
     size
   );
 
-  const status = useShallowEqualSelector(status_preferences);
-  const message = useShallowEqualSelector(message_preferences);
+ 
   const companys = useShallowEqualSelector(system_branchs);
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_branch = useSelector(
@@ -89,9 +87,7 @@ function ViewBranch() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          {message && status ? (
-            <Message message={message} status={status} />
-          ) : null}
+         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">

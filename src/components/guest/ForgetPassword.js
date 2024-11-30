@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import Message from "./../helpers/Message";
+
 import Spinner from "./../helpers/Spinner";
 import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import {
   requestPasswordLink,
   resetUsersState,
 } from "../../store/actions/userActions";
-import { useForm } from "../../hooks";
+import { useCleanUp, useForm, useUserNotification } from "../../hooks";
 import { requestLink } from "../../util/formValidations";
 import { Input, Button } from "antd";
 import { SendOutlined, MailOutlined } from "@ant-design/icons";
@@ -18,12 +18,15 @@ import { useShallowEqualSelector } from "../../hooks";
 import styles from "../styles/layout/Layout.module.css";
 import AminatedLayout from "../ui/AminatedLayout";
 const ForgetPassword = () => {
+
+  useUserNotification();
+  useCleanUp()
   const initEmail = {
     email: "",
   };
   const currentCleint = useShallowEqualSelector(current_cleint);
   const dispatch = useDispatch();
-  const { spinner, message, status } = useSelector((state) => state.user);
+  const { spinner} = useSelector((state) => state.user);
   // callback
   const sendResetLinkFromForm = () => {
     requestPasswordLink(dispatch, values).then((res) => {
@@ -51,10 +54,8 @@ const ForgetPassword = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Enter Email to get a reset link </p>
-              {message && status ? (
-                <Message message={message} status={status} />
-              ) : null}
-              <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
+            
+              <Spinner d-hidden mb-2  />
               <form onSubmit={handleSubmit}>
                 <div className="input-group mb-3">
                   <Input
