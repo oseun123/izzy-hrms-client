@@ -11,6 +11,7 @@ import $ from "jquery";
 
 import { updateCurrentUserSettings } from "../../../../../../store/actions/userActions";
 import { RadioChangeEvent } from "antd/lib/radio"; 
+import { CurrentClient } from "../../../../../../@types/api.types";
 
 const navbar_dark_skins = [
   "sidebar-dark-primary",
@@ -79,7 +80,7 @@ const brand_light_skins = [
 ];
 
 interface DarkSideBarVariantProps{
-   currentCleint: any;
+   currentCleint: CurrentClient;
    setEnabled: (enabled:boolean)=>void
 
 }

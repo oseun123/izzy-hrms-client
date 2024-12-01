@@ -1,67 +1,73 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Input, Button, Space } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
-
-import { validateCreateGender } from "../../../../../../util/formValidations";
 import {
   createGender,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
-  useShallowEqualSelector,
-  useForm,
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-  
-} from "../../../../../../store/selectors/preferencesSelector";
+
 
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import { useCustomForm } from "../../../../../../util/hookstype";
 
-function CreateGenders() {
-  const initValues = {
-    name: "",
-  };
+interface FormValues {
+  name: string;
+}
+
+
+
+
+const CreateGenders: React.FC = () => {
+
+  useCleanUp();
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
-  
   const request = useAxiosPrivate();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  //callback
-  function createGenderCallback() {
+  // Initial form values
+  const initValues: FormValues = { name: "" };
+
+  // Validation function
+  const validateCreateGender = (values: FormValues): Record<string, string | undefined> => {
+    const errors: Record<string, string | undefined> = {};
+    if (!values.name.trim()) {
+      errors.name = "Name is required";
+    }
+    return errors;
+  };
+
+  // Callback for creating a gender
+  const createGenderCallback = () => {
+    setLoading(true);
     createGender(dispatch, request, values).then((res) => {
+      setLoading(false);
       if (res?.status === "success") {
-        clearForm();
+        clearForm(); // Clear the form after successful creation
       }
     });
-  }
+  };
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
+  // Use the custom form hook
+  const { values, errors, handleChange, handleSubmit, clearForm } = useCustomForm(
     createGenderCallback,
     initValues,
     validateCreateGender
   );
 
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-
   return (
     <>
       <PreferencesHero />
-
       <AminatedLayout>
-        {/* Content Header (Page header) */}
+        {/* Content Header */}
         <section className="content-header">
-          
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -78,24 +84,21 @@ function CreateGenders() {
               </div>
             </div>
           </div>
-          {/* /.container-fluid */}
         </section>
-        {/* Main content */}
+
+        {/* Main Content */}
         <section className="content col-md-12">
           <div className="container-fluid">
-            {/* Default box */}
+            {/* Default Box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a gender</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">Create a Gender</h3>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 d-flex flex-column offset-md-4">
-                      <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
-                      </label>
+                      <label htmlFor="name">Name <span className="text-danger">*</span></label>
                       <Input
                         type="text"
                         name="name"
@@ -107,39 +110,29 @@ function CreateGenders() {
                         className="w-75"
                         placeholder="Name of gender"
                       />
-
-                      <div
-                        className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
-                          {
-                            "custom-visibible": errors.name,
-                          }
-                        )}
-                      >
-                        {errors.name}
-                      </div>
+                      {errors.name && (
+                        <div className={classnames("invalid-feedback", "custom-feedback")}>
+                          {errors.name}
+                        </div>
+                      )}
                     </div>
                   </div>
+
+                  {/* Action Buttons */}
                   <div className="row">
                     <div className="form-group col-md-4 offset-md-4">
                       <Space>
                         <Button
                           type="primary"
                           icon={<PlusCircleOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
                           Create
                         </Button>
                         <Link to="/preferences/view-genders">
-                          <Button
-                            icon={<EyeOutlined />}
-                            className={styles.on_hover_secondary}
-                          >
-                            {" "}
+                          <Button icon={<EyeOutlined />} className={styles.on_hover_secondary}>
                             View
                           </Button>
                         </Link>
@@ -149,13 +142,11 @@ function CreateGenders() {
                 </div>
               </form>
             </div>
-            {/* /.card */}
           </div>
         </section>
-        {/* /.content */}
       </AminatedLayout>
     </>
   );
-}
+};
 
 export default CreateGenders;

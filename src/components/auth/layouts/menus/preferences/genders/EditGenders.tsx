@@ -4,79 +4,100 @@ import { Input, Button, Space } from "antd";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { validateCreateGender } from "../../../../../../util/formValidations";
+
 import {
   updateGender,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
-import { useGetSystemGender } from "../../../../../../store/actions/preferencesHooksActions";
-import { useDispatch, shallowEqual, useSelector } from "react-redux";
+import { useGetSystemGender } from "../../../../../../store/actions/preferencesHooksActionsType";
+import { useDispatch } from "react-redux";
 import {
-  useShallowEqualSelector,
-  useForm,
+  
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
 
-  single_system_gender,
-} from "../../../../../../store/selectors/preferencesSelector";
 
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import { Gender } from "../../../../../../@types/api.types";
+import { useCustomForm } from "../../../../../../util/hookstype";
+
+
+interface FormValues {
+  id: number,
+  name: string;
+}
+
+
+
+
 
 function EditGenders() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
-  const [nam, setNam] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<Gender | null>(null);
+
 
   const { id } = useParams();
-  useGetSystemGender(enabled, setEnabled);
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
-
   const request = useAxiosPrivate();
+  
+  // Fetch system genders
+  const { data } = useGetSystemGender(enabled, setEnabled, 'all');
 
-  const single_gender = useSelector(
-    (state) => single_system_gender(state, id),
-    shallowEqual
-  );
+ 
 
-  const gender_name = single_gender[0]?.name;
-  const initValues = {
-    name: gender_name,
-    gender_id: id,
+  // Effect to set selected gender when data changes
+  useEffect(() => {
+    if (data && Object.keys(data).length) {
+      const genders = data.payload?.genders || [];
+      const selectedGender = genders.find((item) => item.id === parseInt(id));
+      setSelected(selectedGender || null);
+    }
+  }, [data, id]);
+
+  // Initial form values based on selected gender
+  const initValues: FormValues = {
+    id: parseInt(id),
+    name: selected?.name || '',
   };
 
-  //callback
-  function updateGenderCallback() {
-    console.log(values);
-    updateGender(dispatch, request, values);
-  }
-
-  const { values, errors, handleChange, handleSubmit } = useForm(
+  // Custom hook to manage form state and validation
+  const { values, errors, handleChange, handleSubmit,clearForm } = useCustomForm(
     updateGenderCallback,
     initValues,
-    validateCreateGender
+    validateEditGender
   );
-  function handleSubmitfist(e) {
-    e.preventDefault();
 
-    values.name = document.querySelector("#name").value;
+  // Effect to update form values when selected gender changes
+  useEffect(() => {
+    if (selected) {
+      clearForm();
+      values.name = selected.name; // Update form value directly
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
-    handleSubmit();
+  // Validation function for the form
+  function validateEditGender(values: FormValues): Record<string, string | undefined>  {
+    const errors: Record<string, string | undefined>  = {};
+    if (!values.name.trim()) {
+      errors.name = "Name is required";
+    }
+    return errors;
   }
-  // set Gender name incase of refresh
-  useEffect(() => {
-    values.name = gender_name;
-    setNam(gender_name);
-  }, [gender_name, values]);
 
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+  // Callback to handle gender update
+  function updateGenderCallback() {
+    console.log({ values });
+    setLoading(true);
+    updateGender(dispatch, request, values).then(() => {
+      setLoading(false);
+      // Optionally redirect or show a success message here
+    });
+  }
 
   return (
     <>
@@ -112,7 +133,7 @@ function EditGenders() {
                 <h3 className="card-title">Edit a Gender</h3>
                 <div className="card-tools"></div>
               </div>
-              <form onSubmit={handleSubmitfist}>
+              <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 d-flex flex-column offset-md-4">
@@ -127,7 +148,7 @@ function EditGenders() {
                         value={values.name}
                         onChange={handleChange}
                         status={errors.name ? "error" : ""}
-                        defaultValue={nam}
+                        // defaultValue={nam}
                         className="w-75"
                         placeholder="Name of gender"
                       />
@@ -151,7 +172,7 @@ function EditGenders() {
                         <Button
                           type="primary"
                           icon={<FormOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >

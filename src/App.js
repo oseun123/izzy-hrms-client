@@ -8,7 +8,7 @@ import RequireAuth from "./hoc/RequireAuth";
 import AlreadyAuth from "./hoc/AlreadyAuth";
 import "antd/dist/reset.css";
 import Spinner from "./components/helpers/Spinner";
-import { useGetCurrentClient } from "../src/store/actions/userHooksActions";
+import { useGetCurrentClient } from "../src/store/actions/userHooksActionsType";
 
 import styles from "./components/styles/layout/Layout.module.css";
 import "./index.css";
