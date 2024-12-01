@@ -8,6 +8,7 @@ import { AiOutlineSkin } from "react-icons/ai";
 import $ from "jquery";
 import { updateCurrentUserSettings } from "../../../../../../store/actions/userActions";
 import { RadioChangeEvent } from "antd/lib/radio"; 
+import { CurrentClient } from "../../../../../../@types/api.types";
 
 const navbar_light_skins = [
   "sidebar-light-primary",
@@ -77,7 +78,7 @@ const brand_light_skins = [
 ];
 
 interface LightSideBarVariantProps {
-    currentCleint: any;
+    currentCleint: CurrentClient;
     setEnabled: (enabled: boolean) => void;
 }
 

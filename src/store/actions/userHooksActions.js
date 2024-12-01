@@ -44,53 +44,7 @@ const UseRefreshTest = (enabled, setEnabled) => {
 
   return { data, refetch };
 };
-const useGetCurrentClient = (enabled, setEnabled) => {
-  const dispatch = useDispatch();
-  // const location = useLocation();
-  // const history = useHistory();
-  const queryClient = useQueryClient();
-  const request = useAxiosPrivate();
-  const { data, error, refetch, isLoading } = useQuery(
-    ["current_client"],
-    async () => {
-      const result = await request.get(`/auth/current_client`);
-      return result.data;
-    },
-    { enabled: enabled, manual: true, retry: 1 }
-  );
 
-  useEffect(() => {
-    if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-    }
-    if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "CURRENT_CLIENT_SUCCESS", payload: data });
-      setEnabled(false);
-    }
-
-    if (error) {
-      queryClient.removeQueries(["current_client"]);
-
-      const resMessage = error.response.data;
-
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "CURRENT_CLIENT_ERROR", payload: resMessage });
-      setEnabled(false);
-    }
-  }, [
-    dispatch,
-    isLoading,
-    data,
-    error,
-    setEnabled,
-    // location,
-    // history,
-    queryClient,
-  ]);
-
-  return { data, error, refetch };
-};
 const useGetAllEmployee = (enabled, setEnabled) => {
   const dispatch = useDispatch();
   // const location = useLocation();
@@ -135,4 +89,4 @@ const useGetAllEmployee = (enabled, setEnabled) => {
   return { data: data?.payload, error, refetch, isLoading };
 };
 
-export { UseRefreshTest, useGetCurrentClient, useGetAllEmployee };
+export { UseRefreshTest, useGetAllEmployee };

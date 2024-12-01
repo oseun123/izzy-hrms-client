@@ -14,14 +14,14 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemGender } from "./../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemGender } from "../../../../../../store/actions/preferencesHooksActions";
 import {
   deleteGender,
   preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 
 import { useMediaQuery } from "react-responsive";
-import { gender_columns } from "./../../../../../../util/tables";
+import { gender_columns } from "../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";

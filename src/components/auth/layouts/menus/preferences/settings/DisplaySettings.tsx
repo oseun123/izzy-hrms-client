@@ -6,20 +6,31 @@ import AminatedLayout from "../../../../../ui/AminatedLayout";
 
 import { useCleanUp } from "../../../../../../hooks";
 import DarkSideBarVariant from "./DarkSideBarVariant";
-import { useGetCurrentClient } from "./../../../../../../store/actions/userHooksActions";
+// import { useGetCurrentClient } from "../../../../../../store/actions/userHooksActionsType";
 import LightSideBarVariant from "./LightSidebarVariant";
+// import { ApiResponse } from "../../../../../../@types/api.types";
+import { useGetCurrentClient } from "../../../../../../store/actions/userHooksActionsType";
+import { CurrentClient } from "../../../../../../@types/api.types";
 
 
-function DisplaySettings() {
+
+const DisplaySettings: React.FC = () =>  {
   
   useCleanUp();
 
-  const [enabled, setEnabled] = useState(true);
- 
-  // const currentCleint = useShallowEqualSelector(current_cleint);
-  const { data } = useGetCurrentClient(enabled, setEnabled);
+  const [enabled, setEnabled] = useState<boolean>(true);
 
-  const currentCleint = data?.payload?.current_cleint;
+
+
+  // const currentCleint = useShallowEqualSelector(current_cleint);
+  const { data } = useGetCurrentClient(enabled, setEnabled)
+;
+
+
+
+  const current: CurrentClient = data!.payload!.current_cleint!;
+
+  console.log({data, current});
 
   return (
     <>
@@ -49,12 +60,12 @@ function DisplaySettings() {
 
         <div className="row m-0">
           <LightSideBarVariant
-            currentCleint={currentCleint}
+            currentCleint={current}
             setEnabled={setEnabled}
           />
 
           <DarkSideBarVariant
-            currentCleint={currentCleint}
+            currentCleint={current}
             setEnabled={setEnabled}
           />
         </div>

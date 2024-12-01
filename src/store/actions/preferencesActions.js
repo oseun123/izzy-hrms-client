@@ -453,8 +453,8 @@ const updateGender = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/preferences/genders/${creds.gender_id}`,
-      creds
+      `/preferences/genders/${creds.id}`,
+      {...creds,gender_id: creds.id}
     );
 
     dispatch({ type: "STOP_SPINNER" });
