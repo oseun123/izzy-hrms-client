@@ -26,6 +26,7 @@ function GenderDetails() {
   const dispatch = useDispatch();
 
   const single_gender = useSelector(
+     // @ts-ignore
     (state) => single_system_gender(state, id),
     shallowEqual
   );
@@ -90,6 +91,7 @@ function GenderDetails() {
                   </div>
                   <div className="card-body">
                     <Table
+                     // @ts-ignore
                       columns={department_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={users}
