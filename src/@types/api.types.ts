@@ -11,6 +11,7 @@ export interface Gender {
     name: string;
     created_at: string;
     updated_at: string;
+  
     users: User[]
 
 }
@@ -36,6 +37,7 @@ export interface User {
 export interface Payload {
     current_cleint?: CurrentClient; // Correct property name
     genders?: Gender[]; // Correct property name
+    total_pages?: number
   
 }
 
