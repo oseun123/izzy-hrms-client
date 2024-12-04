@@ -14,7 +14,7 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemGender } from "../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemGenderPaginated } from "../../../../../../store/actions/preferencesHooksActionsType";
 import {
   deleteGender,
   preferencesCleanUp,
@@ -25,6 +25,8 @@ import { gender_columns } from "../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { User } from "../../../../../../@types/api.types";
+
 const { Option } = Select;
 
 function ViewGenders() {
@@ -32,7 +34,7 @@ function ViewGenders() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemGender(
+  const { data, isLoading } = useGetSystemGenderPaginated(
     enabled,
     setEnabled,
     page,
@@ -41,11 +43,15 @@ function ViewGenders() {
 
   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
+
+
   const delete_gender = useSelector(
+      // @ts-ignore
     (state) => memoUserpermission(state, "DELETE_GENDER"),
     shallowEqual
   );
   const edit_gender = useSelector(
+      // @ts-ignore
     (state) => memoUserpermission(state, "EDIT_GENDER"),
     shallowEqual
   );
@@ -59,17 +65,17 @@ function ViewGenders() {
       preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
-  function handlePagination(page) {
+  function handlePagination(page: number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
+  function confirmAction(id: number) {
     deleteGender(dispatch, request, { id }).then((res) => {
       if (res?.status === "success") {
         setEnabled(true);
@@ -117,7 +123,9 @@ function ViewGenders() {
                       <Skeleton active />
                     ) : (
                       <>
+                      
                         <Table
+                        // @ts-ignore
                           columns={gender_columns(
                             isTabletOrMobile,
                             confirm_text,
@@ -125,6 +133,7 @@ function ViewGenders() {
                             delete_gender,
                             edit_gender
                           )}
+                          // @ts-ignore
                           dataSource={genders}
                           rowKey={(record) => record.id}
                           scroll={{
@@ -144,13 +153,13 @@ function ViewGenders() {
                                       }}
                                     >
                                       <Space wrap size="middle">
-                                        {record.users.map((user) => (
+                                        {record.users.map((user:User) => (
                                           <Space>
                                             <Avatar
                                               name={`${user.first_name || ""} ${
                                                 user.last_name || " "
                                               }`}
-                                              size={22}
+                                              size="22"
                                               round={true}
                                             />
                                             <span>
