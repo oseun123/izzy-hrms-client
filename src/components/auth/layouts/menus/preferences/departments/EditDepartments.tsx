@@ -4,117 +4,112 @@ import { Input, Button, Space, Select } from "antd";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { validateCreateDepartment } from "../../../../../../util/formValidations";
 import {
   updateDepartment,
-  preferencesCleanUp,
+
 } from "../../../../../../store/actions/preferencesActions";
-import { useGetSystemDepartment } from "../../../../../../store/actions/preferencesHooksActions";
-import { useDispatch, shallowEqual, useSelector } from "react-redux";
+import { useGetSystemDepartment } from "../../../../../../store/actions/preferencesHooksActionsType";
+import { useDispatch,} from "react-redux";
 import {
-  useShallowEqualSelector,
-  useForm,
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-  single_system_department,
-} from "../../../../../../store/selectors/preferencesSelector";
+
 
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActions";
 import Avatar from "react-avatar";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { MdOutlineLocalFireDepartment } from "react-icons/md";
+import { Department, User } from "../../../../../../@types/api.types";
+import { useCustomForm } from "../../../../../../util/hookstype";
+
+
+
+interface FormValues {
+  id: number,
+  name: string;
+  hod: number | null;
+}
+
 
 function EditDepartments() {
-  const [creds, setCreds] = useState({});
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
   const [enabledEmp, setEnabledEmp] = useState(true);
-  const [nam, setNam] = useState("");
-  const [ho, setHOD] = useState("");
+  const [selected, setSelected] = useState<Department | null>(null);
+  const [loading, setLoading] = useState(false);
+
 
   const { id } = useParams();
-  useGetSystemDepartment(enabled, setEnabled);
+ const {data:department_data}= useGetSystemDepartment(enabled, setEnabled,'all');
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
+
 
   const request = useAxiosPrivate();
 
   const { data, isLoading } = useGetAllEmployee(enabledEmp, setEnabledEmp);
 
-  const single_department = useSelector(
-    (state) => single_system_department(state, id),
-    shallowEqual
-  );
 
-  const dept_name = single_department[0]?.name;
-  const hod_id = single_department[0]?.hod;
-  const initValues = {
-    name: dept_name,
-    hod: hod_id,
-    dept_id: id,
+   // Effect to set selected gender when data changes
+  useEffect(() => {
+    if (department_data && Object.keys(department_data).length) {
+      
+      const departments = department_data.payload?.departments || [];
+      console.log({departments});
+      const selectedDepartment = departments.find((item) => item.id === parseInt(id));
+      setSelected(selectedDepartment || null);
+    }
+  }, [department_data, id]);
+
+   // Initial form values based on selected gender
+  const initValues: FormValues = {
+    id: parseInt(id),
+    name: selected?.name || '',
+    hod: selected?.hod || null,
   };
 
-  // console.log({ single_department });
 
-  //callback
+    //callback
   function updateDepartmentCallback() {
-    updateDepartment(dispatch, request, creds);
+      setLoading(true);
+    updateDepartment(dispatch, request, values).then(()=>{
+
+       setLoading(false);
+    });
   }
+ 
 
-  const { errors, handleSubmit } = useForm(
-    updateDepartmentCallback,
-    creds,
-    validateCreateDepartment
-  );
-  function handleSubmitfist(e) {
-    e.preventDefault();
-
-    // values.name = document.querySelector("#name").value;
-    // values.hod = document.querySelector("#hod").value;
-
-    handleSubmit(e, creds);
-  }
-  // set department name incase of refresh
-  useEffect(() => {
-    setNam(dept_name);
-    setHOD(hod_id);
-  }, [dept_name, hod_id, creds]);
-
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    setCreds({ ...initValues });
-  }, []);
-
-  function handleSelect(value, name) {
-    // alert("here");
-    console.log({ name, value });
-    handleChangeCreds("_", true, { name, value });
-  }
-
-  function handleChangeCreds(e, sep = false, creds = {}) {
-    if (sep) {
-      setCreds((prevValues) => {
-        if (!creds.name || creds.value === undefined) {
-          console.error("Invalid creds provided:", creds);
-          return prevValues; // Do not update if creds are invalid
-        }
-        return { ...prevValues, [creds.name]: creds.value };
-      });
-    } else if (e && e.target) {
-      setCreds((prevValues) => {
-        return { ...prevValues, [e.target.name]: e.target.value };
-      });
-    } else {
-      console.error("Invalid event provided:", e);
+    // Validation function for the form
+  function validateEditDepartment(values: FormValues): Record<string, string | undefined>  {
+    const errors: Record<string, string | undefined>  = {};
+    if (!values.name.trim()) {
+      errors.name = "Name is required";
     }
+    return errors;
   }
+  // Custom hook to manage form state and validation
+  const { values, errors, handleChange, handleSubmit,clearForm } = useCustomForm(
+    updateDepartmentCallback,
+    initValues,
+    validateEditDepartment
+  );
+
+
+// Effect to update form values when selected gender changes
+  useEffect(() => {
+    if (selected) {
+      clearForm();
+      values.name = selected.name; // Update form value directly
+      values.hod = selected?.hod; // Update form value directly
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
+
+ 
+console.log({values,selected,department_data})
 
   return (
     <>
@@ -147,10 +142,19 @@ function EditDepartments() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Edit a department</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align"> 
+                    <MdOutlineLocalFireDepartment />
+
+                      Update department
+                  </span>
+                  
+                  </h3>
+                <div className="card-tools">
+                  <GeneralBackButton/>
+                </div>
               </div>
-              <form onSubmit={handleSubmitfist}>
+              <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row ">
                     <div className="form-group col-md-4 d-flex flex-column">
@@ -162,8 +166,8 @@ function EditDepartments() {
                         name="name"
                         id="name"
                         allowClear
-                        value={creds.name}
-                        onChange={handleChangeCreds}
+                        value={values.name}
+                        onChange={handleChange}
                         status={errors.name ? "error" : ""}
                         className="w-75"
                         placeholder="Name of department"
@@ -184,24 +188,24 @@ function EditDepartments() {
                     <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">HOD</label>
                       <Select
-                        name="hod"
+                       
                         id="hod"
-                        value={creds.hod || null}
+                        value={values.hod || null}
                         loading={isLoading ? true : false}
                         showSearch
-                        onChange={(value) => handleSelect(value, "hod")}
+                        onChange={(value) => handleChange({ name: "hod", value })}
                         optionFilterProp="children"
-                        filterOption={(input, option) => {
-                          return (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
+                         filterOption={(input, option) => {
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? "";
+                          return typeof label === 'string' && label.toLowerCase().includes(input.toLowerCase());
                         }}
                         className="w-75"
                         placeholder="Head of department"
                       >
                         <option value="">--</option>
                         {data && Object.keys(data).length
-                          ? data?.system_users.map((item) => {
+                          ? data?.system_users.map((item:User) => {
                               return (
                                 <option
                                   key={item.id}
@@ -211,7 +215,7 @@ function EditDepartments() {
                                   <Space>
                                     <Avatar
                                       name={item.fullname}
-                                      size={25}
+                                      size='25'
                                       round={true}
                                     />
 
@@ -242,7 +246,7 @@ function EditDepartments() {
                         <Button
                           type="primary"
                           icon={<FormOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >

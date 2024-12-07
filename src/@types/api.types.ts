@@ -11,9 +11,18 @@ export interface Gender {
     name: string;
     created_at: string;
     updated_at: string;
-  
     users: User[]
 
+}
+
+export interface Department {
+  created_at: string; // ISO date string
+  headOfDepartment: number | null;
+  hod: number | null; 
+  id: number;
+  name: string;
+  updated_at: string; // ISO date string
+  users: User[]
 }
 export interface User {
   branch_id: number | null;
@@ -32,12 +41,18 @@ export interface User {
   state_id: number | null;
   step_id: number | null;
   updated_at: string;
+  fullname?: string;
 }
+
+
 
 export interface Payload {
     current_cleint?: CurrentClient; // Correct property name
     genders?: Gender[]; // Correct property name
-    total_pages?: number
+    total_pages?: number,
+    system_users?: User[],
+    departments?: Department[]
+
   
 }
 

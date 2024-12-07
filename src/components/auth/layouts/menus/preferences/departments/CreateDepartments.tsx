@@ -4,67 +4,84 @@ import { Input, Button, Space, Select } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { validateCreateDepartment } from "../../../../../../util/formValidations";
 import {
   createDepartment,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
-  useShallowEqualSelector,
-  useForm,
+ 
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-} from "../../../../../../store/selectors/preferencesSelector";
+
 
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
-import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActions";
+import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActionsType";
 import Avatar from "react-avatar";
+import { MdOutlineLocalFireDepartment } from "react-icons/md";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { useCustomForm } from "../../../../../../util/hookstype";
+import { User } from "../../../../../../@types/api.types";
+
+
+interface FormValues {
+  name: string,
+  hod: string
+}
 
 function CreateDepartments() {
-  const [enabled, setEnabled] = useState(true);
-  const initValues = {
+
+  useCleanUp();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+   const [loading, setLoading] = useState<boolean>(false);
+   const [enabled, setEnabled] = useState<boolean>(true);
+   const { data, isLoading } = useGetAllEmployee(enabled, setEnabled);
+
+  const initValues : FormValues = {
     name: "",
     hod: "",
   };
-  const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
- 
-  const request = useAxiosPrivate();
 
-  const { data, isLoading } = useGetAllEmployee(enabled, setEnabled);
+
+  // Validation function
+  const validateCreateDepartment = (values: FormValues): Record<string, string | undefined> => {
+    const errors: Record<string, string | undefined> = {};
+    if (!values.name.trim()) {
+      errors.name = "Name is required";
+    }
+
+
+    return errors;
+  };
+
+ 
+
 
   // console.log({ data });
 
   //callback
   function createDepartmentCallback() {
+    setLoading(true);
     createDepartment(dispatch, request, values).then((res) => {
+      setLoading(false);
       if (res?.status === "success") {
         clearForm();
       }
     });
   }
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
+  const { values, errors, handleChange, handleSubmit, clearForm } = useCustomForm(
     createDepartmentCallback,
     initValues,
     validateCreateDepartment
   );
 
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
 
-  function handleSelect(value, name) {
-    console.log({ value, name });
-    handleChange("_", true, { name, value });
-  }
+
+
 
   return (
     <>
@@ -97,8 +114,17 @@ function CreateDepartments() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a department</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                  <MdOutlineLocalFireDepartment />
+                  Add new department
+
+                  </span>
+                  
+                </h3>
+                <div className="card-tools">
+                  <GeneralBackButton/>
+                </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
@@ -133,38 +159,28 @@ function CreateDepartments() {
                     </div>
                     <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">HOD</label>
-                      <Select
-                        name="hod"
+                     <Select
                         id="hod"
                         value={values.hod || null}
                         loading={isLoading ? true : false}
                         showSearch
-                        onChange={(value) => handleSelect(value, "hod")}
+                        onChange={(value) => handleChange({ name: "hod", value })}
                         optionFilterProp="children"
                         filterOption={(input, option) => {
-                          return (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? "";
+                          return typeof label === 'string' && label.toLowerCase().includes(input.toLowerCase());
                         }}
                         className="w-75"
                         placeholder="Head of department"
                       >
                         <option value="">--</option>
                         {data && Object.keys(data).length
-                          ? data?.system_users.map((item) => {
+                          ? data?.system_users?.map((item: User) => {
                               return (
-                                <option
-                                  key={item.id}
-                                  value={item.id}
-                                  label={item.fullname}
-                                >
+                                <option key={item.id} value={item.id} label={item.fullname}>
                                   <Space>
-                                    <Avatar
-                                      name={item.fullname}
-                                      size={25}
-                                      round={true}
-                                    />
-
+                                    <Avatar name={item.fullname} size="25" round={true} />
                                     {item.fullname}
                                   </Space>
                                 </option>
@@ -192,7 +208,7 @@ function CreateDepartments() {
                         <Button
                           type="primary"
                           icon={<PlusCircleOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >

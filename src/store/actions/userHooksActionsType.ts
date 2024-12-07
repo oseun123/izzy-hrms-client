@@ -54,6 +54,60 @@ const useGetCurrentClient = (enabled: boolean, setEnabled: React.Dispatch<React.
 };
 
 
+const useGetAllEmployee = (enabled:boolean, setEnabled:React.Dispatch<React.SetStateAction<boolean>>) => {
+  const dispatch = useDispatch();
+  // const location = useLocation();
+  // const history = useHistory();
+  const queryClient = useQueryClient();
+  const request = useAxiosPrivate();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ["all_employee"],
+    async () : Promise <ApiResponse> => {
+      const result = await request.get<ApiResponse>(`/utils/system_users`);
+      return result.data;
+    },
+    { enabled: enabled, retry: 1 }
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: "START_SPINNER" });
+    }
+    if (data) {
+      dispatch({ type: "STOP_SPINNER" });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(["all_employee"]);
+       // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
+
+      dispatch({ type: "STOP_SPINNER" });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    // location,
+    // history,
+    queryClient,
+  ]);
+
+  return { data: data?.payload, error, refetch, isLoading };
+};
+
+
 export {
-    useGetCurrentClient
+    useGetCurrentClient,
+    useGetAllEmployee
 }

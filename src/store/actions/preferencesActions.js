@@ -91,7 +91,7 @@ const updateDepartment = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/preferences/departments/${creds.dept_id}`,
+      `/preferences/departments/${creds.id}`,
       creds
     );
 
