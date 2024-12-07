@@ -4,76 +4,91 @@ import { Input, Button, Space } from "antd";
 import { FormOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { validateCreateCountry } from "../../../../../../util/formValidations";
 import {
   updateCountry,
-  preferencesCleanUp,
+ 
 } from "../../../../../../store/actions/preferencesActions";
-import { useGetSystemCountry } from "../../../../../../store/actions/preferencesHooksActions";
-import { useDispatch, shallowEqual, useSelector } from "react-redux";
+import { useGetSystemCountry } from "../../../../../../store/actions/preferencesHooksActionsType";
+import { useDispatch} from "react-redux";
 import {
-  useShallowEqualSelector,
-  useForm,
+ 
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-  single_system_country,
-} from "../../../../../../store/selectors/preferencesSelector";
+
 
 import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
+import { useCustomForm } from "../../../../../../util/hookstype";
+import { Country } from "../../../../../../@types/api.types";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { GoGlobe } from "react-icons/go";
+
+interface FormValues {
+  id: number,
+  name: string;
+}
 
 function EditCountry() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
-  const [nam, setNam] = useState("");
+   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<Country | null>(null)
 
   const { id } = useParams();
-  useGetSystemCountry(enabled, setEnabled);
-  const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
-
   const request = useAxiosPrivate();
+  const dispatch = useDispatch();
 
-  const single_country = useSelector(
-    (state) => single_system_country(state, id),
-    shallowEqual
-  );
+ const {data} = useGetSystemCountry(enabled, setEnabled,"all");
 
-  const country_name = single_country[0]?.name;
-  const initValues = {
-    name: country_name,
-    country_id: id,
+  // Effect to set selected gender when data changes
+  useEffect(() => {
+    if (data && Object.keys(data).length) {
+      const countrys = data.payload?.countrys || [];
+      const selectcountry = countrys.find((item) => item.id === parseInt(id));
+      setSelected(selectcountry || null);
+    }
+  }, [data, id]);
+
+  // Initial form values based on selected gender
+  const initValues: FormValues = {
+    id: parseInt(id),
+    name: selected?.name || '',
   };
+
+
 
   //callback
   function updateCountryCallback() {
-    updateCountry(dispatch, request, values);
+    setLoading(true);
+    updateCountry(dispatch, request, values).then((res)=>{
+      setLoading(false)
+    });
   }
 
-  const { values, errors, handleChange, handleSubmit } = useForm(
+   // Validation function for the form
+  function validateEditCountry(values: FormValues): Record<string, string | undefined>  {
+    const errors: Record<string, string | undefined>  = {};
+    if (!values.name.trim()) {
+      errors.name = "Name is required";
+    }
+    return errors;
+  }
+
+  const { values, errors, handleChange, handleSubmit,clearForm } = useCustomForm(
     updateCountryCallback,
     initValues,
-    validateCreateCountry
+    validateEditCountry
   );
-  function handleSubmitfist(e) {
-    e.preventDefault();
 
-    values.name = document.querySelector("#name").value;
-
-    handleSubmit();
-  }
-  // set state name incase of refresh
+  // Effect to update form values when selected gender changes
   useEffect(() => {
-    values.name = country_name;
-    setNam(country_name);
-  }, [country_name, values]);
-
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+    if (selected) {
+      clearForm();
+      values.name = selected.name; // Update form value directly
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   return (
     <>
@@ -105,10 +120,19 @@ function EditCountry() {
           {/* Default box */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">Edit a country</h3>
-              <div className="card-tools"></div>
+              <h3 className="card-title">
+                <span className="space__align">
+                <GoGlobe/>
+
+                Update country
+                </span>
+                
+                </h3>
+              <div className="card-tools">
+                <GeneralBackButton/>
+              </div>
             </div>
-            <form onSubmit={handleSubmitfist}>
+            <form onSubmit={handleSubmit}>
               <div className="card-body">
                 <div className="row">
                   <div className="form-group col-md-4 offset-md-4 d-flex flex-column">
@@ -123,7 +147,6 @@ function EditCountry() {
                       value={values.name}
                       onChange={handleChange}
                       status={errors.name ? "error" : ""}
-                      defaultValue={nam}
                       className="w-75"
                       placeholder="Name of country"
                     />
@@ -148,7 +171,7 @@ function EditCountry() {
                       <Button
                         type="primary"
                         icon={<FormOutlined />}
-                        loading={spinner}
+                        loading={loading}
                         htmlType="submit"
                         className={styles.on_hover}
                       >

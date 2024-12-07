@@ -1,58 +1,73 @@
-import React, { useEffect } from "react";
+import React, {  useState } from "react";
 import { Link } from "react-router-dom";
 import { Input, Button, Space } from "antd";
 import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 
-import { validateCreateCountry } from "../../../../../../util/formValidations";
+
 import {
   createCountry,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 import { useDispatch } from "react-redux";
 import {
-  useShallowEqualSelector,
-  useForm,
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
-import {
-  spinner_preferences,
-
-} from "../../../../../../store/selectors/preferencesSelector";
 
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import styles from "../../../../../styles/layout/Layout.module.css";
+import { useCustomForm } from "../../../../../../util/hookstype";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { GoGlobe } from "react-icons/go";
+
+
+interface FormValues {
+  name: string,
+}
 
 function CreateCountry() {
-  const initValues = {
+  useCleanUp();
+ const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+const [loading, setLoading] = useState(false);
+
+
+
+
+
+  const initValues:FormValues = {
     name: "",
   };
-  const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
 
-  const request = useAxiosPrivate();
+    // Validation function
+  function validateCreateCountry(values: FormValues): Record<string, string | undefined> {
+    const errors: Record<string, string | undefined> = {};
+    if (!values.name.trim()) {
+      errors.name = "Name is required";
+    }
+    return errors;
+  };
+
 
   //callback
   function createCountryCallback() {
+    setLoading(true);
     createCountry(dispatch, request, values).then((res) => {
+      setLoading(false);
       if (res?.status === "success") {
         clearForm();
       }
     });
   }
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
+  const { values, errors, handleChange, handleSubmit, clearForm } = useCustomForm(
     createCountryCallback,
     initValues,
     validateCreateCountry
   );
 
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+
 
   return (
     <>
@@ -85,8 +100,16 @@ function CreateCountry() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a country</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <GoGlobe/>
+                    Add new country
+                  </span>
+                  
+                  </h3>
+                <div className="card-tools">
+                  <GeneralBackButton/>
+                </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
@@ -126,7 +149,7 @@ function CreateCountry() {
                         <Button
                           type="primary"
                           icon={<PlusCircleOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >

@@ -519,7 +519,7 @@ const updateCountry = async (dispatch, request, creds) => {
     dispatch({ type: "START_SPINNER" });
     dispatch({ type: "START_SPINNER_PREFERENCES" });
     const result = await request.put(
-      `/preferences/countries/${creds.country_id}`,
+      `/preferences/countries/${creds.id}`,
       creds
     );
 

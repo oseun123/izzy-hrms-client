@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
 
@@ -6,6 +6,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
 import {
 
@@ -13,10 +14,9 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemCountry } from "./../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemCountryPaginated } from "./../../../../../../store/actions/preferencesHooksActionsType";
 import {
   deleteCountry,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 
 import { useMediaQuery } from "react-responsive";
@@ -24,15 +24,20 @@ import { country_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { User } from "../../../../../../@types/api.types";
+import { GoGlobe } from "react-icons/go";
 
 const { Option } = Select;
 
 function ViewCountry() {
+  useCleanUp();
+
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemCountry(
+  const { data, isLoading } = useGetSystemCountryPaginated(
     enabled,
     setEnabled,
     page,
@@ -40,14 +45,16 @@ function ViewCountry() {
   );
 
  
-  const states = useShallowEqualSelector(system_countrys);
+  const countrys = useShallowEqualSelector(system_countrys);
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_state = useSelector(
-    (state) => memoUserpermission(state, "DELETE_STATES"),
+     // @ts-ignore
+    (state) => memoUserpermission(state, "DELETE_COUNTRY"),
     shallowEqual
   );
   const edit_state = useSelector(
-    (state) => memoUserpermission(state, "EDIT_STATES"),
+     // @ts-ignore
+    (state) => memoUserpermission(state, "EDIT_COUNTRY"),
     shallowEqual
   );
 
@@ -55,22 +62,18 @@ function ViewCountry() {
   const confirm_text = "Delete Country";
   const request = useAxiosPrivate();
 
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-  function handlePagination(page) {
+ 
+  function handlePagination(page:number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value:number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
+  function confirmAction(id:number) {
     deleteCountry(dispatch, request, { id }).then((res) => {
       if (res?.status === "success") {
         setEnabled(true);
@@ -110,7 +113,16 @@ function ViewCountry() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System country</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                       <GoGlobe/>
+                      Available countries
+                      </span>
+                      
+                      </h3>
+                    <div className="card-tools">
+                        <GeneralBackButton/>
+                      </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
@@ -118,6 +130,7 @@ function ViewCountry() {
                     ) : (
                       <>
                         <Table
+                         // @ts-ignore
                           columns={country_columns(
                             isTabletOrMobile,
                             confirm_text,
@@ -125,7 +138,8 @@ function ViewCountry() {
                             delete_state,
                             edit_state
                           )}
-                          dataSource={states}
+                           // @ts-ignore
+                          dataSource={countrys}
                           rowKey={(record) => record.id}
                           scroll={{
                             x: 786,
@@ -144,7 +158,7 @@ function ViewCountry() {
                                       }}
                                     >
                                       <Space wrap>
-                                        {record.users.map((user) => (
+                                        {record.users.map((user:User) => (
                                           <span className="badge bg-secondary rounded-pill p-1">
                                             {user.first_name}
                                           </span>

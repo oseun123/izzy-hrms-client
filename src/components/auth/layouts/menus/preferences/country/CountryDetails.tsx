@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table } from "antd";
-import { useGetSystemCountry } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
+import { useGetSystemCountry } from "./../../../../../../store/actions/preferencesHooksActionsType";
 
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+
+import { shallowEqual, useSelector } from "react-redux";
 
 import {
 
@@ -17,16 +17,21 @@ import { department_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { useCleanUp } from "../../../../../../hooks";
+import { GoGlobe } from "react-icons/go";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
 
 function CountryDetails() {
+  useCleanUp()
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
 
-  useGetSystemCountry(enabled, setEnabled);
+  useGetSystemCountry(enabled, setEnabled,'all');
 
-  const dispatch = useDispatch();
+
   
   const single_country = useSelector(
+     // @ts-ignore
     (state) => single_system_country(state, id),
     shallowEqual
   );
@@ -34,11 +39,7 @@ function CountryDetails() {
   const users = single_country[0]?.users;
   const country_name = single_country[0]?.name;
 
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+
 
   return (
     <>
@@ -74,23 +75,20 @@ function CountryDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
+                      <span className="space__align">
+
+                      <GoGlobe/>
                       User(s) in{" "}
                       {country_name && capitalizeFirstLetter(country_name)}{" "}
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                      <GeneralBackButton/>
                     </div>
                   </div>
                   <div className="card-body">
                     <Table
+                     // @ts-ignore
                       columns={department_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={users}
