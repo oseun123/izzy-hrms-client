@@ -22,6 +22,8 @@ import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { Gender } from "../../../../../../@types/api.types";
 import { useCustomForm } from "../../../../../../util/hookstype";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { BsGenderMale } from "react-icons/bs";
 
 
 interface FormValues {
@@ -130,8 +132,16 @@ function EditGenders() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Edit a Gender</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  
+                   <span className="space__align">
+                        <BsGenderMale/>
+                     Update gender
+                    </span>
+                  </h3>
+                 <div className="card-tools">
+                <GeneralBackButton/>
+              </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">

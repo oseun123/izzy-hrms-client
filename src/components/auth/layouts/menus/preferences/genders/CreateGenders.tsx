@@ -17,6 +17,8 @@ import PreferencesHero from "../PreferencesHero";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import { useCustomForm } from "../../../../../../util/hookstype";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { BsGenderMale } from "react-icons/bs";
 
 interface FormValues {
   name: string;
@@ -25,7 +27,7 @@ interface FormValues {
 
 
 
-const CreateGenders: React.FC = () => {
+const CreateGenders: React.FC = () =>  {
 
   useCleanUp();
   const dispatch = useDispatch();
@@ -92,7 +94,18 @@ const CreateGenders: React.FC = () => {
             {/* Default Box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a Gender</h3>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <BsGenderMale/>
+
+                    Add new gender
+
+                  </span>
+                  
+                  </h3>
+                <div className="card-tools">
+                <GeneralBackButton/>
+              </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">

@@ -6,6 +6,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
 import {
 
@@ -13,30 +14,33 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemDepartment } from "./../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemDepartmentPaginated } from "../../../../../../store/actions/preferencesHooksActionsType";
 import {
   deleteDepartment,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 
 import { useMediaQuery } from "react-responsive";
-import { department_columns } from "./../../../../../../util/tables";
+import { department_columns } from "../../../../../../util/tables";
 import { CSVLink } from "react-csv";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import Avatar from "react-avatar";
 import styles from "../../../../../styles/layout/Layout.module.css";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { MdOutlineLocalFireDepartment } from "react-icons/md";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { Department, User } from "../../../../../../@types/api.types";
 
 const { Option } = Select;
 
 function ViewDepartments() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [csv_department, setCSVDepartment] = useState([]);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemDepartment(
+  const { data, isLoading } = useGetSystemDepartmentPaginated(
     enabled,
     setEnabled,
     page,
@@ -44,13 +48,15 @@ function ViewDepartments() {
   );
 
 
-  const departments = useShallowEqualSelector(system_departments);
+  const departments:Department[] = useShallowEqualSelector(system_departments) as Department[];
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_dept = useSelector(
+    // @ts-ignore
     (state) => memoUserpermission(state, "DELETE_DEPARTMENT"),
     shallowEqual
   );
   const edit_dept = useSelector(
+    // @ts-ignore
     (state) => memoUserpermission(state, "EDIT_DEPARTMENT"),
     shallowEqual
   );
@@ -60,37 +66,31 @@ function ViewDepartments() {
   const request = useAxiosPrivate();
 
   useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+    if ( departments && departments?.length) {
+      const new_dept:any = [];
 
-  useEffect(() => {
-    if (departments.length) {
-      const new_dept = [];
-
-      departments.forEach((item) => {
+      departments?.forEach((item:Department) => {
         new_dept.push({
           Name: item.name,
           // eslint-disable-next-line
-          ["Total users"]: item.users.length,
+          ["Total users"]: item?.users?.length,
         });
       });
       setCSVDepartment(new_dept);
     }
   }, [departments]);
 
-  function handlePagination(page) {
+  function handlePagination(page:number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
+  function confirmAction(id: number) {
     deleteDepartment(dispatch, request, { id }).then((res) => {
       if (res?.status === "success") {
         setEnabled(true);
@@ -131,8 +131,18 @@ function ViewDepartments() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System departments</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                       <MdOutlineLocalFireDepartment />
+
+                        Available departments
+
+                      </span>
+                      
+                      </h3>
                     <div className="card-tools">
+                      <Space>
+                      <GeneralBackButton/>
                       <CSVLink
                         data={csv_department}
                         filename={"system_departments.csv"}
@@ -143,9 +153,11 @@ function ViewDepartments() {
                           size="small"
                           className={styles.on_hover}
                         >
-                          Export csv
+                          Export
                         </Button>
                       </CSVLink>
+
+                      </Space>
                     </div>
                   </div>
                   <div className="card-body">
@@ -154,6 +166,7 @@ function ViewDepartments() {
                     ) : (
                       <>
                         <Table
+                          // @ts-ignore
                           columns={department_columns(
                             isTabletOrMobile,
                             confirm_text,
@@ -161,6 +174,7 @@ function ViewDepartments() {
                             delete_dept,
                             edit_dept
                           )}
+                            // @ts-ignore
                           dataSource={departments}
                           rowKey={(record) => record.id}
                           scroll={{
@@ -180,10 +194,10 @@ function ViewDepartments() {
                                       }}
                                     >
                                       <Space size="middle" wrap>
-                                        {record.users.map((user) => (
+                                        {record.users.map((user:User) => (
                                           <Space>
                                             <Avatar
-                                              size={25}
+                                              size='25'
                                               name={`${user.first_name} ${user.last_name}`}
                                               round={true}
                                             />

@@ -6,7 +6,7 @@ export { default as EditRoles } from "./menus/preferences/roles/EditRoles";
 export { default as AddUserRole } from "./menus/preferences/roles/AddUserRole";
 // department
 export { default as CreateDepartments } from "./menus/preferences/departments/CreateDepartments";
-export { default as ViewDepartments } from "./menus/preferences/departments/ViewDepartments";
+export { default as ViewDepartments } from "./menus/preferences/departments/ViewDepartment";
 export { default as EditDepartments } from "./menus/preferences/departments/EditDepartments";
 export { default as DepartmentDetails } from "./menus/preferences/departments/DepartmentDetails";
 // gender

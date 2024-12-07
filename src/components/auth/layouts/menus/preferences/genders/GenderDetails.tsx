@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table } from "antd";
-import { useGetSystemGender } from "./../../../../../../store/actions/preferencesHooksActions";
+import { useGetSystemGender } from "./../../../../../../store/actions/preferencesHooksActionsType";
 import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
 
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -16,12 +16,14 @@ import { department_details_columns } from "./../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { BsGenderMale } from "react-icons/bs";
 
 function GenderDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
 
-  useGetSystemGender(enabled, setEnabled);
+  useGetSystemGender(enabled, setEnabled,"all");
 
   const dispatch = useDispatch();
 
@@ -74,20 +76,18 @@ function GenderDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      User(s) in{" "}
-                      {gender_name && capitalizeFirstLetter(gender_name)}{" "}
+                      <span className="space__align">
+                        <BsGenderMale/>
+                        <span>
+                          User(s) in{" "}
+                          {gender_name && capitalizeFirstLetter(gender_name)}{" "}
+
+                        </span>
+                      </span>
                     </h3>
-                    <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
-                    </div>
+                     <div className="card-tools">
+                       <GeneralBackButton/>
+                     </div>
                   </div>
                   <div className="card-body">
                     <Table

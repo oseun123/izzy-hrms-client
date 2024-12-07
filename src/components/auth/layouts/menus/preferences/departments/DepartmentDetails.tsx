@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table } from "antd";
-import { useGetSystemDepartment } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
+import { useGetSystemDepartment } from "../../../../../../store/actions/preferencesHooksActionsType";
 
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+
+import { shallowEqual, useSelector } from "react-redux";
 
 import {
 
@@ -12,20 +12,25 @@ import {
 } from "../../../../../../store/selectors/preferencesSelector";
 
 
-import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
-import { department_details_columns } from "./../../../../../../util/tables";
+import { capitalizeFirstLetter } from "../../../../../../util/helpers";
+import { department_details_columns } from "../../../../../../util/tables";
 import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { MdOutlineLocalFireDepartment } from "react-icons/md";
+import { useCleanUp } from "../../../../../../hooks";
 
 function DepartmentDetails() {
+  useCleanUp();
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
 
-  useGetSystemDepartment(enabled, setEnabled);
+  useGetSystemDepartment(enabled, setEnabled,'all');
 
-  const dispatch = useDispatch();
+
  
   const single_department = useSelector(
+    // @ts-ignore
     (state) => single_system_department(state, id),
     shallowEqual
   );
@@ -33,11 +38,7 @@ function DepartmentDetails() {
   const users = single_department[0]?.users;
   const department_name = single_department[0]?.name;
 
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+ 
 
   return (
     <>
@@ -74,24 +75,23 @@ function DepartmentDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
+                      <span className="space__align">
+
+                      <MdOutlineLocalFireDepartment />
+                      
                       User(s) in{" "}
                       {department_name &&
                         capitalizeFirstLetter(department_name)}{" "}
+
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                     <GeneralBackButton/>
                     </div>
                   </div>
                   <div className="card-body">
                     <Table
+                    // @ts-ignore
                       columns={department_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={users}

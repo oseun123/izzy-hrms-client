@@ -7,6 +7,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
+  useCleanUp,
 } from "../../../../../../hooks";
 import {
   // spinner_preferences,
@@ -17,7 +18,6 @@ import { userhaspermission } from "../../../../../../store/selectors/userSelecto
 import { useGetSystemGenderPaginated } from "../../../../../../store/actions/preferencesHooksActionsType";
 import {
   deleteGender,
-  preferencesCleanUp,
 } from "../../../../../../store/actions/preferencesActions";
 
 import { useMediaQuery } from "react-responsive";
@@ -26,10 +26,13 @@ import PreferencesHero from "../PreferencesHero";
 import AminatedLayout from "../../../../../ui/AminatedLayout";
 import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
 import { User } from "../../../../../../@types/api.types";
+import GeneralBackButton from "../../../../../ui/GeneralBackButton";
+import { BsGenderMale } from "react-icons/bs";
 
 const { Option } = Select;
 
 function ViewGenders() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -60,11 +63,7 @@ function ViewGenders() {
   const confirm_text = "Are you sure you want to delete this gender?";
   const request = useAxiosPrivate();
 
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+ 
   function handlePagination(page: number) {
     setPage(page);
 
@@ -116,7 +115,17 @@ function ViewGenders() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System genders</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                        <BsGenderMale/>
+                        Available genders
+
+                      </span>
+                      
+                      </h3>
+                      <div className="card-tools">
+                        <GeneralBackButton/>
+                      </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
