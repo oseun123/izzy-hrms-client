@@ -24,6 +24,14 @@ export interface Department {
   updated_at: string; // ISO date string
   users: User[]
 }
+
+export interface Country {
+  id: number;
+  name: string;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+  users: User[]; 
+}
 export interface User {
   branch_id: number | null;
   country_id: number | null;
@@ -51,7 +59,8 @@ export interface Payload {
     genders?: Gender[]; // Correct property name
     total_pages?: number,
     system_users?: User[],
-    departments?: Department[]
+    departments?: Department[],
+    countrys?: Country[]
 
   
 }
