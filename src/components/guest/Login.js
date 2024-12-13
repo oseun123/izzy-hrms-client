@@ -1,29 +1,28 @@
-import React, { useEffect } from "react";
-import { useCleanUp, useForm, useUserNotification } from "../../hooks";
-import Spinner from "./../helpers/Spinner";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import classnames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
-import { loginForm } from "../../util/formValidations";
-import { login } from "./../../store/actions/userActions";
-import { resetUsersState } from "../../store/actions/userActions";
-import { Input, Button } from "antd";
-import { LoginOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
-import { current_cleint } from "../../store/selectors/userSelectors";
-import { useShallowEqualSelector } from "../../hooks";
-import styles from "../styles/layout/Layout.module.css";
-import AminatedLayout from "../ui/AminatedLayout";
+import React, { useEffect } from 'react';
+import { useCleanUp, useForm, useUserNotification } from '../../hooks';
+import Spinner from './../helpers/Spinner';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import classnames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginForm } from '../../util/formValidations';
+import { login } from './../../store/actions/userActions';
+import { resetUsersState } from '../../store/actions/userActions';
+import { Input, Button } from 'antd';
+import { LoginOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import { current_cleint } from '../../store/selectors/userSelectors';
+import { useShallowEqualSelector } from '../../hooks';
+import styles from '../styles/layout/Layout.module.css';
+import AminatedLayout from '../ui/AminatedLayout';
 
 const Login = () => {
   useUserNotification();
   useCleanUp();
   const initLoginUser = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
   const currentCleint = useShallowEqualSelector(current_cleint);
-
 
   const { spinner } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -43,7 +42,7 @@ const Login = () => {
   const { values, errors, handleChange, handleSubmit } = useForm(
     loginUserFromForm,
     initLoginUser,
-    loginForm
+    loginForm,
   );
 
   return (
@@ -55,18 +54,13 @@ const Login = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Sign in to start your session</p>
-              
 
-              <Spinner
-                d-hidden
-                mb-2
-                position={"right"}
-              />
+              <Spinner mb-2 position={'right'} />
               <form onSubmit={handleSubmit}>
                 <div className="input-group mb-3">
                   <Input
                     allowClear
-                    status={errors.email ? "error" : ""}
+                    status={errors.email ? 'error' : ''}
                     type="text"
                     value={values.email}
                     name="email"
@@ -76,11 +70,11 @@ const Login = () => {
                   />
                   <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.email,
-                      }
+                        'custom-visibible': errors.email,
+                      },
                     )}
                   >
                     {errors.email}
@@ -89,7 +83,7 @@ const Login = () => {
                 <div className="input-group mb-3">
                   <Input.Password
                     allowClear
-                    status={errors.password ? "error" : ""}
+                    status={errors.password ? 'error' : ''}
                     type="password"
                     value={values.password}
                     onChange={handleChange}
@@ -100,11 +94,11 @@ const Login = () => {
 
                   <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.password,
-                      }
+                        'custom-visibible': errors.password,
+                      },
                     )}
                   >
                     {errors.password}
@@ -121,7 +115,7 @@ const Login = () => {
                       htmlType="submit"
                       className={styles.on_hover}
                     >
-                      {" "}
+                      {' '}
                       Sign In
                     </Button>
                   </div>

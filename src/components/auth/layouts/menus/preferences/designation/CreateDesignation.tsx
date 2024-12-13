@@ -1,95 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Input, Button, Space } from "antd";
-import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
-import classnames from "classnames";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Input, Button, Space } from 'antd';
+import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
 
-import { createDesignation } from "../../../../../../store/actions/preferencesActions";
-import { useDispatch } from "react-redux";
-import {
-  useShallowEqualSelector,
-  useForm,
-  useAxiosPrivate,
-  useCleanUp,
-  usePreferenceNotification,
-} from "../../../../../../hooks";
-import { spinner_preferences } from "../../../../../../store/selectors/preferencesSelector";
-import PreferencesHero from "../PreferencesHero";
-import styles from "../../../../../styles/layout/Layout.module.css";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
+import { createDesignation } from '../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
+
+import PreferencesHero from '../PreferencesHero';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import { useCustomForm } from '../../../../../../util/hookstype';
+import { MdWorkOutline } from 'react-icons/md';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+
+interface FormValues {
+  name: string;
+}
 
 function CreateDesignation() {
-  const [creds, setCreds] = useState({});
-  const initValues = {
-    name: "",
+  useCleanUp();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const [loading, setLoading] = useState(false);
+
+  const initValues: FormValues = {
+    name: '',
   };
 
-  useCleanUp();
-  usePreferenceNotification();
-  const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
-
-  const request = useAxiosPrivate();
+  // Validation function
+  function validateCreateDesignation(
+    values: FormValues,
+  ): Record<string, string | undefined> {
+    const errors: Record<string, string | undefined> = {};
+    if (!values.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    return errors;
+  }
 
   //callback
-  function createDesginationCallback() {
-    createDesignation(dispatch, request, creds).then((res) => {
-      if (res?.status === "success") {
+  function createDesignationCallback() {
+    setLoading(true);
+    createDesignation(dispatch, request, values).then((res) => {
+      setLoading(false);
+      if (res?.status === 'success') {
         clearForm();
       }
     });
   }
 
-  //validation
-
-  function validateCreateDesignation(values) {
-    let errors = {};
-
-    if (values.hasOwnProperty("name") && values.name === "") {
-      errors.name = "Name cannot not be empty.";
-    }
-
-    return errors;
-  }
-
-  function clearForm() {
-    setCreds((prev) => {
-      let rep_obj = { ...prev };
-      for (var key of Object.keys(rep_obj)) {
-        rep_obj[key] = initValues[key];
-      }
-      return rep_obj;
-    });
-  }
-
-  function handleChangeCreds(e, sep = false, creds = {}) {
-    if (sep) {
-      setCreds((prevValues) => {
-        if (!creds.name || creds.value === undefined) {
-          console.error("Invalid creds provided:", creds);
-          return prevValues; // Do not update if creds are invalid
-        }
-        return { ...prevValues, [creds.name]: creds.value };
-      });
-    } else if (e && e.target) {
-      setCreds((prevValues) => {
-        return { ...prevValues, [e.target.name]: e.target.value };
-      });
-    } else {
-      console.error("Invalid event provided:", e);
-    }
-  }
-
-  const { errors, handleSubmit } = useForm(
-    createDesginationCallback,
-    creds,
-    validateCreateDesignation
-  );
-
-  useEffect(() => {
-    setCreds({ ...initValues });
-    // eslint-disable-next-line
-  }, []);
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(
+      createDesignationCallback,
+      initValues,
+      validateCreateDesignation,
+    );
 
   return (
     <>
@@ -122,35 +89,42 @@ function CreateDesignation() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Add new designation</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <MdWorkOutline />
+                    Add new designation
+                  </span>
+                </h3>
+                <div className="card-tools">
+                  <GeneralBackButton />
+                </div>
               </div>
-              <form onSubmit={(e) => handleSubmit(e, creds)}>
+              <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 offset-md-4 d-flex flex-column ">
                       <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
+                        Name <span className="text-danger">*</span>{' '}
                       </label>
                       <Input
                         type="text"
                         name="name"
                         id="name"
                         allowClear
-                        value={creds.name}
-                        onChange={handleChangeCreds}
-                        status={errors.name ? "error" : ""}
+                        value={values.name}
+                        onChange={handleChange}
+                        status={errors.name ? 'error' : ''}
                         className="w-75"
                         placeholder="Name of designation"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.name,
-                          }
+                            'custom-visibible': errors.name,
+                          },
                         )}
                       >
                         {errors.name}
@@ -164,11 +138,11 @@ function CreateDesignation() {
                         <Button
                           type="primary"
                           icon={<PlusCircleOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
+                          {' '}
                           Create
                         </Button>
                         <Link to="/preferences/view-designation">
@@ -176,7 +150,7 @@ function CreateDesignation() {
                             icon={<EyeOutlined />}
                             className={styles.on_hover_secondary}
                           >
-                            {" "}
+                            {' '}
                             View
                           </Button>
                         </Link>

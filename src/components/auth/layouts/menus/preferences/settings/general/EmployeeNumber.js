@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Input, Skeleton, Switch, Button } from "antd";
-import { useGetEmpNumber } from "../../../../../../../store/actions/preferencesHooksActions";
+import React, { useEffect, useState } from 'react';
+import { Input, Skeleton, Switch, Button } from 'antd';
+import { useGetEmpNumber } from '../../../../../../../store/actions/preferencesHooksActions';
 
-import { MdEdit } from "react-icons/md";
-import { useAxiosPrivate, useForm } from "../../../../../../../hooks";
-import classnames from "classnames";
+import { MdEdit } from 'react-icons/md';
+import { useAxiosPrivate, useForm } from '../../../../../../../hooks';
+import classnames from 'classnames';
+import { RiSortNumberDesc } from 'react-icons/ri';
 
 import {
   updateNumberPrefix,
   updateNumberStatus,
   updateNumberSuffix,
-} from "../../../../../../../store/actions/preferencesActions";
-import { useDispatch } from "react-redux";
+} from '../../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
 
 function ToggleActiveState({ payload, refetch }) {
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const request = useAxiosPrivate();
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ function ToggleActiveState({ payload, refetch }) {
         <div className="d-flex flex-column">
           <label className="text-bold-500 "> Enable Auto-Numbering</label>
           <small className="d-none d-sm-block">
-            {" "}
+            {' '}
             Activate to automatically generate employee numbers during creation
           </small>
         </div>
@@ -64,21 +65,21 @@ function CurrentEmployeeNumber({ payload }) {
       <div className="d-flex flex-column">
         <label className="text-bold-500 "> Number Format</label>
         <small className="d-none d-sm-block">
-          {" "}
+          {' '}
           Current employee number pattern
         </small>
       </div>
       <span
         className=" p-2 shadow text-bold-500 rounded  text-right"
-        style={{ letterSpacing: "3px", minWidth: "140px" }}
+        style={{ letterSpacing: '3px', minWidth: '140px' }}
       >
-        {payload?.format_string || "N/A"}
+        {payload?.format_string || 'N/A'}
       </span>
     </div>
   );
 }
 function PrefixEmployeeNumber({ payload, refetch }) {
-  const [prefix, setPrefix] = useState("");
+  const [prefix, setPrefix] = useState('');
   const [creds, setCreds] = useState({});
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ function PrefixEmployeeNumber({ payload, refetch }) {
     setLoading(true);
     updateNumberPrefix(dispatch, request, creds).then((res) => {
       setLoading(false);
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         refetch();
       }
     });
@@ -100,8 +101,8 @@ function PrefixEmployeeNumber({ payload, refetch }) {
   function formValidate(values) {
     let errors = {};
 
-    if (values.hasOwnProperty("prefix") && values.prefix === "") {
-      errors.prefix = "Prefix cannot not be empty.";
+    if (values.hasOwnProperty('prefix') && values.prefix === '') {
+      errors.prefix = 'Prefix cannot not be empty.';
     }
 
     return errors;
@@ -141,23 +142,23 @@ function PrefixEmployeeNumber({ payload, refetch }) {
       <div className="d-flex flex-column">
         <label className="text-bold-500 "> Prefix Text</label>
         <small className="d-none d-sm-block">
-          {" "}
+          {' '}
           Customize the prefix for employee numbers to ensure consistency.
         </small>
       </div>
-      <span style={{ width: "140px" }}>
+      <span style={{ width: '140px' }}>
         <form onSubmit={(e) => handleSubmit(e, creds)}>
           <Input
             addonAfter={
               <Button
                 htmlType="submit"
                 style={{
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                  outline: "none",
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  outline: 'none',
                 }}
-                icon={<MdEdit style={{ color: "blue" }} />}
+                icon={<MdEdit style={{ color: 'blue' }} />}
                 size="small"
                 loading={loading}
               />
@@ -166,13 +167,13 @@ function PrefixEmployeeNumber({ payload, refetch }) {
             defaultValue={prefix || null}
             value={creds.prefix || null}
             onChange={handleChangeCreds}
-            status={errors.prefix ? "error" : ""}
+            status={errors.prefix ? 'error' : ''}
             name="prefix"
           />
         </form>
         <div
-          className={classnames("invalid-feedback", "custom-feedback", {
-            "custom-visibible": errors.prefix,
+          className={classnames('invalid-feedback', 'custom-feedback', {
+            'custom-visibible': errors.prefix,
           })}
         >
           {errors.prefix}
@@ -182,7 +183,7 @@ function PrefixEmployeeNumber({ payload, refetch }) {
   );
 }
 function SuffixEmployeeNumber({ payload, refetch }) {
-  const [suffix, setSuffix] = useState("");
+  const [suffix, setSuffix] = useState('');
   const [creds, setCreds] = useState({});
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -194,7 +195,7 @@ function SuffixEmployeeNumber({ payload, refetch }) {
     setLoading(true);
     updateNumberSuffix(dispatch, request, creds).then((res) => {
       setLoading(false);
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         refetch();
       }
     });
@@ -242,23 +243,23 @@ function SuffixEmployeeNumber({ payload, refetch }) {
       <div className="d-flex flex-column">
         <label className="text-bold-500 "> Suffix Text</label>
         <small className="d-none d-sm-block">
-          {" "}
+          {' '}
           Customize the suffix for employee numbers to ensure consistency.
         </small>
       </div>
-      <span style={{ width: "140px" }}>
+      <span style={{ width: '140px' }}>
         <form onSubmit={(e) => handleSubmit(e, creds)}>
           <Input
             addonAfter={
               <Button
                 htmlType="submit"
                 style={{
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                  outline: "none",
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  outline: 'none',
                 }}
-                icon={<MdEdit style={{ color: "blue" }} />}
+                icon={<MdEdit style={{ color: 'blue' }} />}
                 size="small"
                 loading={loading}
               />
@@ -267,13 +268,13 @@ function SuffixEmployeeNumber({ payload, refetch }) {
             defaultValue={suffix || null}
             value={creds.suffix || null}
             onChange={handleChangeCreds}
-            status={errors.suffix ? "error" : ""}
+            status={errors.suffix ? 'error' : ''}
             name="suffix"
           />
         </form>
         <div
-          className={classnames("invalid-feedback", "custom-feedback", {
-            "custom-visibible": errors.suffix,
+          className={classnames('invalid-feedback', 'custom-feedback', {
+            'custom-visibible': errors.suffix,
           })}
         >
           {errors.suffix}
@@ -304,7 +305,12 @@ function EmployeeNumber() {
           <div className="card">
             <div className="card-header">
               <div className="row justify-content-between">
-                <h3 className="card-title">Employe Number Settings</h3>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <RiSortNumberDesc />
+                    Employee Number Settings
+                  </span>
+                </h3>
                 <div className="card-tools">
                   <button
                     type="button"

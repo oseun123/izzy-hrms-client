@@ -44,16 +44,17 @@ interface FormErrors {
 function useCustomForm<T extends FormValues>(
   callback: () => void,
   initialValues: T,
-  validate: (values: T) => FormErrors
+  validate: (values: T) => FormErrors,
 ) {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | { name: string; value: any }
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | { name: string; value: any },
   ) => {
-    const { name, value } = 
-      'target' in e ? e.target : e; // For Select, expect a custom object
+    const { name, value } = 'target' in e ? e.target : e; // For Select, expect a custom object
     setValues((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -77,6 +78,4 @@ function useCustomForm<T extends FormValues>(
   return { values, errors, handleChange, handleSubmit, clearForm };
 }
 
-export {
-    useCustomForm
-}
+export { useCustomForm };

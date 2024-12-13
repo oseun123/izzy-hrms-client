@@ -1,61 +1,68 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Space, Table, Pagination, Select, Card, Skeleton } from 'antd';
 
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
-} from "../../../../../../hooks";
+  useCleanUp,
+} from '../../../../../../hooks';
 import {
   // spinner_preferences,
- 
-  system_branchs,
-} from "../../../../../../store/selectors/preferencesSelector";
-import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemBranch } from "../../../../../../store/actions/preferencesHooksActions";
+  system_branchs,
+} from '../../../../../../store/selectors/preferencesSelector';
+import { userhaspermission } from '../../../../../../store/selectors/userSelectors';
+
+import { useGetSystemBranchPaginated } from '../../../../../../store/actions/preferencesHooksActionsType';
 import {
   deleteBranch,
   preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
+} from '../../../../../../store/actions/preferencesActions';
 
-import { useMediaQuery } from "react-responsive";
-import { branch_columns } from "../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
+import { useMediaQuery } from 'react-responsive';
+import { branch_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
 
-import Avatar from "react-avatar";
+import Avatar from 'react-avatar';
 
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { User } from '../../../../../../@types/api.types';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaBuildingUser } from 'react-icons/fa6';
+
 const { Option } = Select;
 
 function ViewBranch() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemBranch(
+  const { data, isLoading } = useGetSystemBranchPaginated(
     enabled,
     setEnabled,
     page,
-    size
+    size,
   );
 
- 
   const companys = useShallowEqualSelector(system_branchs);
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_branch = useSelector(
-    (state) => memoUserpermission(state, "DELETE_BRANCH"),
-    shallowEqual
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'DELETE_BRANCH'),
+    shallowEqual,
   );
   const edit_branch = useSelector(
-    (state) => memoUserpermission(state, "EDIT_BRANCH"),
-    shallowEqual
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'EDIT_BRANCH'),
+    shallowEqual,
   );
 
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Delete Branch";
+  const confirm_text = 'Delete Branch';
   const request = useAxiosPrivate();
 
   useEffect(() => {
@@ -63,19 +70,19 @@ function ViewBranch() {
       preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
-  function handlePagination(page) {
+  function handlePagination(page: number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
+  function confirmAction(id: number) {
     deleteBranch(dispatch, request, { id }).then((res) => {
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         setEnabled(true);
       }
     });
@@ -87,7 +94,6 @@ function ViewBranch() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -114,7 +120,15 @@ function ViewBranch() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System branches</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                        <FaBuildingUser />
+                        System branches
+                      </span>
+                    </h3>
+                    <div className="card-tools">
+                      <GeneralBackButton />
+                    </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
@@ -122,13 +136,15 @@ function ViewBranch() {
                     ) : (
                       <>
                         <Table
+                          // @ts-ignore
                           columns={branch_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
                             delete_branch,
-                            edit_branch
+                            edit_branch,
                           )}
+                          // @ts-ignore
                           dataSource={companys}
                           rowKey={(record) => record.id}
                           scroll={{
@@ -148,21 +164,23 @@ function ViewBranch() {
                                       }}
                                     >
                                       <Space wrap size="middle">
-                                        {record.managers.map((manager) => (
-                                          <Space>
-                                            <Avatar
-                                              name={`${
-                                                manager.first_name || ""
-                                              } ${manager.last_name || " "}`}
-                                              size={25}
-                                              round={true}
-                                            />
-                                            <span>
-                                              {manager.first_name}{" "}
-                                              {manager.last_name}
-                                            </span>
-                                          </Space>
-                                        ))}
+                                        {record.managers.map(
+                                          (manager: User) => (
+                                            <Space>
+                                              <Avatar
+                                                name={`${
+                                                  manager.first_name || ''
+                                                } ${manager.last_name || ' '}`}
+                                                size="25"
+                                                round={true}
+                                              />
+                                              <span>
+                                                {manager.first_name}{' '}
+                                                {manager.last_name}
+                                              </span>
+                                            </Space>
+                                          ),
+                                        )}
                                       </Space>
                                     </Card>
                                   </div>
@@ -177,7 +195,7 @@ function ViewBranch() {
                                       }}
                                     >
                                       <Space wrap>
-                                        {record.users.map((user) => (
+                                        {record.users.map((user: User) => (
                                           <span className="badge bg-secondary rounded-pill p-1">
                                             {user.first_name}
                                           </span>
@@ -205,7 +223,7 @@ function ViewBranch() {
                             pageSize={1}
                             onChange={handlePagination}
                             current={page}
-                          />{" "}
+                          />{' '}
                           <Select
                             defaultValue={size}
                             style={{

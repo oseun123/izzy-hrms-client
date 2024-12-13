@@ -1,31 +1,29 @@
-import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-
-import Spinner from "./../helpers/Spinner";
-import classnames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import Spinner from './../helpers/Spinner';
+import classnames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   resetPassword,
   resetUsersState,
-} from "../../store/actions/userActions";
-import { useCleanUp, useForm, useUserNotification } from "../../hooks";
-import { validatResetPassword } from "../../util/formValidations";
-import { Input, Button } from "antd";
-import { LockOutlined, SyncOutlined } from "@ant-design/icons";
-import { current_cleint } from "../../store/selectors/userSelectors";
-import { useShallowEqualSelector } from "../../hooks";
-import styles from "../styles/layout/Layout.module.css";
-import AminatedLayout from "../ui/AminatedLayout";
+} from '../../store/actions/userActions';
+import { useCleanUp, useForm, useUserNotification } from '../../hooks';
+import { validatResetPassword } from '../../util/formValidations';
+import { Input, Button } from 'antd';
+import { LockOutlined, SyncOutlined } from '@ant-design/icons';
+import { current_cleint } from '../../store/selectors/userSelectors';
+import { useShallowEqualSelector } from '../../hooks';
+import styles from '../styles/layout/Layout.module.css';
+import AminatedLayout from '../ui/AminatedLayout';
 
 const ResetPassword = () => {
-
   useUserNotification();
   useCleanUp();
   const { token } = useParams();
   const initData = {
-    password: "",
-    password_confirm: "",
+    password: '',
+    password_confirm: '',
     token,
   };
 
@@ -36,7 +34,7 @@ const ResetPassword = () => {
   // callback
   const ResetPasswordFromForm = () => {
     resetPassword(dispatch, values).then((res) => {
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         clearForm();
       }
     });
@@ -45,7 +43,7 @@ const ResetPassword = () => {
   const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
     ResetPasswordFromForm,
     initData,
-    validatResetPassword
+    validatResetPassword,
   );
   useEffect(() => {
     return () => resetUsersState(dispatch);
@@ -60,12 +58,12 @@ const ResetPassword = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Enter your new password </p>
-              
-              <Spinner color="secondary" d-hidden mb-2 spinner={spinner} />
+
+              <Spinner mb-2 />
               <form onSubmit={handleSubmit}>
                 <div className="input-group mb-3">
                   <Input.Password
-                    status={errors.password ? "error" : ""}
+                    status={errors.password ? 'error' : ''}
                     allowClear
                     value={values.password}
                     name="password"
@@ -76,11 +74,11 @@ const ResetPassword = () => {
 
                   <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.password,
-                      }
+                        'custom-visibible': errors.password,
+                      },
                     )}
                   >
                     {errors.password}
@@ -88,7 +86,7 @@ const ResetPassword = () => {
                 </div>
                 <div className="input-group mb-3">
                   <Input.Password
-                    status={errors.password_confirm ? "error" : ""}
+                    status={errors.password_confirm ? 'error' : ''}
                     allowClear
                     value={values.password_confirm}
                     name="password_confirm"
@@ -99,11 +97,11 @@ const ResetPassword = () => {
 
                   <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.password_confirm,
-                      }
+                        'custom-visibible': errors.password_confirm,
+                      },
                     )}
                   >
                     {errors.password_confirm}
