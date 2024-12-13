@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Table } from "antd";
-import { useGetSystemBranch } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Table } from 'antd';
+import { useGetSystemBranch } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { preferencesCleanUp } from '../../../../../../store/actions/preferencesActions';
 
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import {
-  
-  single_system_branch,
-} from "../../../../../../store/selectors/preferencesSelector";
+import { single_system_branch } from '../../../../../../store/selectors/preferencesSelector';
 
-import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
-import { department_details_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { capitalizeFirstLetter } from '../../../../../../util/helpers';
+import { department_details_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaBuildingUser } from 'react-icons/fa6';
 
 function BranchDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
 
-  useGetSystemBranch(enabled, setEnabled);
+  useGetSystemBranch(enabled, setEnabled, 'all');
 
   const dispatch = useDispatch();
- 
+
   const single_branch = useSelector(
+    // @ts-ignore
     (state) => single_system_branch(state, id),
-    shallowEqual
+    shallowEqual,
   );
 
   const users = single_branch[0]?.users;
@@ -47,7 +47,6 @@ function BranchDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -75,23 +74,19 @@ function BranchDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      Users in{" "}
-                      {branch_name && capitalizeFirstLetter(branch_name)}{" "}
+                      <span className="space__align">
+                        <FaBuildingUser />
+                        Users in{' '}
+                        {branch_name && capitalizeFirstLetter(branch_name)}{' '}
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                      <GeneralBackButton />
                     </div>
                   </div>
                   <div className="card-body">
                     <Table
+                      // @ts-ignore
                       columns={department_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={users}
@@ -114,8 +109,7 @@ function BranchDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      Manager in{" "}
-                      {branch_name && capitalizeFirstLetter(branch_name)}{" "}
+                      {branch_name && capitalizeFirstLetter(branch_name)}{' '}
                     </h3>
                     <div className="card-tools ">
                       <button
@@ -131,6 +125,7 @@ function BranchDetails() {
                   </div>
                   <div className="card-body">
                     <Table
+                      // @ts-ignore
                       columns={department_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={managers}
@@ -166,7 +161,7 @@ function BranchDetails() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <table class="table table-striped">
+                    <table className="table table-striped">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -178,37 +173,37 @@ function BranchDetails() {
                         <tr>
                           <th scope="row">1</th>
                           <td>Name</td>
-                          <td>{single_branch[0].name || "--"}</td>
+                          <td>{single_branch[0].name || '--'}</td>
                         </tr>
                         <tr>
                           <th scope="row">2</th>
                           <td>Address</td>
-                          <td>{single_branch[0].address || "--"}</td>
+                          <td>{single_branch[0].address || '--'}</td>
                         </tr>
                         <tr>
                           <th scope="row">3</th>
                           <td>Email</td>
-                          <td>{single_branch[0].email || "--"}</td>
+                          <td>{single_branch[0].email || '--'}</td>
                         </tr>
                         <tr>
                           <th scope="row">4</th>
                           <td>Phone 1</td>
-                          <td>{single_branch[0].phone_1 || "--"}</td>
+                          <td>{single_branch[0].phone_1 || '--'}</td>
                         </tr>
                         <tr>
                           <th scope="row">5</th>
                           <td>Phone 2</td>
-                          <td>{single_branch[0].phone_2 || "--"}</td>
+                          <td>{single_branch[0].phone_2 || '--'}</td>
                         </tr>
                         <tr>
                           <th scope="row">6</th>
                           <td>Company</td>
-                          <td>{single_branch[0].company.name || "--"}</td>
+                          <td>{single_branch[0].company.name || '--'}</td>
                         </tr>
                         <tr>
                           <th scope="row">7</th>
                           <td>Code</td>
-                          <td>{single_branch[0].code || "--"}</td>
+                          <td>{single_branch[0].code || '--'}</td>
                         </tr>
                       </tbody>
                     </table>

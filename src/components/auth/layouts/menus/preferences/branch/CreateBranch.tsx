@@ -1,88 +1,116 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Input, Button, Space, Checkbox, Select } from "antd";
-import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
-import classnames from "classnames";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Input, Button, Space, Checkbox, Select } from 'antd';
+import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
+import type { CheckboxProps } from 'antd';
 
-import { validateCreateBranch } from "../../../../../../util/formValidations";
-import {
-  createBranch,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
-import { useDispatch } from "react-redux";
-import {
-  useShallowEqualSelector,
-  useForm,
-  useAxiosPrivate,
-} from "../../../../../../hooks";
-import {
-  spinner_preferences,
-  system_companys,
-  system_users,
-} from "../../../../../../store/selectors/preferencesSelector";
+import { createBranch } from '../../../../../../store/actions/preferencesActions';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
 import {
   useGetSystemCompany,
   useGetSystemUsers,
-} from "./../../../../../../store/actions/preferencesHooksActions";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import styles from "../../../../../styles/layout/Layout.module.css";
-import Avatar from "react-avatar";
+} from '../../../../../../store/actions/preferencesHooksActionsType';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import Avatar from 'react-avatar';
+import { Company, User } from '../../../../../../@types/api.types';
+
+import { useCustomForm } from '../../../../../../util/hookstype';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaBuildingUser } from 'react-icons/fa6';
 
 const { Option } = Select;
 
+interface FormValues {
+  name: string;
+  company_id: number | string;
+  address: string;
+  email: string;
+  code: string;
+  phone_1: string;
+  phone_2: string;
+  headquarters: boolean;
+  branch_managers: User[];
+}
+
 function CreateBranch() {
-  const initValues = {
-    name: "",
-    company_id: "",
-    address: "",
-    email: "",
-    code: "",
-    phone_1: "",
-    phone_2: "",
-    headquarters: false,
-    branch_managers: [],
-  };
+  useCleanUp();
+
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const [loading, setLoading] = useState(false);
   const [enableduser, setEnabledUser] = useState(true);
   const [enabledcompany, setEnabledCompany] = useState(true);
   const [all_company, setAllCompany] = useState([]);
   const [all_users, setAllUsers] = useState([]);
 
-  const dispatch = useDispatch();
-
-  useGetSystemCompany(enabledcompany, setEnabledCompany, "_", "_", "all");
+  useGetSystemCompany(enabledcompany, setEnabledCompany, 'all');
   useGetSystemUsers(enableduser, setEnabledUser);
-  const spinner = useShallowEqualSelector(spinner_preferences);
 
-  const companys = useShallowEqualSelector(system_companys);
-  const users = useShallowEqualSelector(system_users);
-  const request = useAxiosPrivate();
+  const companys = useSelector(
+    // @ts-ignore
+    (state) => state.preferences.system_companys,
+    shallowEqual,
+  );
+  const users = useSelector(
+    // @ts-ignore
+    (state) => state.preferences.system_users,
+    shallowEqual,
+  );
+
+  const initValues: FormValues = {
+    name: '',
+    company_id: '',
+    address: '',
+    email: '',
+    code: '',
+    phone_1: '',
+    phone_2: '',
+    headquarters: false,
+    branch_managers: [],
+  };
+
+  function validateCreateBranch(
+    values: FormValues,
+  ): Record<string, string | undefined> {
+    let errors: Record<string, string | undefined> = {};
+
+    if (values.hasOwnProperty('name') && values.name.trim() === '') {
+      errors.name = 'Name cannot not be empty.';
+    }
+    if (values.hasOwnProperty('address') && values.address.trim() === '') {
+      errors.address = 'Address cannot not be empty.';
+    }
+    if (values.hasOwnProperty('company_id') && values.company_id === '') {
+      errors.company_id = ' Company cannot be empty.';
+    }
+    if (
+      values.hasOwnProperty('branch_managers') &&
+      values.branch_managers.length === 0
+    ) {
+      errors.branch_managers = 'Branch managers cannot be empty.';
+    }
+
+    return errors;
+  }
 
   //callback
   function createBranchCallback() {
+    setLoading(true);
     createBranch(dispatch, request, values).then((res) => {
-      if (res?.status === "success") {
+      setLoading(false);
+      if (res?.status === 'success') {
         clearForm();
       }
     });
   }
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
-    createBranchCallback,
-    initValues,
-    validateCreateBranch
-  );
-
-  const handleChangeCompany = (id) => {
-    handleChange("_", true, { name: "company_id", value: id });
-  };
-  const handleChangeUsers = (users) => {
-    handleChange("_", true, { name: "branch_managers", value: users });
-  };
-  const handleChangeHeadQuarter = (e) => {
-    handleChange("_", true, { name: "headquarters", value: e.target.checked });
-  };
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(createBranchCallback, initValues, validateCreateBranch);
 
   useEffect(() => {
     setAllCompany(companys);
@@ -92,19 +120,12 @@ function CreateBranch() {
     setAllUsers(users);
   }, [users]);
 
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-
   return (
     <>
       <PreferencesHero />
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-        
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -129,15 +150,22 @@ function CreateBranch() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Add new branch</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <FaBuildingUser />
+                    Add new branch
+                  </span>
+                </h3>
+                <div className="card-tools">
+                  <GeneralBackButton />
+                </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row ">
                     <div className="form-group col-md-4  d-flex flex-column">
                       <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
+                        Name <span className="text-danger">*</span>{' '}
                       </label>
                       <Input
                         type="text"
@@ -146,18 +174,18 @@ function CreateBranch() {
                         allowClear
                         value={values.name}
                         onChange={handleChange}
-                        status={errors.name ? "error" : ""}
+                        status={errors.name ? 'error' : ''}
                         className="w-75"
                         placeholder="Name of branch"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.name,
-                          }
+                            'custom-visibible': errors.name,
+                          },
                         )}
                       >
                         {errors.name}
@@ -172,18 +200,18 @@ function CreateBranch() {
                         allowClear
                         value={values.email}
                         onChange={handleChange}
-                        status={errors.email ? "error" : ""}
+                        status={errors.email ? 'error' : ''}
                         className="w-75"
                         placeholder="Email of branch"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.email,
-                          }
+                            'custom-visibible': errors.email,
+                          },
                         )}
                       >
                         {errors.email}
@@ -191,7 +219,7 @@ function CreateBranch() {
                     </div>
                     <div className="form-group col-md-4 d-flex flex-column ">
                       <label htmlFor="address">
-                        Address <span className="text-danger">*</span>{" "}
+                        Address <span className="text-danger">*</span>{' '}
                       </label>
                       <Input.TextArea
                         name="address"
@@ -199,18 +227,18 @@ function CreateBranch() {
                         allowClear
                         value={values.address}
                         onChange={handleChange}
-                        status={errors.address ? "error" : ""}
+                        status={errors.address ? 'error' : ''}
                         className="w-75"
                         placeholder="Address of branch"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.address,
-                          }
+                            'custom-visibible': errors.address,
+                          },
                         )}
                       >
                         {errors.address}
@@ -226,18 +254,18 @@ function CreateBranch() {
                         allowClear
                         value={values.phone_1}
                         onChange={handleChange}
-                        status={errors.phone_1 ? "error" : ""}
+                        status={errors.phone_1 ? 'error' : ''}
                         className="w-75"
                         placeholder="Primary phone number"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.phone_1,
-                          }
+                            'custom-visibible': errors.phone_1,
+                          },
                         )}
                       >
                         {errors.phone_1}
@@ -252,18 +280,18 @@ function CreateBranch() {
                         allowClear
                         value={values.phone_2}
                         onChange={handleChange}
-                        status={errors.phone_2 ? "error" : ""}
+                        status={errors.phone_2 ? 'error' : ''}
                         className="w-75"
                         placeholder="Secondary phone number"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.phone_2,
-                          }
+                            'custom-visibible': errors.phone_2,
+                          },
                         )}
                       >
                         {errors.phone_2}
@@ -278,18 +306,18 @@ function CreateBranch() {
                         allowClear
                         value={values.code}
                         onChange={handleChange}
-                        status={errors.code ? "error" : ""}
+                        status={errors.code ? 'error' : ''}
                         className="w-75"
                         placeholder="Rc number of branch"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.code,
-                          }
+                            'custom-visibible': errors.code,
+                          },
                         )}
                       >
                         {errors.code}
@@ -299,7 +327,13 @@ function CreateBranch() {
                     <div className="form-group col-md-4 pt-md-3 ">
                       <Checkbox
                         checked={values.headquarters}
-                        onChange={handleChangeHeadQuarter}
+                        name="headquarters"
+                        onChange={(e) =>
+                          handleChange({
+                            name: 'headquarters',
+                            value: e.target.checked,
+                          })
+                        }
                       >
                         Make branch headquarter
                       </Checkbox>
@@ -318,24 +352,28 @@ function CreateBranch() {
                       </label>
                       <Select
                         showSearch
-                        status={errors.company_id ? "error" : ""}
+                        status={errors.company_id ? 'error' : ''}
                         id="company_id"
-                        name="company_id"
                         allowClear
-                        onChange={handleChangeCompany}
+                        onChange={(value) =>
+                          handleChange({ name: 'company_id', value })
+                        }
                         filterOption={(input, option) => {
-                          return option.children[1]
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? '';
+                          return (
+                            typeof label === 'string' &&
+                            label.toLowerCase().includes(input.toLowerCase())
+                          );
                         }}
                         value={values.company_id || null}
                         placeholder="Company of branch"
                         className="w-75"
                       >
                         {all_company &&
-                          all_company.map((company) => (
+                          all_company.map((company: Company) => (
                             <Option key={company.id} value={company.id}>
-                              {" "}
+                              {' '}
                               {company.name}
                             </Option>
                           ))}
@@ -343,11 +381,11 @@ function CreateBranch() {
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.company_id,
-                          }
+                            'custom-visibible': errors.company_id,
+                          },
                         )}
                       >
                         {errors.company_id}
@@ -361,9 +399,8 @@ function CreateBranch() {
                         className="w-75"
                         placeholder="Branch contact person(s)"
                         showSearch
-                        status={errors.branch_managers ? "error" : ""}
+                        status={errors.branch_managers ? 'error' : ''}
                         id="branch_managers"
-                        name="branch_managers"
                         mode="multiple"
                         allowClear
                         value={
@@ -371,27 +408,32 @@ function CreateBranch() {
                             ? values.branch_managers
                             : null
                         }
-                        onChange={handleChangeUsers}
+                        onChange={(value) =>
+                          handleChange({ name: 'branch_managers', value })
+                        }
                         filterOption={(input, option) => {
-                          return option?.label
-                            .toLowerCase()
-                            .includes(input?.toLowerCase());
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? '';
+                          return (
+                            typeof label === 'string' &&
+                            label.toLowerCase().includes(input.toLowerCase())
+                          );
                         }}
                       >
                         {all_users &&
-                          all_users.map((user) => (
+                          all_users.map((user: User) => (
                             <Option
                               key={user.id}
                               value={user.id}
                               label={`${user.first_name} ${user.last_name}`}
                             >
-                              {" "}
+                              {' '}
                               <Space>
                                 <Avatar
-                                  name={`${user.first_name || ""} ${
-                                    user.last_name || " "
+                                  name={`${user.first_name || ''} ${
+                                    user.last_name || ' '
                                   }`}
-                                  size={25}
+                                  size="25"
                                   round={true}
                                 />
                                 <span>
@@ -404,11 +446,11 @@ function CreateBranch() {
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.branch_managers,
-                          }
+                            'custom-visibible': errors.branch_managers,
+                          },
                         )}
                       >
                         {errors.branch_managers}
@@ -422,11 +464,11 @@ function CreateBranch() {
                         <Button
                           type="primary"
                           icon={<PlusCircleOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
+                          {' '}
                           Create
                         </Button>
                         <Link to="/preferences/view-branches">
@@ -434,7 +476,7 @@ function CreateBranch() {
                             icon={<EyeOutlined />}
                             className={styles.on_hover_secondary}
                           >
-                            {" "}
+                            {' '}
                             View
                           </Button>
                         </Link>

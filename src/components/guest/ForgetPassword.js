@@ -1,36 +1,34 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-
-import Spinner from "./../helpers/Spinner";
-import classnames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import Spinner from './../helpers/Spinner';
+import classnames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   requestPasswordLink,
   resetUsersState,
-} from "../../store/actions/userActions";
-import { useCleanUp, useForm, useUserNotification } from "../../hooks";
-import { requestLink } from "../../util/formValidations";
-import { Input, Button } from "antd";
-import { SendOutlined, MailOutlined } from "@ant-design/icons";
-import { current_cleint } from "../../store/selectors/userSelectors";
-import { useShallowEqualSelector } from "../../hooks";
-import styles from "../styles/layout/Layout.module.css";
-import AminatedLayout from "../ui/AminatedLayout";
+} from '../../store/actions/userActions';
+import { useCleanUp, useForm, useUserNotification } from '../../hooks';
+import { requestLink } from '../../util/formValidations';
+import { Input, Button } from 'antd';
+import { SendOutlined, MailOutlined } from '@ant-design/icons';
+import { current_cleint } from '../../store/selectors/userSelectors';
+import { useShallowEqualSelector } from '../../hooks';
+import styles from '../styles/layout/Layout.module.css';
+import AminatedLayout from '../ui/AminatedLayout';
 const ForgetPassword = () => {
-
   useUserNotification();
-  useCleanUp()
+  useCleanUp();
   const initEmail = {
-    email: "",
+    email: '',
   };
   const currentCleint = useShallowEqualSelector(current_cleint);
   const dispatch = useDispatch();
-  const { spinner} = useSelector((state) => state.user);
+  const { spinner } = useSelector((state) => state.user);
   // callback
   const sendResetLinkFromForm = () => {
     requestPasswordLink(dispatch, values).then((res) => {
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         clearForm();
       }
     });
@@ -39,7 +37,7 @@ const ForgetPassword = () => {
   const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
     sendResetLinkFromForm,
     initEmail,
-    requestLink
+    requestLink,
   );
   useEffect(() => {
     return () => resetUsersState(dispatch);
@@ -54,13 +52,13 @@ const ForgetPassword = () => {
           <div className="card">
             <div className="card-body login-card-body">
               <p className="login-box-msg">Enter Email to get a reset link </p>
-            
-              <Spinner d-hidden mb-2  />
+
+              <Spinner mb-2 />
               <form onSubmit={handleSubmit}>
                 <div className="input-group mb-3">
                   <Input
                     allowClear
-                    status={errors.email ? "error" : ""}
+                    status={errors.email ? 'error' : ''}
                     type="text"
                     value={values.email}
                     name="email"
@@ -71,11 +69,11 @@ const ForgetPassword = () => {
 
                   <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.email,
-                      }
+                        'custom-visibible': errors.email,
+                      },
                     )}
                   >
                     {errors.email}

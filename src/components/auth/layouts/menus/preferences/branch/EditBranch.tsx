@@ -1,136 +1,162 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
-import { Input, Button, Space, Checkbox, Select } from "antd";
-import { FormOutlined, EyeOutlined } from "@ant-design/icons";
-import classnames from "classnames";
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Input, Button, Space, Checkbox, Select } from 'antd';
+import { FormOutlined, EyeOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
 
-import { validateUpdateBranch } from "../../../../../../util/formValidations";
-import {
-  updateBranch,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
-import { useDispatch, shallowEqual, useSelector } from "react-redux";
-import {
-  useShallowEqualSelector,
-  useForm,
-  useAxiosPrivate,
-} from "../../../../../../hooks";
-import {
-  spinner_preferences,
-
-  system_companys,
-  system_users,
-  single_system_branch,
-} from "../../../../../../store/selectors/preferencesSelector";
+import { updateBranch } from '../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
 import {
   useGetSystemCompany,
   useGetSystemUsers,
   useGetSystemBranch,
-} from "./../../../../../../store/actions/preferencesHooksActions";
-import PreferencesHero from "../PreferencesHero";
-import styles from "../../../../../styles/layout/Layout.module.css";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import Avatar from "react-avatar";
+} from '../../../../../../store/actions/preferencesHooksActionsType';
+import PreferencesHero from '../PreferencesHero';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import Avatar from 'react-avatar';
+import { Company, Branch, User } from '../../../../../../@types/api.types';
+import { useCustomForm } from '../../../../../../util/hookstype';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaBuildingUser } from 'react-icons/fa6';
+
 const { Option } = Select;
 
-function EditBranch() {
-  const { id } = useParams();
-  const history = useHistory();
+interface FormValues {
+  branch_id: number;
+  name: string;
+  company_id: number | string;
+  address: string;
+  email: string;
+  code: string;
+  phone_1: string;
+  phone_2: string;
+  headquarters: boolean | undefined;
+  branch_managers: number[] | null;
+}
 
+function EditBranch() {
+  useCleanUp();
+  const [loading, setLoading] = useState(false);
   const [enableduser, setEnabledUser] = useState(true);
   const [enabledcompany, setEnabledCompany] = useState(true);
   const [enabledbranch, setEnabledBranch] = useState(true);
-  const [all_company, setAllCompany] = useState([]);
-  const [all_users, setAllUsers] = useState([]);
+  const [all_company, setAllCompany] = useState<Company[] | undefined>(
+    undefined,
+  );
+  const [all_users, setAllUsers] = useState<User[] | undefined>(undefined);
+  const [selected, setSelected] = useState<Branch | null>(null);
 
+  const { id } = useParams();
   const dispatch = useDispatch();
-
-  useGetSystemCompany(enabledcompany, setEnabledCompany, "_", "_", "all");
-  useGetSystemUsers(enableduser, setEnabledUser);
-  useGetSystemBranch(enabledbranch, setEnabledBranch);
-  const spinner = useShallowEqualSelector(spinner_preferences);
- 
-  const companys = useShallowEqualSelector(system_companys);
-  const users = useShallowEqualSelector(system_users);
   const request = useAxiosPrivate();
-  const single_branch = useSelector(
-    (state) => single_system_branch(state, id),
-    shallowEqual
+
+  const { data: company_data } = useGetSystemCompany(
+    enabledcompany,
+    setEnabledCompany,
+    'all',
+  );
+  const { data: user_data } = useGetSystemUsers(enableduser, setEnabledUser);
+  const { data: branch_data } = useGetSystemBranch(
+    enabledbranch,
+    setEnabledBranch,
+    'all',
   );
 
-  const name = single_branch[0]?.name;
-  const company_id = single_branch[0]?.company_id;
-  const address = single_branch[0]?.address;
-  const email = single_branch[0]?.email;
-  const code = single_branch[0]?.code;
-  const phone_1 = single_branch[0]?.phone_1;
-  const phone_2 = single_branch[0]?.phone_2;
-  const headquarters = single_branch[0]?.headquarters;
-  let branch_managers = single_branch[0]?.managers;
-  if (branch_managers?.length) {
-    let new_branch_managers = [];
-    branch_managers.forEach((man) => {
-      new_branch_managers.push(man.id);
-    });
-    branch_managers = new_branch_managers;
-  }
-  //   console.log(branch_managers);
+  // Effect to set selected branch when data changes
+  useEffect(() => {
+    if (branch_data && Object.keys(branch_data).length) {
+      const branchs = branch_data?.payload?.branchs || [];
+      const selectbranch = branchs.find((item) => item.id === parseInt(id));
+      setSelected(selectbranch || null);
+    }
+  }, [branch_data, id]);
 
-  const initValues = {
-    name,
-    company_id,
-    address,
-    email,
-    code,
-    phone_1,
-    phone_2,
-    headquarters,
-    branch_managers,
-    branch_id: id,
+  const initValues: FormValues = {
+    branch_id: parseInt(id),
+    name: selected?.name || '',
+    company_id: selected?.company_id || '',
+    address: selected?.address || '',
+    email: selected?.email || '',
+    code: selected?.code || '',
+    phone_1: selected?.phone_1 || '',
+    phone_2: selected?.phone_2 || '',
+    headquarters: selected?.headquarters || undefined,
+    branch_managers: selected?.managers.map((item) => item.id) || null,
   };
 
   //callback
   function updateBranchCallback() {
-    updateBranch(dispatch, request, values);
+    setLoading(true);
+    updateBranch(dispatch, request, values).then((res) => {
+      setLoading(false);
+    });
   }
 
-  const { values, errors, handleChange, handleSubmit } = useForm(
-    updateBranchCallback,
-    initValues,
-    validateUpdateBranch
-  );
+  //Validation
 
-  const handleChangeCompany = (id) => {
-    handleChange("_", true, { name: "company_id", value: id });
-  };
-  const handleChangeUsers = (users) => {
-    handleChange("_", true, { name: "branch_managers", value: users });
-  };
-  const handleChangeHeadQuarter = (e) => {
-    handleChange("_", true, { name: "headquarters", value: e.target.checked });
-  };
+  function validateEditBranch(
+    values: FormValues,
+  ): Record<string, string | undefined> {
+    let errors: Record<string, string | undefined> = {};
+
+    if (values.hasOwnProperty('name') && values.name.trim() === '') {
+      errors.name = 'Name cannot not be empty.';
+    }
+    if (values.hasOwnProperty('address') && values.address.trim() === '') {
+      errors.address = 'Address cannot not be empty.';
+    }
+    if (values.hasOwnProperty('company_id') && values.company_id === '') {
+      errors.company_id = ' Company cannot be empty.';
+    }
+
+    return errors;
+  }
+
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(updateBranchCallback, initValues, validateEditBranch);
+
+  // Effect to update form values when selected gender changes
+  useEffect(() => {
+    if (selected) {
+      clearForm();
+      values.name = selected?.name;
+      values.company_id = selected?.company_id;
+      values.address = selected?.address;
+      values.email = selected?.email;
+      values.code = selected?.code;
+      values.phone_1 = selected?.phone_1;
+      values.phone_2 = selected?.phone_2;
+      values.headquarters = selected?.headquarters;
+      values.branch_managers = selected?.managers.map((item) => item.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   useEffect(() => {
-    setAllCompany(companys);
-  }, [companys]);
+    if (company_data && Object.keys(company_data).length) {
+      const all_company = company_data?.payload?.companys;
+      setAllCompany(all_company);
+    }
+  }, [company_data]);
 
   useEffect(() => {
-    setAllUsers(users);
-  }, [users]);
-
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+    if (user_data && Object.keys(user_data).length) {
+      const all_users = user_data?.payload?.system_users;
+      setAllUsers(all_users);
+    }
+  }, [user_data]);
 
   // eslint-disable-next-line
-  useEffect(() => {
-    if (!single_branch.length) {
-      history.push("/preferences/view-branches");
-    }
-  }, [single_branch, history]);
+  // useEffect(() => {
+  //   if (!selected) {
+  //     history.push('/preferences/view-branches');
+  //   }
+  // }, [selected, history]);
+
+  console.log({ branch_data, values, selected });
 
   return (
     <>
@@ -139,7 +165,6 @@ function EditBranch() {
 
       <AminatedLayout>
         <section className="content-header">
-         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -164,15 +189,22 @@ function EditBranch() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Edit a branch</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <FaBuildingUser />
+                    Update branch
+                  </span>
+                </h3>
+                <div className="card-tools">
+                  <GeneralBackButton />
+                </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 ">
                       <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
+                        Name <span className="text-danger">*</span>{' '}
                       </label>
                       <Input
                         type="text"
@@ -181,16 +213,16 @@ function EditBranch() {
                         allowClear
                         value={values.name}
                         onChange={handleChange}
-                        status={errors.name ? "error" : ""}
+                        status={errors.name ? 'error' : ''}
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.name,
-                          }
+                            'custom-visibible': errors.name,
+                          },
                         )}
                       >
                         {errors.name}
@@ -205,16 +237,16 @@ function EditBranch() {
                         allowClear
                         value={values.email}
                         onChange={handleChange}
-                        status={errors.email ? "error" : ""}
+                        status={errors.email ? 'error' : ''}
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.email,
-                          }
+                            'custom-visibible': errors.email,
+                          },
                         )}
                       >
                         {errors.email}
@@ -222,7 +254,7 @@ function EditBranch() {
                     </div>
                     <div className="form-group col-md-4 ">
                       <label htmlFor="address">
-                        Address <span className="text-danger">*</span>{" "}
+                        Address <span className="text-danger">*</span>{' '}
                       </label>
                       <Input.TextArea
                         name="address"
@@ -230,16 +262,16 @@ function EditBranch() {
                         allowClear
                         value={values.address}
                         onChange={handleChange}
-                        status={errors.address ? "error" : ""}
+                        status={errors.address ? 'error' : ''}
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.address,
-                          }
+                            'custom-visibible': errors.address,
+                          },
                         )}
                       >
                         {errors.address}
@@ -255,16 +287,16 @@ function EditBranch() {
                         allowClear
                         value={values.phone_1}
                         onChange={handleChange}
-                        status={errors.phone_1 ? "error" : ""}
+                        status={errors.phone_1 ? 'error' : ''}
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.phone_1,
-                          }
+                            'custom-visibible': errors.phone_1,
+                          },
                         )}
                       >
                         {errors.phone_1}
@@ -279,16 +311,16 @@ function EditBranch() {
                         allowClear
                         value={values.phone_2}
                         onChange={handleChange}
-                        status={errors.phone_2 ? "error" : ""}
+                        status={errors.phone_2 ? 'error' : ''}
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.phone_2,
-                          }
+                            'custom-visibible': errors.phone_2,
+                          },
                         )}
                       >
                         {errors.phone_2}
@@ -303,16 +335,16 @@ function EditBranch() {
                         allowClear
                         value={values.code}
                         onChange={handleChange}
-                        status={errors.code ? "error" : ""}
+                        status={errors.code ? 'error' : ''}
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.code,
-                          }
+                            'custom-visibible': errors.code,
+                          },
                         )}
                       >
                         {errors.code}
@@ -321,8 +353,13 @@ function EditBranch() {
 
                     <div className="form-group col-md-4 pt-md-3">
                       <Checkbox
-                        checked={values.headquarters}
-                        onChange={handleChangeHeadQuarter}
+                        checked={values?.headquarters}
+                        onChange={(e) =>
+                          handleChange({
+                            name: 'headquarters',
+                            value: e.target.checked,
+                          })
+                        }
                       >
                         Make branch headquarter
                       </Checkbox>
@@ -339,25 +376,29 @@ function EditBranch() {
                       </label>
                       <Select
                         style={{
-                          width: "100%",
+                          width: '100%',
                         }}
                         showSearch
-                        status={errors.company_id ? "error" : ""}
+                        status={errors.company_id ? 'error' : ''}
                         id="company_id"
-                        name="company_id"
                         allowClear
-                        onChange={handleChangeCompany}
+                        onChange={(value) =>
+                          handleChange({ name: 'company_id', value })
+                        }
                         filterOption={(input, option) => {
-                          return option.children[1]
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? '';
+                          return (
+                            typeof label === 'string' &&
+                            label.toLowerCase().includes(input.toLowerCase())
+                          );
                         }}
                         value={values.company_id}
                       >
                         {all_company &&
                           all_company.map((company) => (
                             <Option key={company.id} value={company.id}>
-                              {" "}
+                              {' '}
                               {company.name}
                             </Option>
                           ))}
@@ -365,36 +406,38 @@ function EditBranch() {
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.company_id,
-                          }
+                            'custom-visibible': errors.company_id,
+                          },
                         )}
                       >
                         {errors.company_id}
                       </div>
                     </div>
                     <div className="form-group col-md-4">
-                      <label htmlFor="branch_managers">
-                        Branch managers <span className="text-danger">*</span>
-                      </label>
+                      <label htmlFor="branch_managers">Branch managers</label>
                       <Select
                         style={{
-                          width: "100%",
+                          width: '100%',
                         }}
                         showSearch
-                        status={errors.branch_managers ? "error" : ""}
+                        status={errors.branch_managers ? 'error' : ''}
                         id="branch_managers"
-                        name="branch_managers"
                         mode="multiple"
                         allowClear
                         value={values.branch_managers}
-                        onChange={handleChangeUsers}
+                        onChange={(value) =>
+                          handleChange({ name: 'branch_managers', value })
+                        }
                         filterOption={(input, option) => {
-                          return option?.label
-                            .toLowerCase()
-                            .includes(input.toLowerCase());
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? '';
+                          return (
+                            typeof label === 'string' &&
+                            label.toLowerCase().includes(input.toLowerCase())
+                          );
                         }}
                       >
                         {all_users &&
@@ -404,13 +447,13 @@ function EditBranch() {
                               value={user.id}
                               label={`${user.first_name} ${user.last_name}`}
                             >
-                              {" "}
+                              {' '}
                               <Space>
                                 <Avatar
-                                  name={`${user.first_name || ""} ${
-                                    user.last_name || " "
+                                  name={`${user.first_name || ''} ${
+                                    user.last_name || ' '
                                   }`}
-                                  size={25}
+                                  size="25"
                                   round={true}
                                 />
                                 <span>
@@ -423,11 +466,11 @@ function EditBranch() {
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.branch_managers,
-                          }
+                            'custom-visibible': errors.branch_managers,
+                          },
                         )}
                       >
                         {errors.branch_managers}
@@ -441,11 +484,11 @@ function EditBranch() {
                         <Button
                           type="primary"
                           icon={<FormOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
+                          {' '}
                           Update
                         </Button>
                         <Link to="/preferences/view-branches">
@@ -453,7 +496,7 @@ function EditBranch() {
                             icon={<EyeOutlined />}
                             className={styles.on_hover_secondary}
                           >
-                            {" "}
+                            {' '}
                             View
                           </Button>
                         </Link>

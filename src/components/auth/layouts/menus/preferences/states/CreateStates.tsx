@@ -3,23 +3,21 @@ import { Link } from 'react-router-dom';
 import { Input, Button, Space } from 'antd';
 import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-
-import { createCountry } from '../../../../../../store/actions/preferencesActions';
+import { createState } from '../../../../../../store/actions/preferencesActions';
 import { useDispatch } from 'react-redux';
 import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
-
-import PreferencesHero from '../PreferencesHero';
-import AminatedLayout from '../../../../../ui/AminatedLayout';
-import styles from '../../../../../styles/layout/Layout.module.css';
 import { useCustomForm } from '../../../../../../util/hookstype';
+import PreferencesHero from '../PreferencesHero';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
 import GeneralBackButton from '../../../../../ui/GeneralBackButton';
-import { GoGlobe } from 'react-icons/go';
+import { AiOutlineEnvironment } from 'react-icons/ai';
 
 interface FormValues {
   name: string;
 }
 
-function CreateCountry() {
+function CreateStates() {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -29,8 +27,19 @@ function CreateCountry() {
     name: '',
   };
 
+  //callback
+  function createStateCallback() {
+    setLoading(true);
+    createState(dispatch, request, values).then((res) => {
+      setLoading(false);
+      if (res?.status === 'success') {
+        clearForm();
+      }
+    });
+  }
+
   // Validation function
-  function validateCreateCountry(
+  function validateCreateState(
     values: FormValues,
   ): Record<string, string | undefined> {
     const errors: Record<string, string | undefined> = {};
@@ -40,19 +49,8 @@ function CreateCountry() {
     return errors;
   }
 
-  //callback
-  function createCountryCallback() {
-    setLoading(true);
-    createCountry(dispatch, request, values).then((res) => {
-      setLoading(false);
-      if (res?.status === 'success') {
-        clearForm();
-      }
-    });
-  }
-
   const { values, errors, handleChange, handleSubmit, clearForm } =
-    useCustomForm(createCountryCallback, initValues, validateCreateCountry);
+    useCustomForm(createStateCallback, initValues, validateCreateState);
 
   return (
     <>
@@ -63,7 +61,7 @@ function CreateCountry() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Create Country</h1>
+                <h1>Create State</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -71,7 +69,7 @@ function CreateCountry() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Preferences</li>
-                  <li className="breadcrumb-item active">Country</li>
+                  <li className="breadcrumb-item active">State</li>
                 </ol>
               </div>
             </div>
@@ -86,8 +84,8 @@ function CreateCountry() {
               <div className="card-header">
                 <h3 className="card-title">
                   <span className="space__align">
-                    <GoGlobe />
-                    Add new country
+                    <AiOutlineEnvironment />
+                    Add new state
                   </span>
                 </h3>
                 <div className="card-tools">
@@ -97,7 +95,7 @@ function CreateCountry() {
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="form-group col-md-4 offset-md-4 d-flex flex-column">
+                    <div className="form-group col-md-4 d-flex flex-column offset-md-4">
                       <label htmlFor="name">
                         Name <span className="text-danger">*</span>{' '}
                       </label>
@@ -110,7 +108,7 @@ function CreateCountry() {
                         onChange={handleChange}
                         status={errors.name ? 'error' : ''}
                         className="w-75"
-                        placeholder="Name of country"
+                        placeholder="Name of state"
                       />
 
                       <div
@@ -139,7 +137,7 @@ function CreateCountry() {
                           {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-countries">
+                        <Link to="/preferences/view-states">
                           <Button
                             icon={<EyeOutlined />}
                             className={styles.on_hover_secondary}
@@ -163,4 +161,4 @@ function CreateCountry() {
   );
 }
 
-export default CreateCountry;
+export default CreateStates;
