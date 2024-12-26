@@ -1,30 +1,33 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Space, Table, Pagination, Select, Card, Skeleton } from 'antd';
 
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
   useShallowEqualSelector,
   useAxiosPrivate,
-} from "../../../../../../hooks";
+} from '../../../../../../hooks';
 import {
   // spinner_preferences,
- 
-  system_states,
-} from "../../../../../../store/selectors/preferencesSelector";
-import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
 
-import { useGetSystemState } from "./../../../../../../store/actions/preferencesHooksActions";
+  system_states,
+} from '../../../../../../store/selectors/preferencesSelector';
+import { userhaspermission } from '../../../../../../store/selectors/userSelectors';
+
+import { useGetSystemStatePaginated } from '../../../../../../store/actions/preferencesHooksActionsType';
 import {
   deleteState,
   preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
+} from '../../../../../../store/actions/preferencesActions';
 
-import { useMediaQuery } from "react-responsive";
-import { state_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { useMediaQuery } from 'react-responsive';
+import { state_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { AiOutlineEnvironment } from 'react-icons/ai';
+import { User } from '../../../../../../@types/api.types';
 const { Option } = Select;
 
 function ViewStates() {
@@ -32,27 +35,28 @@ function ViewStates() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemState(
+  const { data, isLoading } = useGetSystemStatePaginated(
     enabled,
     setEnabled,
     page,
-    size
+    size,
   );
-
 
   const states = useShallowEqualSelector(system_states);
   const memoUserpermission = useMemo(userhaspermission, []);
   const delete_state = useSelector(
-    (state) => memoUserpermission(state, "DELETE_STATES"),
-    shallowEqual
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'DELETE_STATES'),
+    shallowEqual,
   );
   const edit_state = useSelector(
-    (state) => memoUserpermission(state, "EDIT_STATES"),
-    shallowEqual
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'EDIT_STATES'),
+    shallowEqual,
   );
 
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Delete state";
+  const confirm_text = 'Delete state';
   const request = useAxiosPrivate();
 
   useEffect(() => {
@@ -60,19 +64,19 @@ function ViewStates() {
       preferencesCleanUp(dispatch);
     };
   }, [dispatch]);
-  function handlePagination(page) {
+  function handlePagination(page: number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
+  function confirmAction(id: number) {
     deleteState(dispatch, request, { id }).then((res) => {
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         setEnabled(true);
       }
     });
@@ -83,7 +87,6 @@ function ViewStates() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-          
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -110,7 +113,15 @@ function ViewStates() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System states</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                        <AiOutlineEnvironment />
+                        Available states
+                      </span>
+                    </h3>
+                    <div className="card-tools">
+                      <GeneralBackButton />
+                    </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
@@ -118,13 +129,15 @@ function ViewStates() {
                     ) : (
                       <>
                         <Table
+                          // @ts-ignore
                           columns={state_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
                             delete_state,
-                            edit_state
+                            edit_state,
                           )}
+                          // @ts-ignore
                           dataSource={states}
                           rowKey={(record) => record.id}
                           scroll={{
@@ -144,7 +157,7 @@ function ViewStates() {
                                       }}
                                     >
                                       <Space wrap>
-                                        {record.users.map((user) => (
+                                        {record.users.map((user: User) => (
                                           <span className="badge bg-secondary rounded-pill p-1">
                                             {user.first_name}
                                           </span>
@@ -169,7 +182,7 @@ function ViewStates() {
                             pageSize={1}
                             onChange={handlePagination}
                             current={page}
-                          />{" "}
+                          />{' '}
                           <Select
                             defaultValue={size}
                             style={{

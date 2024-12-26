@@ -31,6 +31,13 @@ export interface Country {
   updated_at: string; // ISO date string
   users: User[];
 }
+export interface State {
+  id: number;
+  name: string;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+  users: User[];
+}
 export interface User {
   branch_id: number | null;
   country_id: number | null;
@@ -54,7 +61,28 @@ export interface User {
 export interface Company {
   id: number;
   name: string;
-  branches: any[]; // Assuming it is an array of similar objects.
+  branches: Branch[]; // Assuming it is an array of similar objects.
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+}
+export interface Designation {
+  id: number;
+  name: string;
+  users: User[];
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+}
+export interface EmployeeCategory {
+  id: number;
+  name: string;
+  users: User[];
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+}
+export interface EmployeeStatus {
+  id: number;
+  name: string;
+  users: User[];
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
 }
@@ -84,8 +112,12 @@ export interface Payload {
   system_users?: User[];
   departments?: Department[];
   countrys?: Country[];
+  states?: State[];
   companys?: Company[];
   branchs?: Branch[];
+  designations?: Designation[];
+  employeeCategory?: EmployeeCategory[];
+  employeeStatus?: EmployeeStatus[];
 }
 
 export interface ApiResponse {

@@ -1,58 +1,58 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Input, Button, Space } from "antd";
-import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
-import classnames from "classnames";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Input, Button, Space } from 'antd';
+import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
 
-import { validateCreateCompany } from "../../../../../../util/formValidations";
-import {
-  createCompany,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
-import { useDispatch } from "react-redux";
-import {
-  useShallowEqualSelector,
-  useForm,
-  useAxiosPrivate,
-} from "../../../../../../hooks";
-import {
-  spinner_preferences,
+import { createCompany } from '../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
-} from "../../../../../../store/selectors/preferencesSelector";
+import PreferencesHero from '../PreferencesHero';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import { useCustomForm } from '../../../../../../util/hookstype';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaBuilding } from 'react-icons/fa6';
 
-import PreferencesHero from "../PreferencesHero";
-import styles from "../../../../../styles/layout/Layout.module.css";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
+interface FormValues {
+  name: string;
+}
 
 function CreateCompany() {
-  const initValues = {
-    name: "",
-  };
+  useCleanUp();
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
-
   const request = useAxiosPrivate();
+  const [loading, setLoading] = useState(false);
+
+  const initValues: FormValues = {
+    name: '',
+  };
+
+  // Validation function
+  function validateCreateCompany(
+    values: FormValues,
+  ): Record<string, string | undefined> {
+    const errors: Record<string, string | undefined> = {};
+    if (!values.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    return errors;
+  }
 
   //callback
   function createCompanyCallback() {
+    setLoading(true);
     createCompany(dispatch, request, values).then((res) => {
-      if (res?.status === "success") {
+      setLoading(false);
+      if (res?.status === 'success') {
         clearForm();
       }
     });
   }
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useForm(
-    createCompanyCallback,
-    initValues,
-    validateCreateCompany
-  );
-
-  useEffect(() => {
-    return () => {
-      return preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(createCompanyCallback, initValues, validateCreateCompany);
 
   return (
     <>
@@ -85,15 +85,22 @@ function CreateCompany() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Create a company</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <FaBuilding />
+                    Add new company
+                  </span>
+                </h3>
+                <div className="card-tools">
+                  <GeneralBackButton />
+                </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 offset-md-4 d-flex flex-column">
                       <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
+                        Name <span className="text-danger">*</span>{' '}
                       </label>
                       <Input
                         type="text"
@@ -102,18 +109,18 @@ function CreateCompany() {
                         allowClear
                         value={values.name}
                         onChange={handleChange}
-                        status={errors.name ? "error" : ""}
+                        status={errors.name ? 'error' : ''}
                         className="w-75"
                         placeholder="Name of company"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.name,
-                          }
+                            'custom-visibible': errors.name,
+                          },
                         )}
                       >
                         {errors.name}
@@ -126,11 +133,11 @@ function CreateCompany() {
                         <Button
                           type="primary"
                           icon={<PlusCircleOutlined />}
-                          loading={spinner}
+                          loading={loading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
+                          {' '}
                           Create
                         </Button>
                         <Link to="/preferences/view-companies">
@@ -138,7 +145,7 @@ function CreateCompany() {
                             icon={<EyeOutlined />}
                             className={styles.on_hover_secondary}
                           >
-                            {" "}
+                            {' '}
                             View
                           </Button>
                         </Link>

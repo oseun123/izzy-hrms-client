@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { Input, Button, Space, Checkbox, Select } from 'antd';
 import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-import type { CheckboxProps } from 'antd';
-
 import { createBranch } from '../../../../../../store/actions/preferencesActions';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';

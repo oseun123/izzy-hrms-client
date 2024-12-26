@@ -1,79 +1,75 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
-
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import {
-  useShallowEqualSelector,
-  useAxiosPrivate,
-} from "../../../../../../hooks";
-import {
-  // spinner_preferences,
-  
-  system_companys,
-} from "../../../../../../store/selectors/preferencesSelector";
-import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
-
-import { useGetSystemCompany } from "../../../../../../store/actions/preferencesHooksActions";
-import {
-  deleteCompany,
-  preferencesCleanUp,
-} from "../../../../../../store/actions/preferencesActions";
-
-import { useMediaQuery } from "react-responsive";
-import { company_columns } from "../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
-
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Space, Table, Pagination, Select, Card, Skeleton } from 'antd';
+import Avatar from 'react-avatar';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
+import { userhaspermission } from '../../../../../../store/selectors/userSelectors';
+import { useGetSystemEmpCategoryPaginated } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { deleteEmpCat } from '../../../../../../store/actions/preferencesActions';
+import { useMediaQuery } from 'react-responsive';
+import { emp_category_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { EmployeeCategory } from '../../../../../../@types/api.types';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaGraduationCap } from 'react-icons/fa6';
 const { Option } = Select;
 
-function ViewCompanys() {
+function ViewEmpCategory() {
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [emp_cat, setEmpCat] = useState<EmployeeCategory[] | undefined>([]);
+
+  useCleanUp();
+
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemCompany(
+  const { data, isLoading } = useGetSystemEmpCategoryPaginated(
     enabled,
     setEnabled,
     page,
-    size
+    size,
   );
 
-
-  const companys = useShallowEqualSelector(system_companys);
+  //   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
-  const delete_company = useSelector(
-    (state) => memoUserpermission(state, "DELETE_COMPANY"),
-    shallowEqual
-  );
-  const edit_company = useSelector(
-    (state) => memoUserpermission(state, "EDIT_COMPANY"),
-    shallowEqual
-  );
 
+  const delete_emp_cat = useSelector(
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'DELETE_EMPLOYEE_CATEGORY'),
+    shallowEqual,
+  );
+  const edit_emp_cat = useSelector(
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'EDIT_EMPLOYEE_CATEGORY'),
+    shallowEqual,
+  );
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Delete Company";
+  const confirm_text =
+    'Are you sure you want to delete this employee category?';
   const request = useAxiosPrivate();
 
   useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
-  function handlePagination(page) {
+    if (data && Object.keys(data).length) {
+      setEmpCat(data?.payload?.employeeCategory);
+    }
+  }, [data]);
+
+  function handlePagination(page: number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
-    deleteCompany(dispatch, request, { id }).then((res) => {
-      if (res?.status === "success") {
+  function confirmAction(id: number) {
+    deleteEmpCat(dispatch, request, { id }).then((res) => {
+      if (res?.status === 'success') {
         setEnabled(true);
       }
     });
@@ -85,11 +81,10 @@ function ViewCompanys() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-      
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>View Company</h1>
+                <h1>View Employee Category</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -97,7 +92,7 @@ function ViewCompanys() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Prefrences</li>
-                  <li className="breadcrumb-item active">Company</li>
+                  <li className="breadcrumb-item active">Employee Category</li>
                 </ol>
               </div>
             </div>
@@ -112,22 +107,33 @@ function ViewCompanys() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">System companies</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                        <FaGraduationCap />
+                        List of employee categories
+                      </span>
+                    </h3>
+                    <div className="card-tools">
+                      <GeneralBackButton />
+                    </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
                       <Skeleton active />
                     ) : (
                       <>
+                        {' '}
                         <Table
-                          columns={company_columns(
+                          // @ts-ignore
+                          columns={emp_category_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
-                            delete_company,
-                            edit_company
+                            delete_emp_cat,
+                            edit_emp_cat,
                           )}
-                          dataSource={companys}
+                          // @ts-ignore
+                          dataSource={emp_cat}
                           rowKey={(record) => record.id}
                           scroll={{
                             x: 786,
@@ -136,20 +142,29 @@ function ViewCompanys() {
                           expandable={{
                             expandedRowRender: (record) => (
                               <>
-                                {record.branches.length ? (
+                                {record.users.length ? (
                                   <div className="mb-3">
                                     <Card
                                       size="small"
-                                      title="Branches"
+                                      title="Users"
                                       style={{
                                         margin: 0,
                                       }}
                                     >
-                                      <Space wrap>
-                                        {record.branches.map((branch) => (
-                                          <span className="badge bg-secondary rounded-pill p-1">
-                                            {branch.name}
-                                          </span>
+                                      <Space wrap size="middle">
+                                        {record.users.map((user) => (
+                                          <Space>
+                                            <Avatar
+                                              name={`${user.first_name || ''} ${
+                                                user.last_name || ' '
+                                              }`}
+                                              size="25"
+                                              round={true}
+                                            />
+                                            <span>
+                                              {user.first_name} {user.last_name}
+                                            </span>
+                                          </Space>
                                         ))}
                                       </Space>
                                     </Card>
@@ -158,20 +173,20 @@ function ViewCompanys() {
                               </>
                             ),
                             rowExpandable: (record) => {
-                              return record.branches.length > 0;
+                              return record.users.length > 0;
                             },
                           }}
-                          locale={{
-                            emptyText: <NoCustomDataIcon />,
-                          }}
+                          locale={{ emptyText: <NoCustomDataIcon /> }}
                         />
                         <div className="mt-3 d-flex justify-content-between">
                           <Pagination
                             total={data?.payload?.total_pages}
-                            current={page}
+                            // showSizeChanger
                             pageSize={1}
                             onChange={handlePagination}
-                          />{" "}
+                            current={page}
+                            // pageSizeOptions={[2, 10, 20, 50, 100]}
+                          />{' '}
                           <Select
                             defaultValue={size}
                             style={{
@@ -203,4 +218,4 @@ function ViewCompanys() {
   );
 }
 
-export default ViewCompanys;
+export default ViewEmpCategory;

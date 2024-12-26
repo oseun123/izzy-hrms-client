@@ -1,57 +1,56 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
-import Avatar from "react-avatar";
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Space, Table, Pagination, Select, Card, Skeleton } from 'antd';
+import Avatar from 'react-avatar';
 
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import {
-  useAxiosPrivate,
-  useCleanUp,
-  usePreferenceNotification,
-} from "../../../../../../hooks";
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
-import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
+import { userhaspermission } from '../../../../../../store/selectors/userSelectors';
 
-import { useGetSystemEmpStatus } from "./../../../../../../store/actions/preferencesHooksActions";
-import { deleteEmpStatus } from "../../../../../../store/actions/preferencesActions";
+import { useGetSystemEmpStatusPaginated } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { deleteEmpStatus } from '../../../../../../store/actions/preferencesActions';
 
-import { useMediaQuery } from "react-responsive";
-import { emp_status_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { useMediaQuery } from 'react-responsive';
+import { emp_status_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { EmployeeStatus } from '../../../../../../@types/api.types';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { AiOutlineCheck } from 'react-icons/ai';
 const { Option } = Select;
 
 function ViewEmpStatus() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [emp_status, setEmpStatus] = useState([]);
-
-  useCleanUp();
-  usePreferenceNotification();
+  const [emp_status, setEmpStatus] = useState<EmployeeStatus[] | undefined>([]);
 
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemEmpStatus(
+  const { data, isLoading } = useGetSystemEmpStatusPaginated(
     enabled,
     setEnabled,
     page,
-    size
+    size,
   );
 
   const memoUserpermission = useMemo(userhaspermission, []);
 
   const delete_emp_status = useSelector(
-    (state) => memoUserpermission(state, "DELETE_EMPLOYEE_STATUS"),
-    shallowEqual
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'DELETE_EMPLOYEE_STATUS'),
+    shallowEqual,
   );
   const edit_emp_status = useSelector(
-    (state) => memoUserpermission(state, "EDIT_EMPLOYEE_STATUS"),
-    shallowEqual
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'EDIT_EMPLOYEE_STATUS'),
+    shallowEqual,
   );
 
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text = "Are you sure you want to delete this employee status?";
+  const confirm_text = 'Are you sure you want to delete this employee status?';
   const request = useAxiosPrivate();
 
   useEffect(() => {
@@ -60,19 +59,19 @@ function ViewEmpStatus() {
     }
   }, [data]);
 
-  function handlePagination(page) {
+  function handlePagination(page: number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
+  function confirmAction(id: number) {
     deleteEmpStatus(dispatch, request, { id }).then((res) => {
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         setEnabled(true);
       }
     });
@@ -110,22 +109,32 @@ function ViewEmpStatus() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">List of employee status</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                        <AiOutlineCheck />
+                        List of employee status
+                      </span>
+                    </h3>
+                    <div className="card-tools">
+                      <GeneralBackButton />
+                    </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
                       <Skeleton active />
                     ) : (
                       <>
-                        {" "}
+                        {' '}
                         <Table
+                          // @ts-ignore
                           columns={emp_status_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
                             delete_emp_status,
-                            edit_emp_status
+                            edit_emp_status,
                           )}
+                          // @ts-ignore
                           dataSource={emp_status}
                           rowKey={(record) => record.id}
                           scroll={{
@@ -148,10 +157,10 @@ function ViewEmpStatus() {
                                         {record.users.map((user) => (
                                           <Space>
                                             <Avatar
-                                              name={`${user.first_name || ""} ${
-                                                user.last_name || " "
+                                              name={`${user.first_name || ''} ${
+                                                user.last_name || ' '
                                               }`}
-                                              size={25}
+                                              size="25"
                                               round={true}
                                             />
                                             <span>
@@ -179,7 +188,7 @@ function ViewEmpStatus() {
                             onChange={handlePagination}
                             current={page}
                             // pageSizeOptions={[2, 10, 20, 50, 100]}
-                          />{" "}
+                          />{' '}
                           <Select
                             defaultValue={size}
                             style={{

@@ -1,44 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Table } from "antd";
-import { useGetSystemState } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
+import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Table } from 'antd';
+import { useGetSystemState } from '../../../../../../store/actions/preferencesHooksActionsType';
 
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from 'react-redux';
 
-import {
+import { single_system_state } from '../../../../../../store/selectors/preferencesSelector';
 
-  single_system_state,
-} from "../../../../../../store/selectors/preferencesSelector";
-
-
-import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
-import { department_details_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { capitalizeFirstLetter } from '../../../../../../util/helpers';
+import { department_details_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { AiOutlineEnvironment } from 'react-icons/ai';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { useCleanUp } from '../../../../../../hooks';
 
 function StateDetails() {
+  useCleanUp();
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
 
-  useGetSystemState(enabled, setEnabled);
+  useGetSystemState(enabled, setEnabled, 'all');
 
-  const dispatch = useDispatch();
- 
   const single_state = useSelector(
+    // @ts-ignore
     (state) => single_system_state(state, id),
-    shallowEqual
+    shallowEqual,
   );
 
   const users = single_state[0]?.users;
   const state_name = single_state[0]?.name;
-
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
 
   return (
     <>
@@ -46,7 +38,6 @@ function StateDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -74,23 +65,19 @@ function StateDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      User(s) in{" "}
-                      {state_name && capitalizeFirstLetter(state_name)}{" "}
+                      <span className="space__align">
+                        <AiOutlineEnvironment />
+                        User(s) in{' '}
+                        {state_name && capitalizeFirstLetter(state_name)}{' '}
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                      <GeneralBackButton />
                     </div>
                   </div>
                   <div className="card-body">
                     <Table
+                      // @ts-ignore
                       columns={department_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={users}

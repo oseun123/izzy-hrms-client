@@ -1,31 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Skeleton, Table } from "antd";
-import { useGetSystemEmpStatus } from "./../../../../../../store/actions/preferencesHooksActions";
-import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
-import { department_details_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
-import { useCleanUp, usePreferenceNotification } from "../../../../../../hooks";
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Skeleton, Table } from 'antd';
+import { useGetSystemEmpStatus } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { capitalizeFirstLetter } from '../../../../../../util/helpers';
+import { department_details_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { useCleanUp } from '../../../../../../hooks';
+import { AiOutlineCheck } from 'react-icons/ai';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { EmployeeStatus } from '../../../../../../@types/api.types';
 
 function EmpStatusDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
-  const [single_emp_status, setSingleEmpStatus] = useState(null);
+  const [single_emp_status, setSingleEmpStatus] =
+    useState<EmployeeStatus | null>(null);
   useCleanUp();
-  usePreferenceNotification();
 
-  const { isLoading, data } = useGetSystemEmpStatus(enabled, setEnabled);
+  const { isLoading, data } = useGetSystemEmpStatus(enabled, setEnabled, 'all');
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
       const employeeStatus = data?.payload?.employeeStatus;
-      const single_status = employeeStatus.find(
-        (item) => parseInt(item.id) === parseInt(id)
+      const single_status = employeeStatus?.find(
+        (item) => item?.id === parseInt(id),
       );
 
-      setSingleEmpStatus(single_status);
+      setSingleEmpStatus(single_status || null);
     }
   }, [data, id]);
 
@@ -62,20 +65,15 @@ function EmpStatusDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      User(s) in{" "}
-                      {single_emp_status &&
-                        capitalizeFirstLetter(single_emp_status?.name)}{" "}
+                      <span className="space__align">
+                        <AiOutlineCheck />
+                        User(s) in{' '}
+                        {single_emp_status &&
+                          capitalizeFirstLetter(single_emp_status?.name)}{' '}
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                      <GeneralBackButton />
                     </div>
                   </div>
                   <div className="card-body">
@@ -83,6 +81,7 @@ function EmpStatusDetails() {
                       <Skeleton active />
                     ) : (
                       <Table
+                        // @ts-ignore
                         columns={department_details_columns()}
                         rowKey={(record) => record.id}
                         dataSource={single_emp_status?.users}
