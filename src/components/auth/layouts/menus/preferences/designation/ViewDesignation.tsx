@@ -1,80 +1,78 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { Space, Table, Pagination, Select, Card, Skeleton } from "antd";
-import Avatar from "react-avatar";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import {
-  useAxiosPrivate,
-  useCleanUp,
-  usePreferenceNotification,
-} from "../../../../../../hooks";
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Space, Table, Pagination, Select, Card, Skeleton } from 'antd';
+import Avatar from 'react-avatar';
 
-import { userhaspermission } from "../../../../../../store/selectors/userSelectors";
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
-import { useGetSystemEmpCategory } from "./../../../../../../store/actions/preferencesHooksActions";
-import { deleteEmpCat } from "../../../../../../store/actions/preferencesActions";
+import { userhaspermission } from '../../../../../../store/selectors/userSelectors';
 
-import { useMediaQuery } from "react-responsive";
-import { emp_category_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { deleteDisignation } from '../../../../../../store/actions/preferencesActions';
+
+import { useMediaQuery } from 'react-responsive';
+import { designation_columns } from './../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { useGetSystemDesignationPaginated } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { Designation, User } from '../../../../../../@types/api.types';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { MdWorkOutline } from 'react-icons/md';
 const { Option } = Select;
 
-function ViewEmpCategory() {
+function ViewDesignation() {
+  useCleanUp();
   const [enabled, setEnabled] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [emp_cat, setEmpCat] = useState([]);
-
-  useCleanUp();
-  usePreferenceNotification();
+  const [designation, setDesignation] = useState<Designation[] | undefined>([]);
 
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetSystemEmpCategory(
+  const { data, isLoading } = useGetSystemDesignationPaginated(
     enabled,
     setEnabled,
     page,
-    size
+    size,
   );
 
   //   const genders = useShallowEqualSelector(system_genders);
   const memoUserpermission = useMemo(userhaspermission, []);
 
-  const delete_emp_cat = useSelector(
-    (state) => memoUserpermission(state, "DELETE_EMPLOYEE_CATEGORY"),
-    shallowEqual
+  const delete_designation = useSelector(
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'DELETE_DESIGNATION'),
+    shallowEqual,
   );
-  const edit_emp_cat = useSelector(
-    (state) => memoUserpermission(state, "EDIT_EMPLOYEE_CATEGORY"),
-    shallowEqual
+  const edit_designation = useSelector(
+    // @ts-ignore
+    (state) => memoUserpermission(state, 'EDIT_DESIGNATION'),
+    shallowEqual,
   );
-  console.log({ emp_cat, data });
+
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const confirm_text =
-    "Are you sure you want to delete this employee category?";
+  const confirm_text = 'Are you sure you want to delete this designation?';
   const request = useAxiosPrivate();
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
-      setEmpCat(data?.payload?.employeeCategory);
+      setDesignation(data?.payload?.designations);
     }
   }, [data]);
 
-  function handlePagination(page) {
+  function handlePagination(page: number) {
     setPage(page);
 
     setEnabled(true);
   }
-  function handleChange(value) {
-    console.log({ value });
+  function handleChange(value: number) {
     setSize(value);
     setPage(1);
     setEnabled(true);
   }
-  function confirmAction(id) {
-    deleteEmpCat(dispatch, request, { id }).then((res) => {
-      if (res?.status === "success") {
+  function confirmAction(id: number) {
+    deleteDisignation(dispatch, request, { id }).then((res) => {
+      if (res?.status === 'success') {
         setEnabled(true);
       }
     });
@@ -89,7 +87,7 @@ function ViewEmpCategory() {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>View Employee Category</h1>
+                <h1>View Designation</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -97,7 +95,7 @@ function ViewEmpCategory() {
                     <Link to="/">Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item active">Prefrences</li>
-                  <li className="breadcrumb-item active">Employee Category</li>
+                  <li className="breadcrumb-item active">Designation</li>
                 </ol>
               </div>
             </div>
@@ -112,23 +110,33 @@ function ViewEmpCategory() {
                 {/* Default box */}
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">List of employee categories</h3>
+                    <h3 className="card-title">
+                      <span className="space__align">
+                        <MdWorkOutline />
+                        Available designations
+                      </span>
+                    </h3>
+                    <div className="card-tools">
+                      <GeneralBackButton />
+                    </div>
                   </div>
                   <div className="card-body">
                     {isLoading ? (
                       <Skeleton active />
                     ) : (
                       <>
-                        {" "}
+                        {' '}
                         <Table
-                          columns={emp_category_columns(
+                          // @ts-ignore
+                          columns={designation_columns(
                             isTabletOrMobile,
                             confirm_text,
                             confirmAction,
-                            delete_emp_cat,
-                            edit_emp_cat
+                            delete_designation,
+                            edit_designation,
                           )}
-                          dataSource={emp_cat}
+                          // @ts-ignore
+                          dataSource={designation}
                           rowKey={(record) => record.id}
                           scroll={{
                             x: 786,
@@ -147,13 +155,13 @@ function ViewEmpCategory() {
                                       }}
                                     >
                                       <Space wrap size="middle">
-                                        {record.users.map((user) => (
+                                        {record.users.map((user: User) => (
                                           <Space>
                                             <Avatar
-                                              name={`${user.first_name || ""} ${
-                                                user.last_name || " "
+                                              name={`${user.first_name || ''} ${
+                                                user.last_name || ' '
                                               }`}
-                                              size={25}
+                                              size="25"
                                               round={true}
                                             />
                                             <span>
@@ -181,7 +189,7 @@ function ViewEmpCategory() {
                             onChange={handlePagination}
                             current={page}
                             // pageSizeOptions={[2, 10, 20, 50, 100]}
-                          />{" "}
+                          />{' '}
                           <Select
                             defaultValue={size}
                             style={{
@@ -213,4 +221,4 @@ function ViewEmpCategory() {
   );
 }
 
-export default ViewEmpCategory;
+export default ViewDesignation;

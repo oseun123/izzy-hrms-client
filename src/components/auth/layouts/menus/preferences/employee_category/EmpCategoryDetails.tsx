@@ -1,31 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Skeleton, Table } from "antd";
-import { useGetSystemEmpCategory } from "./../../../../../../store/actions/preferencesHooksActions";
-import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
-import { department_details_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
-import { useCleanUp, usePreferenceNotification } from "../../../../../../hooks";
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Skeleton, Table } from 'antd';
+import { useGetSystemEmpCategory } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { capitalizeFirstLetter } from '../../../../../../util/helpers';
+import { department_details_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { useCleanUp } from '../../../../../../hooks';
+import { FaGraduationCap } from 'react-icons/fa6';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { EmployeeCategory } from '../../../../../../@types/api.types';
 
 function EmpCategoryDetails() {
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
-  const [single_emp_cat, setSingleEmpCat] = useState(null);
+  const [single_emp_cat, setSingleEmpCat] = useState<EmployeeCategory | null>(
+    null,
+  );
   useCleanUp();
-  usePreferenceNotification();
 
-  const { isLoading, data } = useGetSystemEmpCategory(enabled, setEnabled);
+  const { isLoading, data } = useGetSystemEmpCategory(
+    enabled,
+    setEnabled,
+    'all',
+  );
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
       const employeeCategory = data?.payload?.employeeCategory;
-      const single_cat = employeeCategory.find(
-        (item) => parseInt(item.id) === parseInt(id)
+      const single_cat = employeeCategory?.find(
+        (item) => item.id === parseInt(id),
       );
 
-      setSingleEmpCat(single_cat);
+      setSingleEmpCat(single_cat || null);
     }
   }, [data, id]);
 
@@ -62,20 +70,15 @@ function EmpCategoryDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      User(s) in{" "}
-                      {single_emp_cat &&
-                        capitalizeFirstLetter(single_emp_cat?.name)}{" "}
+                      <span className="space__align">
+                        <FaGraduationCap />
+                        User(s) in{' '}
+                        {single_emp_cat &&
+                          capitalizeFirstLetter(single_emp_cat?.name)}{' '}
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                      <GeneralBackButton />
                     </div>
                   </div>
                   <div className="card-body">
@@ -83,6 +86,7 @@ function EmpCategoryDetails() {
                       <Skeleton active />
                     ) : (
                       <Table
+                        //@ts-ignore
                         columns={department_details_columns()}
                         rowKey={(record) => record.id}
                         dataSource={single_emp_cat?.users}

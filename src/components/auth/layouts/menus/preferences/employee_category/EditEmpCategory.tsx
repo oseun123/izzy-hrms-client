@@ -1,100 +1,86 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Input, Button, Space } from "antd";
-import { FormOutlined, EyeOutlined } from "@ant-design/icons";
-import classnames from "classnames";
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Input, Button, Space } from 'antd';
+import { FormOutlined, EyeOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
 
-import { updateEmpCategory } from "../../../../../../store/actions/preferencesActions";
-import { useDispatch } from "react-redux";
-import {
-  useShallowEqualSelector,
-  useForm,
-  useAxiosPrivate,
-  useCleanUp,
-  usePreferenceNotification,
-} from "../../../../../../hooks";
-import { spinner_preferences } from "../../../../../../store/selectors/preferencesSelector";
-import PreferencesHero from "../PreferencesHero";
-import styles from "../../../../../styles/layout/Layout.module.css";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import { useGetSystemEmpCategory } from "../../../../../../store/actions/preferencesHooksActions";
+import { updateEmpCategory } from '../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
+import PreferencesHero from '../PreferencesHero';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import { useGetSystemEmpCategory } from '../../../../../../store/actions/preferencesHooksActionsType';
+import { EmployeeCategory } from '../../../../../../@types/api.types';
+import { useCustomForm } from '../../../../../../util/hookstype';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { FaGraduationCap } from 'react-icons/fa6';
+
+interface FormValues {
+  emp_cat_id: number;
+  name: string;
+}
 function EditEmpCategory() {
-  const { id } = useParams();
-  const [creds, setCreds] = useState({});
-  const [enabled, setEnabled] = useState(true);
-  const [single_emp_cat, setSingleEmpCat] = useState(null);
-
   useCleanUp();
-  usePreferenceNotification();
+  const { id } = useParams();
+  const [enabled, setEnabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<EmployeeCategory | null>(null);
 
-  const { isLoading, data } = useGetSystemEmpCategory(enabled, setEnabled);
+  const { isLoading, data } = useGetSystemEmpCategory(
+    enabled,
+    setEnabled,
+    'all',
+  );
   const dispatch = useDispatch();
-  const spinner = useShallowEqualSelector(spinner_preferences);
-
   const request = useAxiosPrivate();
+
+  const initValues: FormValues = {
+    emp_cat_id: parseInt(id),
+    name: selected?.name || '',
+  };
+
+  // Effect to set selected gender when data changes
+  useEffect(() => {
+    if (data && Object.keys(data).length) {
+      const empCat = data.payload?.employeeCategory || [];
+      const selectedEmpCat = empCat.find((item) => item.id === parseInt(id));
+      setSelected(selectedEmpCat || null);
+    }
+  }, [data, id]);
 
   //callback
   function editEmpCategoryCallback() {
-    updateEmpCategory(dispatch, request, creds).then((res) => {
-      if (res?.status === "success") {
-      }
+    setLoading(true);
+    updateEmpCategory(dispatch, request, values).then(() => {
+      setLoading(false);
     });
   }
 
   //validation
 
-  function validateeditEmpCategory(values) {
-    let errors = {};
-
-    if (values.hasOwnProperty("name") && values.name === "") {
-      errors.name = "Name cannot not be empty.";
+  function validateeditEmpCategory(
+    values: FormValues,
+  ): Record<string, string | undefined> {
+    const errors: Record<string, string | undefined> = {};
+    if (!values.name.trim()) {
+      errors.name = 'Name is required';
     }
-
     return errors;
   }
 
-  function handleChangeCreds(e, sep = false, creds = {}) {
-    if (sep) {
-      setCreds((prevValues) => {
-        if (!creds.name || creds.value === undefined) {
-          console.error("Invalid creds provided:", creds);
-          return prevValues; // Do not update if creds are invalid
-        }
-        return { ...prevValues, [creds.name]: creds.value };
-      });
-    } else if (e && e.target) {
-      setCreds((prevValues) => {
-        return { ...prevValues, [e.target.name]: e.target.value };
-      });
-    } else {
-      console.error("Invalid event provided:", e);
-    }
-  }
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(editEmpCategoryCallback, initValues, validateeditEmpCategory);
 
-  const { errors, handleSubmit } = useForm(
-    editEmpCategoryCallback,
-    creds,
-    validateeditEmpCategory
-  );
-
+  // Effect to update form values when selected gender changes
   useEffect(() => {
-    if (data && Object.keys(data).length) {
-      const employeeCategory = data?.payload?.employeeCategory;
-      const single_cat = employeeCategory.find(
-        (item) => parseInt(item.id) === parseInt(id)
-      );
-
-      setSingleEmpCat(single_cat);
+    if (selected) {
+      clearForm();
+      values.name = selected.name; // Update form value directly
     }
-  }, [data, id]);
-
-  useEffect(() => {
-    setCreds({
-      name: single_emp_cat?.name,
-      emp_cat_id: single_emp_cat?.id,
-    });
-  }, [single_emp_cat]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   return (
     <>
@@ -127,35 +113,42 @@ function EditEmpCategory() {
             {/* Default box */}
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Modify employee category</h3>
-                <div className="card-tools"></div>
+                <h3 className="card-title">
+                  <span className="space__align">
+                    <FaGraduationCap />
+                    Update employee category
+                  </span>
+                </h3>
+                <div className="card-tools">
+                  <GeneralBackButton />
+                </div>
               </div>
-              <form onSubmit={(e) => handleSubmit(e, creds)}>
+              <form onSubmit={handleSubmit}>
                 <div className="card-body">
                   <div className="row">
                     <div className="form-group col-md-4 offset-md-4 d-flex flex-column ">
                       <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
+                        Name <span className="text-danger">*</span>{' '}
                       </label>
                       <Input
                         type="text"
                         name="name"
                         id="name"
                         allowClear
-                        value={creds?.name || null}
-                        onChange={handleChangeCreds}
-                        status={errors.name ? "error" : ""}
+                        value={values.name}
+                        onChange={handleChange}
+                        status={errors.name ? 'error' : ''}
                         className="w-75"
                         placeholder="Name of employee category"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.name,
-                          }
+                            'custom-visibible': errors.name,
+                          },
                         )}
                       >
                         {errors.name}
@@ -169,11 +162,11 @@ function EditEmpCategory() {
                         <Button
                           type="primary"
                           icon={<FormOutlined />}
-                          loading={spinner || isLoading}
+                          loading={loading || isLoading}
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
+                          {' '}
                           Update
                         </Button>
                         <Link to="/preferences/view-employee-category">
@@ -181,7 +174,7 @@ function EditEmpCategory() {
                             icon={<EyeOutlined />}
                             className={styles.on_hover_secondary}
                           >
-                            {" "}
+                            {' '}
                             View
                           </Button>
                         </Link>

@@ -756,6 +756,542 @@ const useGetSystemBranch = (
   return { data, refetch, isLoading };
 };
 
+const useGetSystemDesignationPaginated = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  page: number = 1,
+  size: number = 10,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_designation_pag', page, size],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/designations?size=${size}&page=${page}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_designation_pag', page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemDesignation = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  all: string,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_designation', all],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/designations?all=${all}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_designation', all]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    all,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+const useGetSystemEmpCategoryPaginated = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  page: number = 1,
+  size: number = 10,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_emp_category_pag', page, size],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/employee-categories?size=${size}&page=${page}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_emp_category_pag', page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+const useGetSystemEmpCategory = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  all: string,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_emp_category', all],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/employee-categories?all=${all}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_emp_category', all]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    all,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemEmpStatusPaginated = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  page: number = 1,
+  size: number = 10,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_emp_status_pag', page, size],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/employee-statuses?size=${size}&page=${page}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_emp_status_pag', page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemEmpStatus = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  all: string,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_emp_status', all],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/employee-statuses?all=${all}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_emp_status', all]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    all,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemStatePaginated = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  page: number = 1,
+  size: number = 10,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_states_pag', page, size],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/states?size=${size}&page=${page}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_STATES_SUCCESS', payload: data });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_states_pag', page, size]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_STATES_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    page,
+    size,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemState = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  all: string,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_states', all],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/states?all=${all}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_STATES_SUCCESS', payload: data });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_states', all]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_STATES_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    all,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
 export {
   useGetSystemGender,
   useGetSystemGenderPaginated,
@@ -768,4 +1304,12 @@ export {
   useGetSystemCompany,
   useGetSystemBranch,
   useGetSystemBranchPaginated,
+  useGetSystemDesignationPaginated,
+  useGetSystemDesignation,
+  useGetSystemEmpCategoryPaginated,
+  useGetSystemEmpCategory,
+  useGetSystemEmpStatusPaginated,
+  useGetSystemEmpStatus,
+  useGetSystemStatePaginated,
+  useGetSystemState,
 };
