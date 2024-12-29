@@ -1,43 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Table } from "antd";
-import { useGetSystemCompany } from "./../../../../../../store/actions/preferencesHooksActions";
-import { preferencesCleanUp } from "../../../../../../store/actions/preferencesActions";
+import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Table } from 'antd';
+import { useGetSystemCompany } from '../../../../../../store/actions/preferencesHooksActionsType';
 
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from 'react-redux';
 
-import {
-  single_system_company,
-} from "../../../../../../store/selectors/preferencesSelector";
+import { single_system_company } from '../../../../../../store/selectors/preferencesSelector';
 
-
-import { capitalizeFirstLetter } from "./../../../../../../util/helpers";
-import { company_details_columns } from "./../../../../../../util/tables";
-import PreferencesHero from "../PreferencesHero";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import NoCustomDataIcon from "../../../../../ui/NoCustomDataIcon";
+import { capitalizeFirstLetter } from '../../../../../../util/helpers';
+import { company_details_columns } from '../../../../../../util/tables';
+import PreferencesHero from '../PreferencesHero';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import NoCustomDataIcon from '../../../../../ui/NoCustomDataIcon';
+import { FaBuilding } from 'react-icons/fa6';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { useCleanUp } from '../../../../../../hooks';
 
 function CompanyDetails() {
+  useCleanUp();
   const { id } = useParams();
   const [enabled, setEnabled] = useState(true);
 
-  useGetSystemCompany(enabled, setEnabled);
-
-  const dispatch = useDispatch();
-
+  useGetSystemCompany(enabled, setEnabled, 'all');
   const single_company = useSelector(
+    // @ts-ignore
     (state) => single_system_company(state, id),
-    shallowEqual
+    shallowEqual,
   );
 
   const branches = single_company[0]?.branches;
   const company_name = single_company[0]?.name;
-
-  useEffect(() => {
-    return () => {
-      preferencesCleanUp(dispatch);
-    };
-  }, [dispatch]);
 
   return (
     <>
@@ -46,7 +38,6 @@ function CompanyDetails() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-       
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -74,23 +65,20 @@ function CompanyDetails() {
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
-                      Branches in{" "}
-                      {company_name && capitalizeFirstLetter(company_name)}{" "}
+                      <span className="space__align">
+                        <FaBuilding />
+                        Branches in{' '}
+                        {company_name &&
+                          capitalizeFirstLetter(company_name)}{' '}
+                      </span>
                     </h3>
                     <div className="card-tools ">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                      >
-                        <i className="fas fa-minus" />
-                      </button>
+                      <GeneralBackButton />
                     </div>
                   </div>
                   <div className="card-body">
                     <Table
+                      // @ts-ignore
                       columns={company_details_columns()}
                       rowKey={(record) => record.id}
                       dataSource={branches}
