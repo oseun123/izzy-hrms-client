@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { useShallowEqualSelector } from "../../../../hooks";
+import { useShallowEqualSelector } from '../../../../hooks';
 import {
   preferencespermissions,
   preferencesRolespermissions,
@@ -15,43 +15,49 @@ import {
   preferencesDesignationpermissions,
   preferencesEmpCategorypermissions,
   preferencesEmpStatuspermissions,
-} from "../../../../store/selectors/userSelectors";
+  preferencesGradespermissions,
+  preferencesStepspermissions,
+} from '../../../../store/selectors/userSelectors';
 
 function Preferences() {
   const root_permissions = useShallowEqualSelector(preferencespermissions);
   const roles_permissions = useShallowEqualSelector(
-    preferencesRolespermissions
+    preferencesRolespermissions,
   );
   const department_permissions = useShallowEqualSelector(
-    preferencesDepartmentpermissions
+    preferencesDepartmentpermissions,
   );
   const gender_permissions = useShallowEqualSelector(
-    preferencesGenderpermissions
+    preferencesGenderpermissions,
   );
   const state_permissions = useShallowEqualSelector(
-    preferencesStatepermissions
+    preferencesStatepermissions,
   );
   const country_permissions = useShallowEqualSelector(
-    preferencesCountrypermissions
+    preferencesCountrypermissions,
   );
   const company_permissions = useShallowEqualSelector(
-    preferencesCompanypermissions
+    preferencesCompanypermissions,
   );
   const branch_permissions = useShallowEqualSelector(
-    preferencesBranchpermissions
+    preferencesBranchpermissions,
   );
   const settings_permissions = useShallowEqualSelector(
-    preferencesSettingspermissions
+    preferencesSettingspermissions,
   );
   const designation_permissions = useShallowEqualSelector(
-    preferencesDesignationpermissions
+    preferencesDesignationpermissions,
   );
   const empcategory_permissions = useShallowEqualSelector(
-    preferencesEmpCategorypermissions
+    preferencesEmpCategorypermissions,
   );
   const empstatus_permissions = useShallowEqualSelector(
-    preferencesEmpStatuspermissions
+    preferencesEmpStatuspermissions,
   );
+  const grade_permissions = useShallowEqualSelector(
+    preferencesGradespermissions,
+  );
+  const step_permissions = useShallowEqualSelector(preferencesStepspermissions);
 
   if (
     root_permissions?.length ||
@@ -65,7 +71,9 @@ function Preferences() {
     settings_permissions?.length ||
     designation_permissions?.length ||
     empcategory_permissions?.length ||
-    empstatus_permissions?.length
+    empstatus_permissions?.length ||
+    grade_permissions?.length ||
+    step_permissions?.length
   ) {
     return (
       <li className="nav-item has-treeview">
@@ -325,6 +333,64 @@ function Preferences() {
                         >
                           <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
                           <p className="dont-close">{design_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+          {/* Grade */}
+          {grade_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {grade_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {grade_permissions.map((grade_perm) => {
+                    return (
+                      <li className="nav-item" key={grade_perm.id}>
+                        <Link
+                          to={grade_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{grade_perm.name}</p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </>
+          ) : null}
+          {/* Steps */}
+          {step_permissions.length ? (
+            <>
+              <li className="nav-item has-treeview">
+                <Link to={() => false} className="nav-link ">
+                  <i className="far fa-circle nav-icon fa-rd " />
+                  <p>
+                    {step_permissions[0].module}
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </Link>
+                <ul className="nav nav-treeview">
+                  {step_permissions.map((step_perm) => {
+                    return (
+                      <li className="nav-item" key={step_perm.id}>
+                        <Link
+                          to={step_perm.url}
+                          className="nav-link dont-close"
+                        >
+                          <i className="far fa-dot-circle nav-icon fa-rd dont-close" />
+                          <p className="dont-close">{step_perm.name}</p>
                         </Link>
                       </li>
                     );
