@@ -1,16 +1,16 @@
-import { Space, Input, Button, Tag, Popconfirm } from "antd";
-import { SearchOutlined, RedoOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import Avatar from "react-avatar";
+import { Space, Input, Button, Tag, Popconfirm } from 'antd';
+import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import Avatar from 'react-avatar';
 
-const desc_text = "Are you sure you want to perform this action?";
+const desc_text = 'Are you sure you want to perform this action?';
 
 const role_details_columns = (confirm_text, removeUser) => {
   return [
     {
-      title: "First Name",
-      dataIndex: "first_name",
-      key: "first_name",
+      title: 'First Name',
+      dataIndex: 'first_name',
+      key: 'first_name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -56,16 +56,16 @@ const role_details_columns = (confirm_text, removeUser) => {
       render: (value, record) => {
         return (
           <Space>
-            <Avatar name={`${value || ""}}`} size={22} round={true} />
+            <Avatar name={`${value || ''}}`} size={22} round={true} />
             {value}
           </Space>
         );
       },
     },
     {
-      title: "Last Name",
-      key: "last_name",
-      dataIndex: "last_name",
+      title: 'Last Name',
+      key: 'last_name',
+      dataIndex: 'last_name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -111,16 +111,16 @@ const role_details_columns = (confirm_text, removeUser) => {
       render: (value, record) => {
         return (
           <Space>
-            <Avatar name={`${value || ""}}`} size={22} round={true} />
+            <Avatar name={`${value || ''}}`} size={22} round={true} />
             {value}
           </Space>
         );
       },
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -165,10 +165,10 @@ const role_details_columns = (confirm_text, removeUser) => {
       },
     },
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: 100,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -199,13 +199,13 @@ const role_columns = (
   confirm_text,
   confirmAction,
   delete_role,
-  edit_role
+  edit_role,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -260,9 +260,9 @@ const role_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -311,9 +311,9 @@ const role_columns = (
     },
 
     {
-      title: "Total permissions",
-      dataIndex: "permissions",
-      key: "permissions",
+      title: 'Total permissions',
+      dataIndex: 'permissions',
+      key: 'permissions',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -362,10 +362,10 @@ const role_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -406,13 +406,13 @@ const department_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -462,9 +462,9 @@ const department_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -513,9 +513,9 @@ const department_columns = (
     },
 
     {
-      title: "HOD",
-      key: "hod",
-      dataIndex: "hod",
+      title: 'HOD',
+      key: 'hod',
+      dataIndex: 'hod',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -562,23 +562,23 @@ const department_columns = (
         return hod > 0 ? (
           <Space>
             <Avatar
-              name={`${record?.headOfDepartment?.fullname || ""}}`}
+              name={`${record?.headOfDepartment?.fullname || ''}}`}
               size={25}
               round={true}
             />
             {record?.headOfDepartment?.fullname}
           </Space>
         ) : (
-          "N/A"
+          'N/A'
         );
       },
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -620,9 +620,9 @@ const department_columns = (
 const department_details_columns = () => {
   return [
     {
-      title: "First Name",
-      dataIndex: "first_name",
-      key: "first_name",
+      title: 'First Name',
+      dataIndex: 'first_name',
+      key: 'first_name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -668,16 +668,16 @@ const department_details_columns = () => {
       render: (value, record) => {
         return (
           <Space>
-            <Avatar name={`${value || ""}}`} size={22} round={true} />
+            <Avatar name={`${value || ''}}`} size={22} round={true} />
             {value}
           </Space>
         );
       },
     },
     {
-      title: "Last Name",
-      key: "last_name",
-      dataIndex: "last_name",
+      title: 'Last Name',
+      key: 'last_name',
+      dataIndex: 'last_name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -724,16 +724,16 @@ const department_details_columns = () => {
       render: (value, record) => {
         return (
           <Space>
-            <Avatar name={`${value || ""}}`} size={22} round={true} />
+            <Avatar name={`${value || ''}}`} size={22} round={true} />
             {value}
           </Space>
         );
       },
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -783,9 +783,9 @@ const department_details_columns = () => {
 const company_details_columns = () => {
   return [
     {
-      title: "Branch Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Branch Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -837,13 +837,13 @@ const gender_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -893,9 +893,9 @@ const gender_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -944,10 +944,10 @@ const gender_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -988,13 +988,13 @@ const designation_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1044,9 +1044,9 @@ const designation_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1095,10 +1095,10 @@ const designation_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -1139,13 +1139,13 @@ const emp_category_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1195,9 +1195,9 @@ const emp_category_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1246,10 +1246,10 @@ const emp_category_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -1291,13 +1291,13 @@ const emp_status_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1347,9 +1347,9 @@ const emp_status_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1398,10 +1398,10 @@ const emp_status_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -1443,13 +1443,13 @@ const state_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1499,9 +1499,9 @@ const state_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1550,10 +1550,10 @@ const state_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -1595,13 +1595,13 @@ const country_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1651,9 +1651,9 @@ const country_columns = (
     },
 
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1702,10 +1702,10 @@ const country_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -1748,13 +1748,13 @@ const company_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1804,9 +1804,9 @@ const company_columns = (
     },
 
     {
-      title: "Total branches",
-      key: "branches",
-      dataIndex: "branches",
+      title: 'Total branches',
+      key: 'branches',
+      dataIndex: 'branches',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1855,10 +1855,10 @@ const company_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -1901,13 +1901,13 @@ const branch_columns = (
   confirm_text,
   confirmAction,
   delete_perm,
-  edit_dept
+  edit_dept,
 ) => {
   return [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -1962,9 +1962,9 @@ const branch_columns = (
     },
 
     {
-      title: "Company",
-      dataIndex: "company",
-      key: "company",
+      title: 'Company',
+      dataIndex: 'company',
+      key: 'company',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -2014,9 +2014,9 @@ const branch_columns = (
     },
 
     {
-      title: "Total managers",
-      key: "managers",
-      dataIndex: "managers",
+      title: 'Total managers',
+      key: 'managers',
+      dataIndex: 'managers',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -2064,9 +2064,9 @@ const branch_columns = (
       },
     },
     {
-      title: "Total users",
-      key: "users",
-      dataIndex: "users",
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -2115,10 +2115,10 @@ const branch_columns = (
     },
 
     {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'action',
       width: isTabletOrMobile ? 100 : 200,
-      fixed: "right",
+      fixed: 'right',
       render: (_, record) => {
         const { id } = record;
         return (
@@ -2156,6 +2156,158 @@ const branch_columns = (
   ];
 };
 
+const grade_columns = (
+  isTabletOrMobile,
+  confirm_text,
+  confirmAction,
+  delete_perm,
+  edit_dept,
+) => {
+  return [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter Name"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.name.toLowerCase().includes(value.toLowerCase());
+      },
+
+      render: (value, record) => {
+        return value;
+      },
+    },
+
+    {
+      title: 'Total users',
+      key: 'users',
+      dataIndex: 'users',
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Filter total users"
+              value={selectedKeys[0]}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+            ></Input>
+            <Space className="my-1">
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  clearFilters();
+                  confirm({ closeDropdown: false });
+                }}
+                icon={<RedoOutlined />}
+              >
+                Reset
+              </Button>
+            </Space>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.users.length === parseInt(value);
+      },
+      render: (users, record) => {
+        return users?.length;
+      },
+    },
+
+    {
+      title: 'Action',
+      key: 'action',
+      width: isTabletOrMobile ? 100 : 200,
+      fixed: 'right',
+      render: (_, record) => {
+        const { id } = record;
+        return (
+          <Space wrap={isTabletOrMobile}>
+            <Link to={`/preferences/view-grade/${id}`}>
+              <Tag color="geekblue">View</Tag>
+            </Link>
+            {edit_dept ? (
+              <Link to={`/preferences/edit-grade/${id}`}>
+                <Tag color="cyan">Edit</Tag>
+              </Link>
+            ) : null}
+
+            {delete_perm ? (
+              <Link to="#">
+                <Popconfirm
+                  placement="topRight"
+                  title={confirm_text}
+                  onConfirm={() => {
+                    // console.log({ id });
+                    confirmAction(id);
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Tag color="red">Delete</Tag>
+                </Popconfirm>
+              </Link>
+            ) : null}
+          </Space>
+        );
+      },
+    },
+  ];
+};
+
 export {
   role_details_columns,
   role_columns,
@@ -2170,4 +2322,5 @@ export {
   designation_columns,
   emp_category_columns,
   emp_status_columns,
+  grade_columns,
 };

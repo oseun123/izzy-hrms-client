@@ -1,13 +1,13 @@
-import React, { Suspense } from "react";
-import Spinner from "../helpers/Spinner";
-import Header from "./layouts/header/Header";
-import Aside from "./layouts/aside/Aside";
-import Footer from "./layouts/footer/Footer";
-import NoMatch from "./layouts/menus/NoMatch";
-import HasPermission from "../../hoc/HasPermission";
-import { Switch, Route, useLocation } from "react-router-dom";
+import React, { Suspense } from 'react';
+import Spinner from '../helpers/Spinner';
+import Header from './layouts/header/Header';
+import Aside from './layouts/aside/Aside';
+import Footer from './layouts/footer/Footer';
+import NoMatch from './layouts/menus/NoMatch';
+import HasPermission from '../../hoc/HasPermission';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
-import styles from "../styles/layout/Layout.module.css";
+import styles from '../styles/layout/Layout.module.css';
 
 //  preferences component
 import {
@@ -53,16 +53,21 @@ import {
   EmpStatusDetails,
   EditEmpStatus,
   GeneralSettings,
-} from "./layouts/preferences";
+  CreateGrades,
+  ViewGrades,
+  GradeDetails,
+  GradesDetails,
+  EditGrades,
+} from './layouts/preferences';
 
 // Human Resource Component
-import { CreateEmployee, ViewEmployee } from "./layouts/human_resource";
+import { CreateEmployee, ViewEmployee } from './layouts/human_resource';
 
 // dashboard components
 
-import { PersonalDashboard, Profile } from "./layouts/personal";
-import { AnimatePresence } from "framer-motion";
-import CreateEmpCategory from "./layouts/menus/preferences/employee_category/CreateEmpCategory";
+import { PersonalDashboard, Profile } from './layouts/personal';
+import { AnimatePresence } from 'framer-motion';
+import CreateEmpCategory from './layouts/menus/preferences/employee_category/CreateEmpCategory';
 
 const Layout = () => {
   const location = useLocation();
@@ -410,6 +415,37 @@ const Layout = () => {
                 />
 
                 {/* end employee status */}
+
+                {/* start employee grade */}
+                <HasPermission
+                  exact
+                  path="/preferences/create-grades"
+                  component={CreateGrades}
+                  permission="CREATE_GRADES"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-grades"
+                  component={ViewGrades}
+                  permission="VIEW_GRADES"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-grade/:id"
+                  component={GradesDetails}
+                  permission="VIEW_GRADES"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/edit-grade/:id"
+                  component={EditGrades}
+                  permission="EDIT_GRADES"
+                />
+
+                {/* end employee grade */}
 
                 {/* start onboarding*/}
                 <HasPermission

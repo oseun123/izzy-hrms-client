@@ -1,58 +1,64 @@
 // roles
-export { default as CreateRoles } from "./menus/preferences/roles/CreateRoles";
-export { default as ViewRoles } from "./menus/preferences/roles/ViewRoles";
-export { default as RoleDetails } from "./menus/preferences/roles/RoleDetails";
-export { default as EditRoles } from "./menus/preferences/roles/EditRoles";
-export { default as AddUserRole } from "./menus/preferences/roles/AddUserRole";
+export { default as CreateRoles } from './menus/preferences/roles/CreateRoles';
+export { default as ViewRoles } from './menus/preferences/roles/ViewRoles';
+export { default as RoleDetails } from './menus/preferences/roles/RoleDetails';
+export { default as EditRoles } from './menus/preferences/roles/EditRoles';
+export { default as AddUserRole } from './menus/preferences/roles/AddUserRole';
 // department
-export { default as CreateDepartments } from "./menus/preferences/departments/CreateDepartments";
-export { default as ViewDepartments } from "./menus/preferences/departments/ViewDepartment";
-export { default as EditDepartments } from "./menus/preferences/departments/EditDepartments";
-export { default as DepartmentDetails } from "./menus/preferences/departments/DepartmentDetails";
+export { default as CreateDepartments } from './menus/preferences/departments/CreateDepartments';
+export { default as ViewDepartments } from './menus/preferences/departments/ViewDepartment';
+export { default as EditDepartments } from './menus/preferences/departments/EditDepartments';
+export { default as DepartmentDetails } from './menus/preferences/departments/DepartmentDetails';
 // gender
-export { default as CreateGenders } from "./menus/preferences/genders/CreateGenders";
-export { default as ViewGenders } from "./menus/preferences/genders/ViewGenders";
-export { default as GenderDetails } from "./menus/preferences/genders/GenderDetails";
-export { default as EditGenders } from "./menus/preferences/genders/EditGenders";
+export { default as CreateGenders } from './menus/preferences/genders/CreateGenders';
+export { default as ViewGenders } from './menus/preferences/genders/ViewGenders';
+export { default as GenderDetails } from './menus/preferences/genders/GenderDetails';
+export { default as EditGenders } from './menus/preferences/genders/EditGenders';
 // state
-export { default as CreateStates } from "./menus/preferences/states/CreateStates";
-export { default as ViewStates } from "./menus/preferences/states/ViewStates";
-export { default as EditStates } from "./menus/preferences/states/EditStates";
-export { default as StateDetails } from "./menus/preferences/states/StateDetails";
+export { default as CreateStates } from './menus/preferences/states/CreateStates';
+export { default as ViewStates } from './menus/preferences/states/ViewStates';
+export { default as EditStates } from './menus/preferences/states/EditStates';
+export { default as StateDetails } from './menus/preferences/states/StateDetails';
 // country
-export { default as CreateCountry } from "./menus/preferences/country/CreateCountry";
-export { default as ViewCountry } from "./menus/preferences/country/ViewCountry";
-export { default as EditCountry } from "./menus/preferences/country/EditCountry";
-export { default as CountryDetails } from "./menus/preferences/country/CountryDetails";
+export { default as CreateCountry } from './menus/preferences/country/CreateCountry';
+export { default as ViewCountry } from './menus/preferences/country/ViewCountry';
+export { default as EditCountry } from './menus/preferences/country/EditCountry';
+export { default as CountryDetails } from './menus/preferences/country/CountryDetails';
 // company
-export { default as CreateCompany } from "./menus/preferences/companys/CreateCompany";
-export { default as ViewCompanys } from "./menus/preferences/companys/ViewCompanys";
-export { default as EditCompany } from "./menus/preferences/companys/EditCompany";
-export { default as CompanyDetails } from "./menus/preferences/companys/CompanyDetails";
+export { default as CreateCompany } from './menus/preferences/companys/CreateCompany';
+export { default as ViewCompanys } from './menus/preferences/companys/ViewCompanys';
+export { default as EditCompany } from './menus/preferences/companys/EditCompany';
+export { default as CompanyDetails } from './menus/preferences/companys/CompanyDetails';
 // branch
-export { default as CreateBranch } from "./menus/preferences/branch/CreateBranch";
-export { default as ViewBranch } from "./menus/preferences/branch/ViewBranch";
-export { default as BranchDetails } from "./menus/preferences/branch/BranchDetails";
-export { default as EditBranch } from "./menus/preferences/branch/EditBranch";
+export { default as CreateBranch } from './menus/preferences/branch/CreateBranch';
+export { default as ViewBranch } from './menus/preferences/branch/ViewBranch';
+export { default as BranchDetails } from './menus/preferences/branch/BranchDetails';
+export { default as EditBranch } from './menus/preferences/branch/EditBranch';
 
 // settings
-export { default as DisplaySettings } from "./menus/preferences/settings/DisplaySettings";
-export { default as GeneralSettings } from "./menus/preferences/settings/general/GeneralSettings";
+export { default as DisplaySettings } from './menus/preferences/settings/DisplaySettings';
+export { default as GeneralSettings } from './menus/preferences/settings/general/GeneralSettings';
 
 // designation
-export { default as CreateDesignation } from "./menus/preferences/designation/CreateDesignation";
-export { default as ViewDesignation } from "./menus/preferences/designation/ViewDesignation";
-export { default as DesignationDetails } from "./menus/preferences/designation/DesignationDetails";
-export { default as EditDesignation } from "./menus/preferences/designation/EditDesignation";
+export { default as CreateDesignation } from './menus/preferences/designation/CreateDesignation';
+export { default as ViewDesignation } from './menus/preferences/designation/ViewDesignation';
+export { default as DesignationDetails } from './menus/preferences/designation/DesignationDetails';
+export { default as EditDesignation } from './menus/preferences/designation/EditDesignation';
 
 // employee category
-export { default as CreateEmpCategory } from "./menus/preferences/employee_category/CreateEmpCategory";
-export { default as ViewEmpCategory } from "./menus/preferences/employee_category/ViewEmpCategory";
-export { default as EmpCategoryDetails } from "./menus/preferences/employee_category/EmpCategoryDetails";
-export { default as EditEmpCategory } from "./menus/preferences/employee_category/EditEmpCategory";
+export { default as CreateEmpCategory } from './menus/preferences/employee_category/CreateEmpCategory';
+export { default as ViewEmpCategory } from './menus/preferences/employee_category/ViewEmpCategory';
+export { default as EmpCategoryDetails } from './menus/preferences/employee_category/EmpCategoryDetails';
+export { default as EditEmpCategory } from './menus/preferences/employee_category/EditEmpCategory';
 
-// employee category
-export { default as CreateEmpStatus } from "./menus/preferences/employee_status/CreateEmpStatus";
-export { default as ViewEmpStatus } from "./menus/preferences/employee_status/ViewEmpStatus";
-export { default as EmpStatusDetails } from "./menus/preferences/employee_status/EmpStatusDetails";
-export { default as EditEmpStatus } from "./menus/preferences/employee_status/EditEmpStatus";
+// employee status
+export { default as CreateEmpStatus } from './menus/preferences/employee_status/CreateEmpStatus';
+export { default as ViewEmpStatus } from './menus/preferences/employee_status/ViewEmpStatus';
+export { default as EmpStatusDetails } from './menus/preferences/employee_status/EmpStatusDetails';
+export { default as EditEmpStatus } from './menus/preferences/employee_status/EditEmpStatus';
+
+// employee grade
+export { default as CreateGrades } from './menus/preferences/grades/CreateGrades';
+export { default as ViewGrades } from './menus/preferences/grades/ViewGrades';
+export { default as GradesDetails } from './menus/preferences/grades/GradesDetails';
+export { default as EditGrades } from './menus/preferences/grades/EditGrades';
