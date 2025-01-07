@@ -62,3 +62,9 @@ export { default as CreateGrades } from './menus/preferences/grades/CreateGrades
 export { default as ViewGrades } from './menus/preferences/grades/ViewGrades';
 export { default as GradesDetails } from './menus/preferences/grades/GradesDetails';
 export { default as EditGrades } from './menus/preferences/grades/EditGrades';
+
+// employee grade
+export { default as CreateSteps } from './menus/preferences/steps/CreateSteps';
+export { default as ViewSteps } from './menus/preferences/steps/ViewSteps';
+export { default as StepDetails } from './menus/preferences/steps/StepDetails';
+export { default as EditSteps } from './menus/preferences/steps/EditSteps';

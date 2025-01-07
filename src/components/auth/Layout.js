@@ -55,9 +55,12 @@ import {
   GeneralSettings,
   CreateGrades,
   ViewGrades,
-  GradeDetails,
   GradesDetails,
   EditGrades,
+  CreateSteps,
+  ViewSteps,
+  StepDetails,
+  EditSteps,
 } from './layouts/preferences';
 
 // Human Resource Component
@@ -446,6 +449,37 @@ const Layout = () => {
                 />
 
                 {/* end employee grade */}
+
+                {/* start employee step */}
+                <HasPermission
+                  exact
+                  path="/preferences/create-steps"
+                  component={CreateSteps}
+                  permission="CREATE_STEPS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-steps"
+                  component={ViewSteps}
+                  permission="VIEW_STEPS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/view-step/:id"
+                  component={StepDetails}
+                  permission="VIEW_STEPS"
+                />
+
+                <HasPermission
+                  exact
+                  path="/preferences/edit-step/:id"
+                  component={EditSteps}
+                  permission="EDIT_STEPS"
+                />
+
+                {/* end employee step */}
 
                 {/* start onboarding*/}
                 <HasPermission
