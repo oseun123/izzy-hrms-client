@@ -93,6 +93,13 @@ export interface Grade {
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
 }
+export interface Step {
+  id: number;
+  name: string;
+  users: User[];
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+}
 
 export interface Branch {
   id: number;
@@ -126,6 +133,7 @@ export interface Payload {
   employeeCategory?: EmployeeCategory[];
   employeeStatus?: EmployeeStatus[];
   grades?: Grade[];
+  steps?: Step[];
 }
 
 export interface ApiResponse {
