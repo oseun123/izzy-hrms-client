@@ -42,19 +42,24 @@ export interface User {
   branch_id: number | null;
   country_id: number | null;
   created_at: string;
+  updated_at: string;
   department_id: number;
   designation_id: number | null;
   email: string;
   employeecategory_id: number | null;
   employeestatus_id: number;
   first_name: string;
+  middle_name: string;
   gender_id: number;
   grade_id: number | null;
+  step_id: number | null;
   id: number;
   last_name: string;
+  employee_number: string;
+  employement_date: string;
+  primary_supervisor: number | null;
+  secondary_supervisor: number | null;
   state_id: number | null;
-  step_id: number | null;
-  updated_at: string;
   fullname?: string;
 }
 
@@ -118,6 +123,15 @@ export interface Branch {
   users: User[];
 }
 
+interface Format {
+  id: number;
+  sequence: string;
+  prefix: string;
+  suffix: string | null;
+  status: boolean;
+  created_at: string; // Use Date if you want it as a Date object
+  updated_at: string; // Use Date if you want it as a Date object
+}
 export interface Payload {
   current_cleint?: CurrentClient; // Correct property name
   genders?: Gender[]; // Correct property name
@@ -134,6 +148,8 @@ export interface Payload {
   employeeStatus?: EmployeeStatus[];
   grades?: Grade[];
   steps?: Step[];
+  format?: Format;
+  format_string?: string;
 }
 
 export interface ApiResponse {

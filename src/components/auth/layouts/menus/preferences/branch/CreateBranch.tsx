@@ -370,7 +370,11 @@ function CreateBranch() {
                       >
                         {all_company &&
                           all_company.map((company: Company) => (
-                            <Option key={company.id} value={company.id}>
+                            <Option
+                              key={company.id}
+                              value={company.id}
+                              label={company.name}
+                            >
                               {' '}
                               {company.name}
                             </Option>
