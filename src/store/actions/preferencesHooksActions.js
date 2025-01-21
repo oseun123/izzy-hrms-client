@@ -1,13 +1,13 @@
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { useQuery, useQueryClient } from "react-query";
-import { useAxiosPrivate } from "../../hooks";
-import { isForbiddden } from "../../util/helpers";
-import { token, storage_type } from "./../../config";
-import { useLocation, useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
+import { useAxiosPrivate } from '../../hooks';
+import { isForbiddden } from '../../util/helpers';
+import { token, storage_type } from './../../config';
+import { useLocation, useHistory } from 'react-router-dom';
 // import Cookies from "js-cookie";
-import { hashData } from "../../util/hash";
-import { user_perm } from "../../config";
+import { hashData } from '../../util/hash';
+import { user_perm } from '../../config';
 // import { setPrivateRequest } from "../../requestMethods";
 
 const useGetSystemPermissions = (enabled, setEnabled) => {
@@ -17,34 +17,34 @@ const useGetSystemPermissions = (enabled, setEnabled) => {
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_permissions"],
+    ['system_permissions'],
     async () => {
       const result = await request.get(`/preferences/permissions`);
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_PERMISSION_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_PERMISSION_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_permissions"]);
+      queryClient.removeQueries(['system_permissions']);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_PERMISSION_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_PERMISSION_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -67,14 +67,14 @@ const useGetUserPermissions = (enabled, setEnabled, user_id) => {
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
   const { data, error, refetch, isLoading } = useQuery(
-    ["user_permissions", user_id],
+    ['user_permissions', user_id],
     async () => {
       const result = await request.get(
-        `/preferences/user-permissions/${user_id}`
+        `/preferences/user-permissions/${user_id}`,
       );
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
@@ -86,12 +86,12 @@ const useGetUserPermissions = (enabled, setEnabled, user_id) => {
       const hash_perm = hashData(data.payload.userpermissions);
       storage_type.setItem(user_perm, hash_perm);
 
-      dispatch({ type: "GET_USER_PERMION_SUCCESS", payload: data });
+      dispatch({ type: 'GET_USER_PERMION_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["user_permissions", user_id]);
+      queryClient.removeQueries(['user_permissions', user_id]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
       console.log(resMessage);
@@ -119,35 +119,35 @@ const useGetSystemUsers = (enabled, setEnabled) => {
   const queryClient = useQueryClient();
 
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_users"],
+    ['system_users'],
     async () => {
       const result = await request.get(`/preferences/users`);
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_USERS_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_USERS_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_users"]);
+      queryClient.removeQueries(['system_users']);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
 
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_USERS_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_USERS_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -170,36 +170,36 @@ const useGetSystemRoles = (enabled, setEnabled, page = 1, size = 10, all) => {
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_roles", page, size],
+    ['system_roles', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/roles?size=${size}&page=${page}&all=${all}`
+        `/preferences/roles?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_ROLES_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_ROLES_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_roles", page, size]);
+      queryClient.removeQueries(['system_roles', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_ROLES_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_ROLES_ERROR', payload: resMessage });
       // console.log(error.message);
       setEnabled(false);
     }
@@ -223,7 +223,7 @@ const useGetSystemDepartment = (
   setEnabled,
   page = 1,
   size = 10,
-  all
+  all,
 ) => {
   const location = useLocation();
   const history = useHistory();
@@ -231,36 +231,36 @@ const useGetSystemDepartment = (
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_departments", page, size],
+    ['system_departments', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/departments?size=${size}&page=${page}&all=${all}`
+        `/preferences/departments?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_DEPARTMENTS_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_DEPARTMENTS_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_departments", page, size]);
+      queryClient.removeQueries(['system_departments', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_DEPARTMENTS_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_DEPARTMENTS_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -285,36 +285,36 @@ const useGetSystemGender = (enabled, setEnabled, page = 1, size = 10, all) => {
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_genders", page, size],
+    ['system_genders', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/genders?size=${size}&page=${page}&all=${all}`
+        `/preferences/genders?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_GENDERS_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_GENDERS_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_genders", page, size]);
+      queryClient.removeQueries(['system_genders', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_GENDERS_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_GENDERS_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -338,7 +338,7 @@ const useGetSystemDesignation = (
   setEnabled,
   page = 1,
   size = 10,
-  all
+  all,
 ) => {
   const location = useLocation();
   const history = useHistory();
@@ -346,35 +346,35 @@ const useGetSystemDesignation = (
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_designation", page, size],
+    ['system_designation', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/designations?size=${size}&page=${page}&all=${all}`
+        `/preferences/designations?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_designation", page, size]);
+      queryClient.removeQueries(['system_designation', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -399,36 +399,36 @@ const useGetSystemState = (enabled, setEnabled, page = 1, size = 10, all) => {
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_states", page, size],
+    ['system_states', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/states?size=${size}&page=${page}&all=${all}`
+        `/preferences/states?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_STATES_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_STATES_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_states", page, size]);
+      queryClient.removeQueries(['system_states', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_STATES_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_STATES_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -453,36 +453,36 @@ const useGetSystemCountry = (enabled, setEnabled, page = 1, size = 10, all) => {
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_country", page, size],
+    ['system_country', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/countries?size=${size}&page=${page}&all=${all}`
+        `/preferences/countries?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_COUNTRY_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_COUNTRY_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_country", page, size]);
+      queryClient.removeQueries(['system_country', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_COUNTRY_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_COUNTRY_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -508,36 +508,36 @@ const useGetSystemCompany = (enabled, setEnabled, page = 1, size = 10, all) => {
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_companys", page, size],
+    ['system_companys', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/companies?size=${size}&page=${page}&all=${all}`
+        `/preferences/companies?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_COMPANYS_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_COMPANYS_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_companys", page, size]);
+      queryClient.removeQueries(['system_companys', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_COMPANYS_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_COMPANYS_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -562,36 +562,36 @@ const useGetSystemBranch = (enabled, setEnabled, page = 1, size = 10, all) => {
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_branchs", page, size],
+    ['system_branchs', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/branches?size=${size}&page=${page}&all=${all}`
+        `/preferences/branches?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_BRANCHS_SUCCESS", payload: data });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_BRANCHS_SUCCESS', payload: data });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_branchs", page, size]);
+      queryClient.removeQueries(['system_branchs', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "SYSTEM_BRANCHS_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_BRANCHS_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -615,7 +615,7 @@ const useGetSystemEmpCategory = (
   setEnabled,
   page = 1,
   size = 10,
-  all
+  all,
 ) => {
   const location = useLocation();
   const history = useHistory();
@@ -623,35 +623,35 @@ const useGetSystemEmpCategory = (
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_emp_category", page, size],
+    ['system_emp_category', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/employee-categories?size=${size}&page=${page}&all=${all}`
+        `/preferences/employee-categories?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_emp_category", page, size]);
+      queryClient.removeQueries(['system_emp_category', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -675,7 +675,7 @@ const useGetSystemEmpStatus = (
   setEnabled,
   page = 1,
   size = 10,
-  all
+  all,
 ) => {
   const location = useLocation();
   const history = useHistory();
@@ -683,35 +683,35 @@ const useGetSystemEmpStatus = (
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["system_emp_status", page, size],
+    ['system_emp_status', page, size],
     async () => {
       const result = await request.get(
-        `/preferences/employee-statuses?size=${size}&page=${page}&all=${all}`
+        `/preferences/employee-statuses?size=${size}&page=${page}&all=${all}`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["system_emp_status", page, size]);
+      queryClient.removeQueries(['system_emp_status', page, size]);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -730,42 +730,42 @@ const useGetSystemEmpStatus = (
   return { data, refetch, isLoading };
 };
 
-const useGetEmpNumber = (enabled, setEnabled, page = 1, size = 10, all) => {
+const useGetEmpNumber = (enabled, setEnabled) => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { data, error, refetch, isLoading } = useQuery(
-    ["emp_number"],
+    ['emp_number'],
     async () => {
       const result = await request.get(
-        `/preferences/settings-general-employee-number`
+        `/preferences/settings-general-employee-number`,
       );
 
       return result.data;
     },
-    { enabled: enabled, manual: true, retry: 2 }
+    { enabled: enabled, manual: true, retry: 2 },
   );
 
   useEffect(() => {
     if (isLoading === true) {
-      dispatch({ type: "START_SPINNER" });
-      dispatch({ type: "START_SPINNER_PREFERENCES" });
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
     }
     if (data) {
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
       setEnabled(false);
     }
 
     if (error) {
-      queryClient.removeQueries(["emp_number"]);
+      queryClient.removeQueries(['emp_number']);
       isForbiddden(dispatch, error, token, location, history);
       const resMessage = error.response.data;
-      dispatch({ type: "STOP_SPINNER" });
-      dispatch({ type: "STOP_SPINNER_PREFERENCES" });
-      dispatch({ type: "GENERIC_ERROR", payload: resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
       setEnabled(false);
     }
   }, [
@@ -774,8 +774,6 @@ const useGetEmpNumber = (enabled, setEnabled, page = 1, size = 10, all) => {
     data,
     error,
     setEnabled,
-    page,
-    size,
     location,
     history,
     queryClient,

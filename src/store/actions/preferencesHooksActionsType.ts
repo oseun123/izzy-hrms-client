@@ -483,7 +483,7 @@ const useGetSystemUsers = (
     queryClient,
   ]);
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 
 const useGetSystemCompanyPagination = (
@@ -1560,6 +1560,70 @@ const useGetSystemStep = (
   return { data, refetch, isLoading };
 };
 
+const useGetEmpNumber = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['emp_number'],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/settings-general-employee-number`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['emp_number']);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = 'An error occurred'; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    location,
+    history,
+    queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
 export {
   useGetSystemGender,
   useGetSystemGenderPaginated,
@@ -1584,4 +1648,5 @@ export {
   useGetSystemGradePaginated,
   useGetSystemStep,
   useGetSystemStepPaginated,
+  useGetEmpNumber,
 };
