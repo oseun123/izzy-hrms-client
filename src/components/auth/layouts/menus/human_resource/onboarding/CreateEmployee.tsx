@@ -14,6 +14,7 @@ import { useCustomForm } from '../../../../../../util/hookstype';
 import {
   useGetEmpNumber,
   useGetSystemBranch,
+  useGetSystemCompany,
   useGetSystemCountry,
   useGetSystemDepartment,
   useGetSystemDesignation,
@@ -27,6 +28,7 @@ import {
 } from '../../../../../../store/actions/preferencesHooksActionsType';
 import {
   Branch,
+  Company,
   Country,
   Department,
   Designation,
@@ -39,10 +41,13 @@ import {
   User,
 } from '../../../../../../@types/api.types';
 import dayjs from 'dayjs';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import DepartmentDrawer from '../drawer/DepartmentDrawer';
 const { Option } = Select;
 
 interface FormValues {
   branch_id: number | null;
+  company_id: number | null;
   country_id: number | null;
   department_id: number | null;
   designation_id: number | null;
@@ -76,7 +81,11 @@ function CreateEmployee() {
   const [enabled_user, setEnabledUser] = useState(true);
   const [enabled_gender, setEnabledGender] = useState(true);
   const [enabled_num, setEnabledNum] = useState(true);
+  const [enabled_com, setEnabledCom] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [filtered_branch_data, setFilteredBranch] = useState<Branch[]>();
+
+  const [open_dept, setOpenDept] = useState(false);
 
   const initValues: FormValues = {
     first_name: '',
@@ -88,6 +97,7 @@ function CreateEmployee() {
     grade_id: null,
     step_id: null,
     branch_id: null,
+    company_id: null,
     designation_id: null,
     primary_supervisor: null,
     secondary_supervisor: null,
@@ -124,6 +134,8 @@ function CreateEmployee() {
     setEnabledBranch,
     'all',
   );
+  const { data: company_data, isLoading: company_loading } =
+    useGetSystemCompany(enabled_com, setEnabledCom, 'all');
   const { data: emp_cat_data, isLoading: cat_loading } =
     useGetSystemEmpCategory(enabled_empCat, setEnabledEmpCat, 'all');
   const { data: emp_status_data, isLoading: status_loading } =
@@ -144,6 +156,8 @@ function CreateEmployee() {
   );
   const { data: format_data } = useGetEmpNumber(enabled_num, setEnabledNum);
 
+  console.log({ branch_data });
+
   const request = useAxiosPrivate();
   const dispatch = useDispatch();
 
@@ -151,7 +165,9 @@ function CreateEmployee() {
     values: FormValues,
   ): Record<string, string | undefined> {
     let errors: Record<string, string | undefined> = {};
+
     console.log({ values });
+    alert('here');
     if (
       values.hasOwnProperty('first_name') &&
       values.first_name.trim() === ''
@@ -247,13 +263,30 @@ function CreateEmployee() {
   const { values, errors, handleChange, handleSubmit, clearForm } =
     useCustomForm(createEmployeeCallback, initValues, validateCreateEmployee);
 
-  console.log({ values, format_data });
-
   useEffect(() => {
     if (format_data?.payload.format_string) {
       values.employee_number = format_data?.payload.format_string;
     }
   }, [format_data, values]);
+
+  useEffect(() => {
+    if (values.company_id && branch_data && Object.keys(branch_data).length) {
+      const filtered = branch_data.payload.branchs?.filter(
+        (item) => item.company.id === values.company_id,
+      );
+      setFilteredBranch(filtered);
+    }
+  }, [values.company_id, branch_data]);
+
+  // Drawers
+
+  function toggleDrawer() {
+    setOpenDept((prev) => !prev);
+  }
+
+  function refetchAll() {
+    setEnabledEmpDept(true);
+  }
 
   return (
     <>
@@ -398,6 +431,7 @@ function CreateEmployee() {
                             label.toLowerCase().includes(input.toLowerCase())
                           );
                         }}
+                        loading={gender_loading}
                       >
                         {gender_data?.payload?.genders &&
                           gender_data?.payload?.genders.map(
@@ -521,15 +555,23 @@ function CreateEmployee() {
                       <label htmlFor="department_id">
                         Department <span className="text-danger">*</span>{' '}
                       </label>
+
                       <Select
                         showSearch
                         allowClear
                         id="department_id"
                         className="w-75"
-                        placeholder="Employee designation"
+                        placeholder="Employee department"
                         value={values.department_id}
                         onChange={(value) =>
                           handleChange({ name: 'department_id', value })
+                        }
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawer}
+                            size={17}
+                            className="drawer_btn"
+                          />
                         }
                         status={errors.department_id ? 'error' : ''}
                         filterOption={(input, option) => {
@@ -928,6 +970,57 @@ function CreateEmployee() {
                       </div>
                     </div>
                     <div className="form-group col-md-4  d-flex flex-column ">
+                      <label htmlFor="company_id">
+                        Company <span className="text-danger">*</span>{' '}
+                      </label>
+                      <Select
+                        showSearch
+                        allowClear
+                        id="company_id"
+                        className="w-75"
+                        placeholder="Employee company"
+                        value={values.company_id}
+                        onChange={(value) =>
+                          handleChange({ name: 'company_id', value })
+                        }
+                        status={errors.company_id ? 'error' : ''}
+                        filterOption={(input, option) => {
+                          // Ensure option.label is a string before calling toLowerCase
+                          const label = option?.label ?? '';
+                          return (
+                            typeof label === 'string' &&
+                            label.toLowerCase().includes(input.toLowerCase())
+                          );
+                        }}
+                        loading={company_loading}
+                      >
+                        {company_data?.payload?.companys &&
+                          company_data?.payload?.companys.map(
+                            (company: Company) => (
+                              <Option
+                                key={company.id}
+                                value={company.id}
+                                label={company.name}
+                              >
+                                {' '}
+                                {company.name}
+                              </Option>
+                            ),
+                          )}
+                      </Select>
+                      <div
+                        className={classnames(
+                          'invalid-feedback',
+                          'custom-feedback',
+                          {
+                            'custom-visibible': errors.company_id,
+                          },
+                        )}
+                      >
+                        {errors.company_id}
+                      </div>
+                    </div>
+                    <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="branch_id">
                         Branch <span className="text-danger">*</span>{' '}
                       </label>
@@ -952,19 +1045,17 @@ function CreateEmployee() {
                         }}
                         loading={branch_loading}
                       >
-                        {branch_data?.payload?.branchs &&
-                          branch_data?.payload?.branchs.map(
-                            (branch: Branch) => (
-                              <Option
-                                key={branch.id}
-                                value={branch.id}
-                                label={branch.name}
-                              >
-                                {' '}
-                                {branch.name}
-                              </Option>
-                            ),
-                          )}
+                        {filtered_branch_data &&
+                          filtered_branch_data?.map((branch: Branch) => (
+                            <Option
+                              key={branch.id}
+                              value={branch.id}
+                              label={branch.name}
+                            >
+                              {' '}
+                              {branch.name}
+                            </Option>
+                          ))}
                       </Select>
                       <div
                         className={classnames(
@@ -1111,6 +1202,11 @@ function CreateEmployee() {
             </div>
             {/* /.card */}
           </div>
+          <DepartmentDrawer
+            open_dept={open_dept}
+            setOpenDept={setOpenDept}
+            refetchAll={refetchAll}
+          />
         </section>
         {/* /.content */}
       </AminatedLayout>

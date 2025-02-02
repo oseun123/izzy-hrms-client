@@ -1,64 +1,57 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Input, Button, Space, Select } from "antd";
-import { PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
-import classnames from "classnames";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Input, Button, Space, Select } from 'antd';
+import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
 
-import {
-  createDepartment,
-} from "../../../../../../store/actions/preferencesActions";
-import { useDispatch } from "react-redux";
-import {
- 
-  useAxiosPrivate,
-  useCleanUp,
-} from "../../../../../../hooks";
+import { createDepartment } from '../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
+import { useAxiosPrivate, useCleanUp } from '../../../../../../hooks';
 
-
-import PreferencesHero from "../PreferencesHero";
-import styles from "../../../../../styles/layout/Layout.module.css";
-import AminatedLayout from "../../../../../ui/AminatedLayout";
-import { useGetAllEmployee } from "../../../../../../store/actions/userHooksActionsType";
-import Avatar from "react-avatar";
-import { MdOutlineLocalFireDepartment } from "react-icons/md";
-import GeneralBackButton from "../../../../../ui/GeneralBackButton";
-import { useCustomForm } from "../../../../../../util/hookstype";
-import { User } from "../../../../../../@types/api.types";
-
+import PreferencesHero from '../PreferencesHero';
+import styles from '../../../../../styles/layout/Layout.module.css';
+import AminatedLayout from '../../../../../ui/AminatedLayout';
+import { useGetAllEmployee } from '../../../../../../store/actions/userHooksActionsType';
+import Avatar from 'react-avatar';
+import { MdOutlineLocalFireDepartment } from 'react-icons/md';
+import GeneralBackButton from '../../../../../ui/GeneralBackButton';
+import { useCustomForm } from '../../../../../../util/hookstype';
+import { User } from '../../../../../../@types/api.types';
 
 interface FormValues {
-  name: string,
-  hod: string
+  name: string;
+  hod: string;
 }
 
-function CreateDepartments() {
+interface CreateDepartmentProps {
+  drawer: boolean;
+  onClose: () => void;
+}
 
+function CreateDepartments({ drawer, onClose }: CreateDepartmentProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
-   const [loading, setLoading] = useState<boolean>(false);
-   const [enabled, setEnabled] = useState<boolean>(true);
-   const { data, isLoading } = useGetAllEmployee(enabled, setEnabled);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [enabled, setEnabled] = useState<boolean>(true);
+  const { data, isLoading } = useGetAllEmployee(enabled, setEnabled);
 
-  const initValues : FormValues = {
-    name: "",
-    hod: "",
+  const initValues: FormValues = {
+    name: '',
+    hod: '',
   };
 
-
   // Validation function
-  const validateCreateDepartment = (values: FormValues): Record<string, string | undefined> => {
+  const validateCreateDepartment = (
+    values: FormValues,
+  ): Record<string, string | undefined> => {
     const errors: Record<string, string | undefined> = {};
     if (!values.name.trim()) {
-      errors.name = "Name is required";
+      errors.name = 'Name is required';
     }
-
 
     return errors;
   };
-
- 
-
 
   // console.log({ data });
 
@@ -67,21 +60,18 @@ function CreateDepartments() {
     setLoading(true);
     createDepartment(dispatch, request, values).then((res) => {
       setLoading(false);
-      if (res?.status === "success") {
+      if (res?.status === 'success') {
         clearForm();
       }
     });
   }
 
-  const { values, errors, handleChange, handleSubmit, clearForm } = useCustomForm(
-    createDepartmentCallback,
-    initValues,
-    validateCreateDepartment
-  );
-
-
-
-
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(
+      createDepartmentCallback,
+      initValues,
+      validateCreateDepartment,
+    );
 
   return (
     <>
@@ -89,7 +79,6 @@ function CreateDepartments() {
       <AminatedLayout>
         {/* Content Header (Page header) */}
         <section className="content-header">
-         
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
@@ -116,14 +105,12 @@ function CreateDepartments() {
               <div className="card-header">
                 <h3 className="card-title">
                   <span className="space__align">
-                  <MdOutlineLocalFireDepartment />
-                  Add new department
-
+                    <MdOutlineLocalFireDepartment />
+                    Add new department
                   </span>
-                  
                 </h3>
                 <div className="card-tools">
-                  <GeneralBackButton/>
+                  <GeneralBackButton />
                 </div>
               </div>
               <form onSubmit={handleSubmit}>
@@ -131,7 +118,7 @@ function CreateDepartments() {
                   <div className="row ">
                     <div className="form-group col-md-4 d-flex flex-column ">
                       <label htmlFor="name">
-                        Name <span className="text-danger">*</span>{" "}
+                        Name <span className="text-danger">*</span>{' '}
                       </label>
                       <Input
                         type="text"
@@ -140,18 +127,18 @@ function CreateDepartments() {
                         allowClear
                         value={values.name}
                         onChange={handleChange}
-                        status={errors.name ? "error" : ""}
+                        status={errors.name ? 'error' : ''}
                         className="w-75"
                         placeholder="Name of department"
                       />
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.name,
-                          }
+                            'custom-visibible': errors.name,
+                          },
                         )}
                       >
                         {errors.name}
@@ -159,17 +146,22 @@ function CreateDepartments() {
                     </div>
                     <div className="form-group col-md-4 d-flex flex-column">
                       <label htmlFor="name">HOD</label>
-                     <Select
+                      <Select
                         id="hod"
                         value={values.hod || null}
                         loading={isLoading ? true : false}
                         showSearch
-                        onChange={(value) => handleChange({ name: "hod", value })}
+                        onChange={(value) =>
+                          handleChange({ name: 'hod', value })
+                        }
                         optionFilterProp="children"
                         filterOption={(input, option) => {
                           // Ensure option.label is a string before calling toLowerCase
-                          const label = option?.label ?? "";
-                          return typeof label === 'string' && label.toLowerCase().includes(input.toLowerCase());
+                          const label = option?.label ?? '';
+                          return (
+                            typeof label === 'string' &&
+                            label.toLowerCase().includes(input.toLowerCase())
+                          );
                         }}
                         className="w-75"
                         placeholder="Head of department"
@@ -178,9 +170,17 @@ function CreateDepartments() {
                         {data && Object.keys(data).length
                           ? data?.system_users?.map((item: User) => {
                               return (
-                                <option key={item.id} value={item.id} label={item.fullname}>
+                                <option
+                                  key={item.id}
+                                  value={item.id}
+                                  label={item.fullname}
+                                >
                                   <Space>
-                                    <Avatar name={item.fullname} size="25" round={true} />
+                                    <Avatar
+                                      name={item.fullname}
+                                      size="25"
+                                      round={true}
+                                    />
                                     {item.fullname}
                                   </Space>
                                 </option>
@@ -191,11 +191,11 @@ function CreateDepartments() {
 
                       <div
                         className={classnames(
-                          "invalid-feedback",
-                          "custom-feedback",
+                          'invalid-feedback',
+                          'custom-feedback',
                           {
-                            "custom-visibible": errors.hod,
-                          }
+                            'custom-visibible': errors.hod,
+                          },
                         )}
                       >
                         {errors.hod}
@@ -212,18 +212,32 @@ function CreateDepartments() {
                           htmlType="submit"
                           className={styles.on_hover}
                         >
-                          {" "}
+                          {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-departments">
+
+                        {!drawer ? (
+                          <Link to="/preferences/view-departments">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              {' '}
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
-                            {" "}
-                            View
+                            {' '}
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>
