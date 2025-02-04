@@ -18,7 +18,12 @@ interface FormValues {
   name: string;
 }
 
-function CreateEmpCategory() {
+interface CreateEmpCategoryProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateEmpCategory({ drawer, onClose }: CreateEmpCategoryProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -144,15 +149,29 @@ function CreateEmpCategory() {
                           {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-employee-category">
+
+                        {!drawer ? (
+                          <Link to="/preferences/view-employee-category">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              {' '}
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon={'X'}
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
                             {' '}
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>

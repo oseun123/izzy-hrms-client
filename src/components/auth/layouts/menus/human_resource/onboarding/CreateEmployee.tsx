@@ -44,6 +44,7 @@ import dayjs from 'dayjs';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import DepartmentDrawer from '../drawer/DepartmentDrawer';
 import DesignationDrawer from '../drawer/DesignationDrawer';
+import EmpCategoryDrawer from '../drawer/EmpCategoryDrawer';
 const { Option } = Select;
 
 interface FormValues {
@@ -88,6 +89,7 @@ function CreateEmployee() {
   // Drawer
   const [open_dept, setOpenDept] = useState(false);
   const [open_desg, setOpenDesg] = useState(false);
+  const [open_cat, setOpenCat] = useState(false);
 
   const initValues: FormValues = {
     first_name: '',
@@ -288,9 +290,14 @@ function CreateEmployee() {
   function toggleDrawerDesg() {
     setOpenDesg((prev) => !prev);
   }
+  function toggleDrawerCat() {
+    setOpenCat((prev) => !prev);
+  }
 
   function refetchAll() {
     setEnabledEmpDept(true);
+    setEnabledEmpDeS(true);
+    setEnabledEmpCat(true);
   }
 
   return (
@@ -853,6 +860,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={cat_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerCat}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {emp_cat_data?.payload?.employeeCategory &&
                           emp_cat_data?.payload?.employeeCategory.map(
@@ -1224,6 +1238,12 @@ function CreateEmployee() {
           <DesignationDrawer
             open_desg={open_desg}
             setOpenDesg={setOpenDesg}
+            refetchAll={refetchAll}
+          />
+
+          <EmpCategoryDrawer
+            open_cat={open_cat}
+            setOpenCat={setOpenCat}
             refetchAll={refetchAll}
           />
         </section>
