@@ -43,6 +43,7 @@ import {
 import dayjs from 'dayjs';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import DepartmentDrawer from '../drawer/DepartmentDrawer';
+import DesignationDrawer from '../drawer/DesignationDrawer';
 const { Option } = Select;
 
 interface FormValues {
@@ -84,8 +85,9 @@ function CreateEmployee() {
   const [enabled_com, setEnabledCom] = useState(true);
   const [loading, setLoading] = useState(false);
   const [filtered_branch_data, setFilteredBranch] = useState<Branch[]>();
-
+  // Drawer
   const [open_dept, setOpenDept] = useState(false);
+  const [open_desg, setOpenDesg] = useState(false);
 
   const initValues: FormValues = {
     first_name: '',
@@ -280,8 +282,11 @@ function CreateEmployee() {
 
   // Drawers
 
-  function toggleDrawer() {
+  function toggleDrawerDept() {
     setOpenDept((prev) => !prev);
+  }
+  function toggleDrawerDesg() {
+    setOpenDesg((prev) => !prev);
   }
 
   function refetchAll() {
@@ -568,7 +573,7 @@ function CreateEmployee() {
                         }
                         prefix={
                           <IoIosAddCircleOutline
-                            onClick={toggleDrawer}
+                            onClick={toggleDrawerDept}
                             size={17}
                             className="drawer_btn"
                           />
@@ -635,6 +640,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={deg_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerDesg}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {emp_des_data?.payload?.designations &&
                           emp_des_data?.payload?.designations.map(
@@ -1202,9 +1214,16 @@ function CreateEmployee() {
             </div>
             {/* /.card */}
           </div>
+
+          {/* Drawer components */}
           <DepartmentDrawer
             open_dept={open_dept}
             setOpenDept={setOpenDept}
+            refetchAll={refetchAll}
+          />
+          <DesignationDrawer
+            open_desg={open_desg}
+            setOpenDesg={setOpenDesg}
             refetchAll={refetchAll}
           />
         </section>

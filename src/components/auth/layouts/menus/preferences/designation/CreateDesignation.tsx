@@ -19,7 +19,12 @@ interface FormValues {
   name: string;
 }
 
-function CreateDesignation() {
+interface CreateDesignationProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateDesignation({ drawer, onClose }: CreateDesignationProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -145,15 +150,28 @@ function CreateDesignation() {
                           {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-designation">
+
+                        {!drawer ? (
+                          <Link to="/preferences/view-designation">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              {' '}
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
                             {' '}
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>
