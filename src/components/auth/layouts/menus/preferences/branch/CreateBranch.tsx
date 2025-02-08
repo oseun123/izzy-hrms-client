@@ -35,7 +35,12 @@ interface FormValues {
   branch_managers: User[];
 }
 
-function CreateBranch() {
+interface CreateBranchProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateBranch({ drawer, onClose }: CreateBranchProps) {
   useCleanUp();
 
   const dispatch = useDispatch();
@@ -473,15 +478,29 @@ function CreateBranch() {
                           {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-branches">
+
+                        {!drawer ? (
+                          <Link to="/preferences/view-branches">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              {' '}
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
                             {' '}
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>

@@ -17,7 +17,12 @@ interface FormValues {
   name: string;
 }
 
-function CreateSteps() {
+interface CreateStepsProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateSteps({ drawer, onClose }: CreateStepsProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -136,14 +141,27 @@ function CreateSteps() {
                         >
                           Create
                         </Button>
-                        <Link to="/preferences/view-steps">
+
+                        {!drawer ? (
+                          <Link to="/preferences/view-steps">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>

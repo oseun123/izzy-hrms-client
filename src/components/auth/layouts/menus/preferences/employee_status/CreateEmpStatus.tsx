@@ -19,7 +19,12 @@ interface FormValues {
   name: string;
 }
 
-function CreateEmpStatus() {
+interface CreateEmpStatusProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateEmpStatus({ drawer, onClose }: CreateEmpStatusProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -145,15 +150,28 @@ function CreateEmpStatus() {
                           {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-employee-status">
+                        {!drawer ? (
+                          <Link to="/preferences/view-employee-status">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              {' '}
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
                             {' '}
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>

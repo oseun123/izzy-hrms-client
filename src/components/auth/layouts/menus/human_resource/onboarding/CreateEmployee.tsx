@@ -45,6 +45,13 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import DepartmentDrawer from '../drawer/DepartmentDrawer';
 import DesignationDrawer from '../drawer/DesignationDrawer';
 import EmpCategoryDrawer from '../drawer/EmpCategoryDrawer';
+import EmpStatusDrawer from '../drawer/EmpStatusDrawer';
+import GradeDrawer from '../drawer/GradeDrawer';
+import StepDrawer from '../drawer/StepDrawer';
+import CompanyDrawer from '../drawer/CompanyDrawer';
+import StateDrawer from '../drawer/StateDrawer';
+import CountryDrawer from '../drawer/CountryDrawer';
+import BranchDrawer from '../drawer/BranchDrawer';
 const { Option } = Select;
 
 interface FormValues {
@@ -90,6 +97,13 @@ function CreateEmployee() {
   const [open_dept, setOpenDept] = useState(false);
   const [open_desg, setOpenDesg] = useState(false);
   const [open_cat, setOpenCat] = useState(false);
+  const [open_status, setOpenStatus] = useState(false);
+  const [open_grade, setOpenGrade] = useState(false);
+  const [open_step, setOpenStep] = useState(false);
+  const [open_company, setOpenCompany] = useState(false);
+  const [open_state, setOpenState] = useState(false);
+  const [open_country, setOpenCountry] = useState(false);
+  const [open_branch, setOpenBranch] = useState(false);
 
   const initValues: FormValues = {
     first_name: '',
@@ -283,7 +297,6 @@ function CreateEmployee() {
   }, [values.company_id, branch_data]);
 
   // Drawers
-
   function toggleDrawerDept() {
     setOpenDept((prev) => !prev);
   }
@@ -293,11 +306,39 @@ function CreateEmployee() {
   function toggleDrawerCat() {
     setOpenCat((prev) => !prev);
   }
+  function toggleDrawerStatus() {
+    setOpenStatus((prev) => !prev);
+  }
+  function toggleDrawerGrade() {
+    setOpenGrade((prev) => !prev);
+  }
+  function toggleDrawerStep() {
+    setOpenStep((prev) => !prev);
+  }
+  function toggleDrawerState() {
+    setOpenState((prev) => !prev);
+  }
+  function toggleDrawerBranch() {
+    setOpenBranch((prev) => !prev);
+  }
+  function toggleDrawerCompany() {
+    setOpenCompany((prev) => !prev);
+  }
+  function toggleDrawerCountry() {
+    setOpenCountry((prev) => !prev);
+  }
 
   function refetchAll() {
     setEnabledEmpDept(true);
     setEnabledEmpDeS(true);
     setEnabledEmpCat(true);
+    setEnabledEmpStatus(true);
+    setEnabledGrade(true);
+    setEnabledStep(true);
+    setEnabledState(true);
+    setEnabledBranch(true);
+    setEnabledCom(true);
+    setEnabledCountry(true);
   }
 
   return (
@@ -808,6 +849,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={status_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerStatus}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {emp_status_data?.payload?.employeeStatus &&
                           emp_status_data?.payload?.employeeStatus.map(
@@ -919,6 +967,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={grade_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerGrade}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {grade_data?.payload?.grades &&
                           grade_data?.payload?.grades.map((grade: Grade) => (
@@ -969,6 +1024,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={step_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerStep}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {step_data?.payload?.steps &&
                           step_data?.payload?.steps.map((step: Step) => (
@@ -1019,6 +1081,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={company_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerCompany}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {company_data?.payload?.companys &&
                           company_data?.payload?.companys.map(
@@ -1070,6 +1139,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={branch_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerBranch}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {filtered_branch_data &&
                           filtered_branch_data?.map((branch: Branch) => (
@@ -1119,6 +1195,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={country_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerCountry}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {country_data?.payload?.countrys &&
                           country_data?.payload?.countrys.map(
@@ -1170,6 +1253,13 @@ function CreateEmployee() {
                           );
                         }}
                         loading={state_loading}
+                        prefix={
+                          <IoIosAddCircleOutline
+                            onClick={toggleDrawerState}
+                            size={17}
+                            className="drawer_btn"
+                          />
+                        }
                       >
                         {state_data?.payload?.states &&
                           state_data?.payload?.states.map((state: State) => (
@@ -1230,22 +1320,79 @@ function CreateEmployee() {
           </div>
 
           {/* Drawer components */}
-          <DepartmentDrawer
-            open_dept={open_dept}
-            setOpenDept={setOpenDept}
-            refetchAll={refetchAll}
-          />
-          <DesignationDrawer
-            open_desg={open_desg}
-            setOpenDesg={setOpenDesg}
-            refetchAll={refetchAll}
-          />
+          {open_dept ? (
+            <DepartmentDrawer
+              open_dept={open_dept}
+              setOpenDept={setOpenDept}
+              refetchAll={refetchAll}
+            />
+          ) : null}
 
-          <EmpCategoryDrawer
-            open_cat={open_cat}
-            setOpenCat={setOpenCat}
-            refetchAll={refetchAll}
-          />
+          {open_desg ? (
+            <DesignationDrawer
+              open_desg={open_desg}
+              setOpenDesg={setOpenDesg}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+
+          {open_cat ? (
+            <EmpCategoryDrawer
+              open_cat={open_cat}
+              setOpenCat={setOpenCat}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+          {open_status ? (
+            <EmpStatusDrawer
+              open_status={open_status}
+              setOpenStatus={setOpenStatus}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+          {open_grade ? (
+            <GradeDrawer
+              open_grade={open_grade}
+              setOpenGrade={setOpenGrade}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+          {open_step ? (
+            <StepDrawer
+              open_step={open_step}
+              setOpenStep={setOpenStep}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+          {open_company ? (
+            <CompanyDrawer
+              open_company={open_company}
+              setOpenCompany={setOpenCompany}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+          {open_state ? (
+            <StateDrawer
+              open_state={open_state}
+              setOpenState={setOpenState}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+
+          {open_country ? (
+            <CountryDrawer
+              open_country={open_country}
+              setOpenCountry={setOpenCountry}
+              refetchAll={refetchAll}
+            />
+          ) : null}
+          {open_branch ? (
+            <BranchDrawer
+              open_branch={open_branch}
+              setOpenBranch={setOpenBranch}
+              refetchAll={refetchAll}
+            />
+          ) : null}
         </section>
         {/* /.content */}
       </AminatedLayout>
