@@ -18,7 +18,12 @@ interface FormValues {
   name: string;
 }
 
-function CreateGrades() {
+interface CreateGradesProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateGrades({ drawer, onClose }: CreateGradesProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -137,14 +142,26 @@ function CreateGrades() {
                         >
                           Create
                         </Button>
-                        <Link to="/preferences/view-grades">
+                        {!drawer ? (
+                          <Link to="/preferences/view-grades">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>

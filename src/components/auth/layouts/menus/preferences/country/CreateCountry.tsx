@@ -19,7 +19,12 @@ interface FormValues {
   name: string;
 }
 
-function CreateCountry() {
+interface CreateCountryProps {
+  drawer: boolean;
+  onClose: () => void;
+}
+
+function CreateCountry({ drawer, onClose }: CreateCountryProps) {
   useCleanUp();
   const dispatch = useDispatch();
   const request = useAxiosPrivate();
@@ -139,15 +144,29 @@ function CreateCountry() {
                           {' '}
                           Create
                         </Button>
-                        <Link to="/preferences/view-countries">
+
+                        {!drawer ? (
+                          <Link to="/preferences/view-countries">
+                            <Button
+                              icon={<EyeOutlined />}
+                              className={styles.on_hover_secondary}
+                            >
+                              {' '}
+                              View
+                            </Button>
+                          </Link>
+                        ) : null}
+
+                        {drawer ? (
                           <Button
-                            icon={<EyeOutlined />}
+                            icon="X"
                             className={styles.on_hover_secondary}
+                            onClick={onClose}
                           >
                             {' '}
-                            View
+                            Close
                           </Button>
-                        </Link>
+                        ) : null}
                       </Space>
                     </div>
                   </div>
