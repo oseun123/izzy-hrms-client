@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Input, Button, Space } from 'antd';
 import { FormOutlined, EyeOutlined } from '@ant-design/icons';
