@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import Preferences from "./Preferences";
-import HumanResource from "./HumanResource";
-import { useShallowEqualSelector } from "../../../../hooks";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import Preferences from './Preferences';
+import HumanResource from './HumanResource';
+import { useShallowEqualSelector } from '../../../../hooks';
 import {
   currentUser,
   current_cleint,
-} from "../../../../store/selectors/userSelectors";
-import { capitalizeFirstLetter } from "../../../../util/helpers";
-import $ from "jquery";
+} from '../../../../store/selectors/userSelectors';
+import { capitalizeFirstLetter } from '../../../../util/helpers';
+import $ from 'jquery';
 
 function Aside() {
   const { first_name, last_name } = useShallowEqualSelector(currentUser);
@@ -20,52 +20,52 @@ function Aside() {
   const brand_variant = JSON.parse(currentCleint?.settings)[0]?.display
     ?.brand_variant;
 
-  const [profile, setProfile] = useState({ first_name: "", last_name: "" });
+  const [profile, setProfile] = useState({ first_name: '', last_name: '' });
   function handleClick(e) {
-    let parent = e.target.closest(".has-treeview");
-    let child = e.target.closest(".has-treeview ").children[1];
+    let parent = e.target.closest('.has-treeview');
+    let child = e.target.closest('.has-treeview ').children[1];
 
-    let grandparent = $("#grandparent");
+    let grandparent = $('#grandparent');
 
-    grandparent.find("a.active").removeClass("active");
+    grandparent.find('a.active').removeClass('active');
 
-    if (parent && parent.classList.contains("menu-open")) {
+    if (parent && parent.classList.contains('menu-open')) {
       if (
-        (e.target.tagName === "P" &&
-          e.target.classList.contains("dont-close")) ||
-        (e.target.tagName === "A" &&
-          e.target.classList.contains("dont-close")) ||
-        (e.target.tagName === "I" && e.target.classList.contains("dont-close"))
+        (e.target.tagName === 'P' &&
+          e.target.classList.contains('dont-close')) ||
+        (e.target.tagName === 'A' &&
+          e.target.classList.contains('dont-close')) ||
+        (e.target.tagName === 'I' && e.target.classList.contains('dont-close'))
       ) {
-        if (parent.parentNode.parentNode.closest(".has-treeview")) {
+        if (parent.parentNode.parentNode.closest('.has-treeview')) {
           parent.parentNode.parentNode
-            .closest(".has-treeview")
-            .children[0].classList.add("active");
+            .closest('.has-treeview')
+            .children[0].classList.add('active');
         } else {
-          parent.children[0].classList.add("active");
+          parent.children[0].classList.add('active');
         }
         return false;
       }
-      parent.classList.remove("menu-open");
-      child.style.display = "none";
+      parent.classList.remove('menu-open');
+      child.style.display = 'none';
 
-      if (parent.parentNode.parentNode.closest(".has-treeview")) {
+      if (parent.parentNode.parentNode.closest('.has-treeview')) {
         parent.parentNode.parentNode
-          .closest(".has-treeview")
-          .children[0].classList.add("active");
+          .closest('.has-treeview')
+          .children[0].classList.add('active');
       } else {
-        parent.children[0].classList.add("active");
+        parent.children[0].classList.add('active');
       }
     } else {
-      parent.classList.add("menu-open");
-      child.style.display = "block";
+      parent.classList.add('menu-open');
+      child.style.display = 'block';
 
-      if (parent.parentNode.parentNode.closest(".has-treeview")) {
+      if (parent.parentNode.parentNode.closest('.has-treeview')) {
         parent.parentNode.parentNode
-          .closest(".has-treeview")
-          .children[0].classList.add("active");
+          .closest('.has-treeview')
+          .children[0].classList.add('active');
       } else {
-        parent.children[0].classList.add("active");
+        parent.children[0].classList.add('active');
       }
     }
   }
@@ -79,7 +79,7 @@ function Aside() {
       {/* Main Sidebar Container */}
       <aside
         className={`main-sidebar   ${
-          sidebar_variant || "sidebar-dark-primary"
+          sidebar_variant || 'sidebar-dark-primary'
         }  elevation-4`}
       >
         {/* Brand Logo */}
@@ -88,7 +88,7 @@ function Aside() {
             src="../../dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"
             className="brand-image img-circle elevation-3"
-            style={{ opacity: ".8" }}
+            style={{ opacity: '.8' }}
           />
           <span className="brand-text font-weight-light">
             <b>Izzy</b>HRMS
@@ -107,8 +107,8 @@ function Aside() {
             </div>
             <div className="info">
               <Link to="/" className="d-block">
-                {capitalizeFirstLetter(profile?.last_name)}{" "}
-                {capitalizeFirstLetter(profile?.first_name)}{" "}
+                {capitalizeFirstLetter(profile?.last_name)}{' '}
+                {capitalizeFirstLetter(profile?.first_name)}{' '}
               </Link>
             </div>
           </div>
