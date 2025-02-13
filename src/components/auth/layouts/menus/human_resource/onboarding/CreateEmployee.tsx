@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Button, Space, DatePicker, Select } from 'antd';
 import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
@@ -70,7 +70,7 @@ interface FormValues {
   step_id: number | null;
   last_name: string;
   employee_number: string;
-  employement_date: string;
+  employment_date: string;
   primary_supervisor: number | null;
   secondary_supervisor: number | null;
   state_id: number | null;
@@ -110,7 +110,7 @@ function CreateEmployee() {
     middle_name: '',
     last_name: '',
     employee_number: '',
-    employement_date: '',
+    employment_date: '',
     department_id: null,
     grade_id: null,
     step_id: null,
@@ -174,8 +174,6 @@ function CreateEmployee() {
   );
   const { data: format_data } = useGetEmpNumber(enabled_num, setEnabledNum);
 
-  console.log({ branch_data });
-
   const request = useAxiosPrivate();
   const dispatch = useDispatch();
 
@@ -184,8 +182,6 @@ function CreateEmployee() {
   ): Record<string, string | undefined> {
     let errors: Record<string, string | undefined> = {};
 
-    console.log({ values });
-    alert('here');
     if (
       values.hasOwnProperty('first_name') &&
       values.first_name.trim() === ''
@@ -202,10 +198,10 @@ function CreateEmployee() {
       errors.last_name = 'Last name cannot be empty.';
     }
     if (
-      values.hasOwnProperty('employement_date') &&
-      values.employement_date.trim() === ''
+      values.hasOwnProperty('employment_date') &&
+      values.employment_date.trim() === ''
     ) {
-      errors.employement_date = 'Employment date cannot be empty.';
+      errors.employment_date = 'Employment date cannot be empty.';
     }
     if (
       values.hasOwnProperty('department_id') &&
@@ -230,12 +226,6 @@ function CreateEmployee() {
       values.designation_id == null
     ) {
       errors.designation_id = 'Designation cannot be empty.';
-    }
-    if (
-      values.hasOwnProperty('primary_supervisor') &&
-      values.primary_supervisor == null
-    ) {
-      errors.primary_supervisor = 'Primary supervisor cannot be empty.';
     }
 
     if (
@@ -542,25 +532,25 @@ function CreateEmployee() {
                       </div>
                     </div>
                     <div className="form-group col-md-4  d-flex flex-column ">
-                      <label htmlFor="employement_date">
+                      <label htmlFor="employment_date">
                         Employment Date <span className="text-danger">*</span>{' '}
                       </label>
                       <DatePicker
                         type="text"
-                        name="employement_date"
-                        id="employement_date"
+                        name="employment_date"
+                        id="employment_date"
                         allowClear
                         className="w-75"
                         placeholder="Employment date"
                         value={
-                          values.employement_date
-                            ? dayjs(values.employement_date)
+                          values.employment_date
+                            ? dayjs(values.employment_date)
                             : null
                         }
                         onChange={(_, value) =>
-                          handleChange({ name: 'employement_date', value })
+                          handleChange({ name: 'employment_date', value })
                         }
-                        status={errors.employement_date ? 'error' : ''}
+                        status={errors.employment_date ? 'error' : ''}
                       />
 
                       <div
@@ -568,11 +558,11 @@ function CreateEmployee() {
                           'invalid-feedback',
                           'custom-feedback',
                           {
-                            'custom-visibible': errors.employement_date,
+                            'custom-visibible': errors.employment_date,
                           },
                         )}
                       >
-                        {errors.employement_date}
+                        {errors.employment_date}
                       </div>
                     </div>
                     <div className="form-group col-md-4  d-flex flex-column ">
@@ -726,7 +716,6 @@ function CreateEmployee() {
                     <div className="form-group col-md-4  d-flex flex-column ">
                       <label htmlFor="primary_supervisor">
                         Primary supervisor{' '}
-                        <span className="text-danger">*</span>{' '}
                       </label>
                       <Select
                         showSearch
