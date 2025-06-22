@@ -3,7 +3,7 @@ import humanResourceSvg from '../../../../../svg/human_resource.svg';
 import { currentUser } from '../../../../../store/selectors/userSelectors';
 import {
   useShallowEqualSelector,
-  useUserNotification,
+  usePreferenceNotification,
 } from '../../../../../hooks';
 
 import { capitalizeFirstLetter } from '../../../../../util/helpers';
@@ -13,7 +13,7 @@ import styles from '../../../../styles/layout/Layout.module.css';
 function HumanResourceHero() {
   const { first_name, last_name, last_login } =
     useShallowEqualSelector(currentUser);
-  useUserNotification();
+  usePreferenceNotification();
   return (
     <div className="card rounded-0">
       <section className="content px-2">
