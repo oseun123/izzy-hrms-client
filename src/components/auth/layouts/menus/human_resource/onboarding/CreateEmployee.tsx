@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Input, Button, Space, DatePicker, Select } from 'antd';
+import { Input, Button, Space, DatePicker, Select, Popconfirm } from 'antd';
 import { PlusCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 
@@ -78,6 +78,7 @@ interface FormValues {
 
 function CreateEmployee() {
   useCleanUp();
+
   const [enabled_country, setEnabledCountry] = useState(true);
   const [enabled_state, setEnabledState] = useState(true);
   const [enabled_grade, setEnabledGrade] = useState(true);
@@ -172,7 +173,10 @@ function CreateEmployee() {
     enabled_user,
     setEnabledUser,
   );
-  const { data: format_data } = useGetEmpNumber(enabled_num, setEnabledNum);
+  const { data: format_data, refetch } = useGetEmpNumber(
+    enabled_num,
+    setEnabledNum,
+  );
 
   const request = useAxiosPrivate();
   const dispatch = useDispatch();
@@ -260,11 +264,15 @@ function CreateEmployee() {
   }
 
   //callback
+
   function createEmployeeCallback() {
+    setLoading(true);
     createEmployee(dispatch, request, values).then((res) => {
-      // if (res?.status === 'success') {
-      //   clearForm();
-      // }
+      if (res?.status === 'success') {
+        clearForm();
+        refetch();
+      }
+      setLoading(false);
     });
   }
 
@@ -330,6 +338,14 @@ function CreateEmployee() {
     setEnabledCom(true);
     setEnabledCountry(true);
   }
+
+  function confirm() {
+    const fakeEvent = {
+      preventDefault: () => {},
+    } as React.FormEvent<HTMLFormElement>;
+    handleSubmit(fakeEvent);
+  }
+  function cancel() {}
 
   return (
     <>
@@ -1279,16 +1295,25 @@ function CreateEmployee() {
                   <div className="row mt-4">
                     <div className="form-group col-md-12">
                       <Space>
-                        <Button
-                          type="primary"
-                          icon={<PlusCircleOutlined />}
-                          loading={loading}
-                          htmlType="submit"
-                          className={styles.on_hover}
+                        <Popconfirm
+                          title="Create Employee"
+                          description="Are you sure you want to create this record?"
+                          onConfirm={confirm}
+                          onCancel={cancel}
+                          okText="Yes"
+                          cancelText="No"
                         >
-                          {' '}
-                          Create
-                        </Button>
+                          <Button
+                            type="primary"
+                            icon={<PlusCircleOutlined />}
+                            loading={loading}
+                            className={styles.on_hover}
+                            htmlType="button"
+                          >
+                            {' '}
+                            Create
+                          </Button>
+                        </Popconfirm>
                         <Link to="/preferences/view-branches">
                           <Button
                             icon={<EyeOutlined />}
