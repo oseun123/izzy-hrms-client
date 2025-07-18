@@ -50,13 +50,17 @@ const useGetSystemGender = (
       queryClient.removeQueries(['system_genders', all]);
       isForbiddden(dispatch, error, token, location, history);
 
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -119,13 +123,17 @@ const useGetSystemGenderPaginated = (
     if (error) {
       queryClient.removeQueries(['system_genders_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -188,13 +196,17 @@ const useGetSystemDepartmentPaginated = (
     if (error) {
       queryClient.removeQueries(['system_departments_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -255,13 +267,17 @@ const useGetSystemDepartment = (
     if (error) {
       queryClient.removeQueries(['system_departments', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -322,13 +338,17 @@ const useGetSystemCountry = (
     if (error) {
       queryClient.removeQueries(['system_country', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -390,13 +410,17 @@ const useGetSystemCountryPaginated = (
     if (error) {
       queryClient.removeQueries(['system_country_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -456,13 +480,17 @@ const useGetSystemUsers = (
     if (error) {
       queryClient.removeQueries(['system_users']);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -524,13 +552,17 @@ const useGetSystemCompanyPagination = (
     if (error) {
       queryClient.removeQueries(['system_companys_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -592,13 +624,17 @@ const useGetSystemCompany = (
     if (error) {
       queryClient.removeQueries(['system_companys', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -660,13 +696,17 @@ const useGetSystemBranchPaginated = (
     if (error) {
       queryClient.removeQueries(['system_branchs_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -726,13 +766,17 @@ const useGetSystemBranch = (
     if (error) {
       queryClient.removeQueries(['system_branchs', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -793,13 +837,17 @@ const useGetSystemDesignationPaginated = (
     if (error) {
       queryClient.removeQueries(['system_designation_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -860,13 +908,17 @@ const useGetSystemDesignation = (
     if (error) {
       queryClient.removeQueries(['system_designation', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -926,13 +978,17 @@ const useGetSystemEmpCategoryPaginated = (
     if (error) {
       queryClient.removeQueries(['system_emp_category_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -992,13 +1048,17 @@ const useGetSystemEmpCategory = (
     if (error) {
       queryClient.removeQueries(['system_emp_category', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1059,13 +1119,17 @@ const useGetSystemEmpStatusPaginated = (
     if (error) {
       queryClient.removeQueries(['system_emp_status_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1126,13 +1190,17 @@ const useGetSystemEmpStatus = (
     if (error) {
       queryClient.removeQueries(['system_emp_status', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1194,13 +1262,17 @@ const useGetSystemStatePaginated = (
     if (error) {
       queryClient.removeQueries(['system_states_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1262,13 +1334,17 @@ const useGetSystemState = (
     if (error) {
       queryClient.removeQueries(['system_states', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1329,13 +1405,17 @@ const useGetSystemGradePaginated = (
     if (error) {
       queryClient.removeQueries(['system_grade_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1396,13 +1476,17 @@ const useGetSystemGrade = (
     if (error) {
       queryClient.removeQueries(['system_grade', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1463,13 +1547,17 @@ const useGetSystemStepPaginated = (
     if (error) {
       queryClient.removeQueries(['system_step_pag', page, size]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1530,13 +1618,17 @@ const useGetSystemStep = (
     if (error) {
       queryClient.removeQueries(['system_step', all]);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1595,13 +1687,17 @@ const useGetEmpNumber = (
     if (error) {
       queryClient.removeQueries(['emp_number']);
       isForbiddden(dispatch, error, token, location, history);
-      let resMessage = 'An error occurred'; // Default error message
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
 
       // Check if the error is an AxiosError
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data?.message || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1623,9 +1719,82 @@ const useGetEmpNumber = (
 
   return { data, refetch, isLoading };
 };
+const useGetCurrentEmployeeProfilePic = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  user_id: number | null,
+) => {
+  // alert('here3');
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['employee_pic', user_id],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `hris/get-employee-pic?user_id=${user_id}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+  // console.log({ error, isLoading, data });
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['employee_pic', user_id]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+
+      console.log({ resMessage });
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      // dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    location,
+    history,
+    queryClient,
+    user_id,
+  ]);
+
+  return { data, refetch, isLoading };
+};
 
 export {
   useGetSystemGender,
+  useGetCurrentEmployeeProfilePic,
   useGetSystemGenderPaginated,
   useGetSystemDepartmentPaginated,
   useGetSystemDepartment,
