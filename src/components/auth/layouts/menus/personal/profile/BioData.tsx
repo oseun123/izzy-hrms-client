@@ -1,42 +1,113 @@
-import { Button, Image, Input, Space } from "antd";
-import React, { useRef, useState } from "react";
-import { BsPersonAdd } from "react-icons/bs";
-import { HiOutlineOfficeBuilding } from "react-icons/hi";
-import { MdOutlineContactPhone } from "react-icons/md";
-import uploadImage from "../../../../../../svg/upload.svg";
-import { MdOutlineDriveFolderUpload } from "react-icons/md";
-import { LuFileEdit } from "react-icons/lu";
-import { GoEye } from "react-icons/go";
-import classnames from "classnames";
+import { Button, Image, Input, Popconfirm, Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { BsPersonAdd } from 'react-icons/bs';
+import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { MdOutlineContactPhone, MdDeleteOutline } from 'react-icons/md';
+
+import { MdOutlineDriveFolderUpload } from 'react-icons/md';
+import { LuFileEdit } from 'react-icons/lu';
+import { GoEye } from 'react-icons/go';
+
+import { useGetCurrentEmployeeProfilePic } from '../../../../../../store/actions/preferencesHooksActionsType';
+
+import uploadImage from './../../../../../../svg/upload.svg';
+import { useSelector } from 'react-redux';
+import {
+  clearUploadProfilePic,
+  uploadProfilePic,
+} from '../../../../../../store/actions/preferencesActions';
+import { useDispatch } from 'react-redux';
+import { useAxiosPrivate } from '../../../../../../hooks';
 
 function ProfilePicture() {
-  const [file, setFile] = useState(null);
-  const [previewSrc, setPreviewSrc] = useState("");
-  const file_input = useRef();
-  function handleUpload(e) {
-    file_input.current.click();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const currentuser = useSelector((state: any) => state.user.currentUser);
+
+  const [enabled_pic, setEnablePic] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loading_clear, setLoadingClear] = useState(false);
+  const [user_id, setUserId] = useState<number | null>(null);
+
+  const [file, setFile] = useState<File | null>(null);
+  const [previewSrc, setPreviewSrc] = useState<undefined | string>('');
+  const file_input = useRef<HTMLInputElement | null>(null);
+
+  const { data: pic_data, isLoading: pic_loading } =
+    useGetCurrentEmployeeProfilePic(enabled_pic, setEnablePic, user_id);
+
+  // console.log({ pic_data });
+
+  function handleUpload() {
+    if (file_input.current) {
+      file_input.current.click();
+    }
   }
 
-  function handleFileChange(e) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     const { files } = e.target;
-    console.log({ files });
 
-    const selectedFile = files[0];
-    setFile(selectedFile);
+    if (files && files.length > 0) {
+      const selectedFile = files[0];
+      setFile(selectedFile);
 
-    // Ensure the selected file is valid
-    if (selectedFile instanceof Blob) {
-      const objectUrl = URL.createObjectURL(selectedFile);
-      setPreviewSrc(objectUrl);
+      setLoading(true);
+      uploadProfilePic(dispatch, request, {
+        image: selectedFile,
+        user_id,
+      }).then((res) => {
+        if (res.status === 'success') {
+          setEnablePic(true);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          setPreviewSrc(undefined);
+          setFile(null);
+          file_input.current = null;
+        }
+      });
 
-      // Clean up the object URL when the component unmounts
-      return () => URL.revokeObjectURL(objectUrl);
-    } else {
-      console.error("Selected file is not valid");
+      // Ensure the selected file is valid
+      if (selectedFile instanceof Blob) {
+        const objectUrl = URL.createObjectURL(selectedFile);
+        setPreviewSrc(objectUrl);
+
+        // Clean up the object URL when the component unmounts
+        return () => URL.revokeObjectURL(objectUrl);
+      } else {
+        console.error('Selected file is not valid');
+      }
     }
-    // setPreview(URL.createObjectURL(file));
   }
+
+  function DeleteUpload() {
+    // alert('here');
+    setLoadingClear(true);
+    clearUploadProfilePic(dispatch, request, { user_id }).then((res) => {
+      if (res.status === 'success') {
+        setEnablePic(true);
+        setLoadingClear(false);
+        setPreviewSrc(undefined);
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (currentuser) {
+      setUserId(parseInt(currentuser.id));
+
+      setEnablePic(true);
+    }
+  }, [currentuser]);
+
+  useEffect(() => {
+    if (pic_data && pic_data?.payload?.profile_pic?.image_url) {
+      setPreviewSrc(pic_data.payload.profile_pic.image_url);
+    }
+  }, [pic_data]);
+
+  // console.log({ file });
 
   return (
     <div className="row">
@@ -61,13 +132,33 @@ function ProfilePicture() {
           </div>
           <Space>
             <Button
-              className="on_hover"
+              className="on_hover p-3"
               onClick={handleUpload}
               size="small"
               icon={<MdOutlineDriveFolderUpload />}
+              loading={loading}
             >
               Upload
             </Button>
+
+            {pic_data && pic_data?.payload?.profile_pic?.image_url ? (
+              <Popconfirm
+                title="Delete Profile Picture"
+                description="Are you sure to delete this profile picture?"
+                onConfirm={DeleteUpload}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button
+                  className="on_hover_secondary p-3"
+                  size="small"
+                  icon={<MdDeleteOutline />}
+                  // loading={loading}
+                >
+                  Clear
+                </Button>
+              </Popconfirm>
+            ) : null}
           </Space>
         </Space>
       </div>
@@ -78,9 +169,9 @@ function ProfilePicture() {
 function PersonalInfo() {
   const [edit_state, setEditSate] = useState(false);
   const input_sm = {
-    height: "29px",
-    fontSize: "12px",
-    padding: "0 8px",
+    height: '29px',
+    fontSize: '12px',
+    padding: '0 8px',
   };
 
   function handleToggle() {
@@ -97,138 +188,10 @@ function PersonalInfo() {
               Personal Information
             </span>
           </h3>
-          <div className="card-tools">
-            {edit_state ? (
-              <GoEye
-                className="icon__title"
-                onClick={handleToggle}
-                title="View"
-              />
-            ) : (
-              <LuFileEdit
-                className="icon__title"
-                onClick={handleToggle}
-                title="Edit"
-              />
-            )}
-          </div>
+          <div className="card-tools"></div>
         </div>
         <div className="card-body">
           <ProfilePicture />
-
-          {edit_state ? (
-            <div className="row">
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{" "}
-                </label>
-                <Input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  allowClear
-                  // className="w-75"
-                  placeholder="First name"
-                  // value={values.first_name}
-                  // onChange={handleChange}
-                  // status={errors.first_name ? "error" : ""}
-                  style={input_sm}
-                />
-
-                {/* <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.first_name,
-                      }
-                    )}
-                  >
-                    {errors.first_name}
-                  </div> */}
-              </div>
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{" "}
-                </label>
-                <Input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  allowClear
-                  // className="w-75"
-                  placeholder="First name"
-                  // value={values.first_name}
-                  // onChange={handleChange}
-                  // status={errors.first_name ? "error" : ""}
-                  style={input_sm}
-                />
-
-                {/* <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.first_name,
-                      }
-                    )}
-                  >
-                    {errors.first_name}
-                  </div> */}
-              </div>
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{" "}
-                </label>
-                <Input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  allowClear
-                  size={15}
-                  className="input_sm"
-                  placeholder="First name"
-                  // value={values.first_name}
-                  // onChange={handleChange}
-                  // status={errors.first_name ? "error" : ""}
-                  style={input_sm}
-                />
-
-                {/* <div
-                    className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
-                      {
-                        "custom-visibible": errors.first_name,
-                      }
-                    )}
-                  >
-                    {errors.first_name}
-                  </div> */}
-              </div>
-            </div>
-          ) : (
-            <div className="row">
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{" "}
-                </label>
-                <p> Seun</p>
-              </div>
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{" "}
-                </label>
-                <p> Ogunsanya Emmanuel</p>
-              </div>
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{" "}
-                </label>
-                <p> {"N/A"}</p>
-              </div>
-            </div>
-          )}
         </div>
         {/* /.card-body */}
       </div>
@@ -239,9 +202,9 @@ function PersonalInfo() {
 function EmployementInfo() {
   const [edit_state, setEditSate] = useState(false);
   const input_sm = {
-    height: "29px",
-    fontSize: "12px",
-    padding: "0 8px",
+    height: '29px',
+    fontSize: '12px',
+    padding: '0 8px',
   };
 
   function handleToggle() {
@@ -278,7 +241,7 @@ function EmployementInfo() {
             <div className="row">
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{" "}
+                  First Name <span className="text-danger">*</span>{' '}
                 </label>
                 <Input
                   type="text"
@@ -307,7 +270,7 @@ function EmployementInfo() {
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{" "}
+                  Last Name <span className="text-danger">*</span>{' '}
                 </label>
                 <Input
                   type="text"
@@ -336,13 +299,14 @@ function EmployementInfo() {
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{" "}
+                  Middle Name <span className="text-danger">*</span>{' '}
                 </label>
                 <Input
                   type="text"
                   name="first_name"
                   id="first_name"
                   allowClear
+                  // @ts-ignore
                   size={15}
                   className="input_sm"
                   placeholder="First name"
@@ -369,21 +333,21 @@ function EmployementInfo() {
             <div className="row">
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{" "}
+                  First Name <span className="text-danger">*</span>{' '}
                 </label>
                 <p> Seun</p>
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{" "}
+                  Last Name <span className="text-danger">*</span>{' '}
                 </label>
                 <p> Ogunsanya Emmanuel</p>
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{" "}
+                  Middle Name <span className="text-danger">*</span>{' '}
                 </label>
-                <p> {"N/A"}</p>
+                <p> {'N/A'}</p>
               </div>
             </div>
           )}
@@ -397,9 +361,9 @@ function EmployementInfo() {
 function ContactInfo() {
   const [edit_state, setEditSate] = useState(false);
   const input_sm = {
-    height: "29px",
-    fontSize: "12px",
-    padding: "0 8px",
+    height: '29px',
+    fontSize: '12px',
+    padding: '0 8px',
   };
 
   function handleToggle() {
@@ -436,7 +400,7 @@ function ContactInfo() {
             <div className="row">
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{" "}
+                  First Name <span className="text-danger">*</span>{' '}
                 </label>
                 <Input
                   type="text"
@@ -465,7 +429,7 @@ function ContactInfo() {
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{" "}
+                  Last Name <span className="text-danger">*</span>{' '}
                 </label>
                 <Input
                   type="text"
@@ -494,13 +458,14 @@ function ContactInfo() {
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{" "}
+                  Middle Name <span className="text-danger">*</span>{' '}
                 </label>
                 <Input
                   type="text"
                   name="first_name"
                   id="first_name"
                   allowClear
+                  // @ts-ignore
                   size={15}
                   className="input_sm"
                   placeholder="First name"
@@ -527,21 +492,21 @@ function ContactInfo() {
             <div className="row">
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{" "}
+                  First Name <span className="text-danger">*</span>{' '}
                 </label>
                 <p> Seun</p>
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{" "}
+                  Last Name <span className="text-danger">*</span>{' '}
                 </label>
                 <p> Ogunsanya Emmanuel</p>
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
                 <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{" "}
+                  Middle Name <span className="text-danger">*</span>{' '}
                 </label>
-                <p> {"N/A"}</p>
+                <p> {'N/A'}</p>
               </div>
             </div>
           )}

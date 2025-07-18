@@ -15,7 +15,7 @@ const initState = {
 
 const preferencesReducer = (state = initState, { type, payload }) => {
   switch (type) {
-    case "CLEAR_PREFERENCES_ERRORS":
+    case 'CLEAR_PREFERENCES_ERRORS':
       return {
         ...state,
         message: null,
@@ -23,133 +23,133 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         spinner: false,
       };
 
-    case "START_SPINNER_PREFERENCES":
+    case 'START_SPINNER_PREFERENCES':
       return {
         ...state,
         spinner: true,
       };
-    case "STOP_SPINNER_PREFERENCES":
+    case 'STOP_SPINNER_PREFERENCES':
       return {
         ...state,
         spinner: false,
       };
-    case "SYSTEM_PERMISSION_SUCCESS":
+    case 'SYSTEM_PERMISSION_SUCCESS':
       return {
         ...state,
         system_permissions: { ...payload.payload.system_permissions },
       };
 
-    case "SYSTEM_USERS_SUCCESS":
+    case 'SYSTEM_USERS_SUCCESS':
       return {
         ...state,
         system_users: [...payload.payload.system_users],
       };
-    case "SYSTEM_USERS_ERROR":
+    case 'SYSTEM_USERS_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "SYSTEM_PERMISSION_ERROR":
+    case 'SYSTEM_PERMISSION_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "SYSTEM_ROLES_SUCCESS":
+    case 'SYSTEM_ROLES_SUCCESS':
       return {
         ...state,
         system_roles: [...payload.payload.roles],
       };
-    case "SYSTEM_ROLES_ERROR":
+    case 'SYSTEM_ROLES_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "SYSTEM_DEPARTMENTS_SUCCESS":
+    case 'SYSTEM_DEPARTMENTS_SUCCESS':
       return {
         ...state,
         system_departments: [...payload.payload.departments],
       };
-    case "SYSTEM_DEPARTMENTS_ERROR":
+    case 'SYSTEM_DEPARTMENTS_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "SYSTEM_GENDERS_SUCCESS":
+    case 'SYSTEM_GENDERS_SUCCESS':
       return {
         ...state,
         system_genders: [...payload.payload.genders],
       };
-    case "SYSTEM_GENDERS_ERROR":
+    case 'SYSTEM_GENDERS_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "GENERIC_SUCCESS":
+    case 'GENERIC_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "GENERIC_ERROR":
+    case 'GENERIC_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "SYSTEM_STATES_SUCCESS":
+    case 'SYSTEM_STATES_SUCCESS':
       return {
         ...state,
         system_states: [...payload.payload.states],
       };
-    case "SYSTEM_STATES_ERROR":
+    case 'SYSTEM_STATES_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "SYSTEM_COUNTRY_SUCCESS":
+    case 'SYSTEM_COUNTRY_SUCCESS':
       return {
         ...state,
         system_countrys: [...payload.payload.countrys],
       };
-    case "SYSTEM_COUNTRY_ERROR":
+    case 'SYSTEM_COUNTRY_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "SYSTEM_COMPANYS_SUCCESS":
+    case 'SYSTEM_COMPANYS_SUCCESS':
       return {
         ...state,
         system_companys: [...payload.payload.companys],
       };
-    case "SYSTEM_COMPANYS_ERROR":
+    case 'SYSTEM_COMPANYS_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "SYSTEM_BRANCHS_SUCCESS":
+    case 'SYSTEM_BRANCHS_SUCCESS':
       return {
         ...state,
         system_branchs: [...payload.payload.branchs],
       };
-    case "SYSTEM_BRANCHS_ERROR":
+    case 'SYSTEM_BRANCHS_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "DELETE_ROLE_SUCCESS": {
+    case 'DELETE_ROLE_SUCCESS': {
       const deleted_id = parseInt(payload.payload.role);
       const sys_roles = [...state.system_roles];
       const filtered_roles = sys_roles.filter((role) => role.id !== deleted_id);
@@ -161,17 +161,17 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_roles: [...filtered_roles],
       };
     }
-    case "DELETE_ROLE_ERROR":
+    case 'DELETE_ROLE_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "DELETE_DEPARTMENT_SUCCESS": {
+    case 'DELETE_DEPARTMENT_SUCCESS': {
       const deleted_id = parseInt(payload.payload.department);
       const system_departments = [...state.system_departments];
       const filtered_department = system_departments.filter(
-        (dept) => dept.id !== deleted_id
+        (dept) => dept.id !== deleted_id,
       );
 
       return {
@@ -181,17 +181,17 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_departments: [...filtered_department],
       };
     }
-    case "DELETE_DEPARTMENT_ERROR":
+    case 'DELETE_DEPARTMENT_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "DELETE_BRANCH_SUCCESS": {
+    case 'DELETE_BRANCH_SUCCESS': {
       const deleted_id = parseInt(payload.payload.branch);
       const system_branchs = [...state.system_branchs];
       const filtered_branch = system_branchs.filter(
-        (bran) => bran.id !== deleted_id
+        (bran) => bran.id !== deleted_id,
       );
 
       return {
@@ -201,18 +201,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_branchs: [...filtered_branch],
       };
     }
-    case "DELETE_BRANCH_ERROR":
+    case 'DELETE_BRANCH_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "DELETE_GENDER_SUCCESS": {
+    case 'DELETE_GENDER_SUCCESS': {
       const deleted_id = parseInt(payload.payload.gender);
       const system_genders = [...state.system_genders];
       const filtered_genders = system_genders.filter(
-        (gend) => gend.id !== deleted_id
+        (gend) => gend.id !== deleted_id,
       );
 
       return {
@@ -222,18 +222,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_genders: [...filtered_genders],
       };
     }
-    case "DELETE_GENDER_ERROR":
+    case 'DELETE_GENDER_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "DELETE_COUNTRY_SUCCESS": {
+    case 'DELETE_COUNTRY_SUCCESS': {
       const deleted_id = parseInt(payload.payload.country);
       const system_countrys = [...state.system_countrys];
       const filtered_countrys = system_countrys.filter(
-        (coun) => coun.id !== deleted_id
+        (coun) => coun.id !== deleted_id,
       );
 
       return {
@@ -243,18 +243,18 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_countrys: [...filtered_countrys],
       };
     }
-    case "DELETE_COUNTRY_ERROR":
+    case 'DELETE_COUNTRY_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "DELETE_STATE_SUCCESS": {
+    case 'DELETE_STATE_SUCCESS': {
       const deleted_id = parseInt(payload.payload.state);
       const system_states = [...state.system_states];
       const filtered_states = system_states.filter(
-        (state) => state.id !== deleted_id
+        (state) => state.id !== deleted_id,
       );
 
       return {
@@ -264,17 +264,17 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_states: [...filtered_states],
       };
     }
-    case "DELETE_STATE_ERROR":
+    case 'DELETE_STATE_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "DELETE_COMPANY_SUCCESS": {
+    case 'DELETE_COMPANY_SUCCESS': {
       const deleted_id = parseInt(payload.payload.company);
       const system_companys = [...state.system_companys];
       const filtered_companys = system_companys.filter(
-        (company) => company.id !== deleted_id
+        (company) => company.id !== deleted_id,
       );
 
       return {
@@ -284,107 +284,107 @@ const preferencesReducer = (state = initState, { type, payload }) => {
         system_companys: [...filtered_companys],
       };
     }
-    case "DELETE_COMPANY_ERROR":
+    case 'DELETE_COMPANY_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "CREATE_DEPARTMENT_SUCCESS":
+    case 'CREATE_DEPARTMENT_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_DEPARTMENT_ERROR":
+    case 'CREATE_DEPARTMENT_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_BRANCH_SUCCESS":
+    case 'CREATE_BRANCH_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_BRANCH_ERROR":
+    case 'CREATE_BRANCH_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_ROLE_SUCCESS":
+    case 'CREATE_ROLE_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_ROLE_ERROR":
+    case 'CREATE_ROLE_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_GENDER_SUCCESS":
+    case 'CREATE_GENDER_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_GENDER_ERROR":
+    case 'CREATE_GENDER_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_COMPANY_SUCCESS":
+    case 'CREATE_COMPANY_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_COMPANY_ERROR":
-      return {
-        ...state,
-        message: payload.message,
-        status: payload.status,
-      };
-
-    case "CREATE_STATE_SUCCESS":
-      return {
-        ...state,
-        message: payload.message,
-        status: payload.status,
-      };
-    case "CREATE_STATE_ERROR":
+    case 'CREATE_COMPANY_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
 
-    case "CREATE_COUNTRY_SUCCESS":
+    case 'CREATE_STATE_SUCCESS':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-    case "CREATE_COUNTRY_ERROR":
+    case 'CREATE_STATE_ERROR':
       return {
         ...state,
         message: payload.message,
         status: payload.status,
       };
-        case "CLEINT_SETTINGS_SUCCESS":
+
+    case 'CREATE_COUNTRY_SUCCESS':
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case 'CREATE_COUNTRY_ERROR':
+      return {
+        ...state,
+        message: payload.message,
+        status: payload.status,
+      };
+    case 'CLEINT_SETTINGS_SUCCESS':
       //   console.log(payload);
       return {
         ...state,
         status: payload.status,
         message: payload.message,
       };
-    case "CLEINT_SETTINGS_ERROR":
+    case 'CLEINT_SETTINGS_ERROR':
       return {
         ...state,
         status: payload.status,

@@ -852,7 +852,66 @@ const updateNumberStatus = async (dispatch, request, creds) => {
     dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
   }
 };
+
+const uploadProfilePic = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: 'CLEAR_USERS_ERRORS' });
+    dispatch({ type: 'CLEAR_PREFERENCES_ERRORS' });
+    dispatch({ type: 'START_SPINNER' });
+    dispatch({ type: 'START_SPINNER_PREFERENCES' });
+
+    // Create and populate FormData dynamically
+    const formData = new FormData();
+    for (const key in creds) {
+      if (creds[key]) {
+        formData.append(key, creds[key]);
+      }
+    }
+
+    const result = await request.post(`/hris/upload-employee-pic`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    dispatch({ type: 'STOP_SPINNER' });
+    dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+    dispatch({ type: 'GENERIC_SUCCESS', payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: 'STOP_SPINNER' });
+    dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+    const resMessage = error?.response?.data;
+    dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+  }
+};
+
+const clearUploadProfilePic = async (dispatch, request, creds) => {
+  try {
+    dispatch({ type: 'CLEAR_USERS_ERRORS' });
+    dispatch({ type: 'CLEAR_PREFERENCES_ERRORS' });
+    dispatch({ type: 'START_SPINNER' });
+    dispatch({ type: 'START_SPINNER_PREFERENCES' });
+
+    const result = await request.delete(
+      `/hris/delete-employee-pic?user_id=${creds.user_id}`,
+    );
+
+    dispatch({ type: 'STOP_SPINNER' });
+    dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+    dispatch({ type: 'GENERIC_SUCCESS', payload: result.data });
+    return result.data;
+  } catch (error) {
+    dispatch({ type: 'STOP_SPINNER' });
+    dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+    const resMessage = error?.response?.data;
+    dispatch({ type: 'GENERIC_ERROR', payload: resMessage });
+  }
+};
+
 export {
+  clearUploadProfilePic,
+  uploadProfilePic,
   createRole,
   deleteRole,
   updateRole,

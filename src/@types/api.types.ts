@@ -132,6 +132,16 @@ interface Format {
   created_at: string; // Use Date if you want it as a Date object
   updated_at: string; // Use Date if you want it as a Date object
 }
+interface ProfilePic {
+  id: number;
+  user_id: number;
+  status: string;
+  image_url: string;
+  created_by: number;
+  created_at: string; // Use Date if you want it as a Date object
+  updated_at: string; // Use Date if you want it as a Date object
+}
+
 export interface Payload {
   current_cleint?: CurrentClient; // Correct property name
   genders?: Gender[]; // Correct property name
@@ -150,6 +160,7 @@ export interface Payload {
   steps?: Step[];
   format?: Format;
   format_string?: string;
+  profile_pic?: ProfilePic;
 }
 
 export interface ApiResponse {
