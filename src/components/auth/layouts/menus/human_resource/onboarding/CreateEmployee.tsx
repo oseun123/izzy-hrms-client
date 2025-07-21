@@ -81,9 +81,10 @@ function CreateEmployee() {
 
   const [enabled_country, setEnabledCountry] = useState(true);
   const [enabled_state, setEnabledState] = useState(true);
+  const [enabled_branch, setEnabledBranch] = useState(true);
+  const [enabled_com, setEnabledCom] = useState(true);
   const [enabled_grade, setEnabledGrade] = useState(true);
   const [enabled_step, setEnabledStep] = useState(true);
-  const [enabled_branch, setEnabledBranch] = useState(true);
   const [enabled_empCat, setEnabledEmpCat] = useState(true);
   const [enabled_empStatus, setEnabledEmpStatus] = useState(true);
   const [enabled_emp_des, setEnabledEmpDeS] = useState(true);
@@ -91,7 +92,6 @@ function CreateEmployee() {
   const [enabled_user, setEnabledUser] = useState(true);
   const [enabled_gender, setEnabledGender] = useState(true);
   const [enabled_num, setEnabledNum] = useState(true);
-  const [enabled_com, setEnabledCom] = useState(true);
   const [loading, setLoading] = useState(false);
   const [filtered_branch_data, setFilteredBranch] = useState<Branch[]>();
   // Drawer
@@ -136,6 +136,14 @@ function CreateEmployee() {
     setEnabledState,
     'all',
   );
+  const { data: branch_data, isLoading: branch_loading } = useGetSystemBranch(
+    enabled_branch,
+    setEnabledBranch,
+    'all',
+  );
+
+  const { data: company_data, isLoading: company_loading } =
+    useGetSystemCompany(enabled_com, setEnabledCom, 'all');
 
   const { data: grade_data, isLoading: grade_loading } = useGetSystemGrade(
     enabled_grade,
@@ -148,13 +156,6 @@ function CreateEmployee() {
     'all',
   );
 
-  const { data: branch_data, isLoading: branch_loading } = useGetSystemBranch(
-    enabled_branch,
-    setEnabledBranch,
-    'all',
-  );
-  const { data: company_data, isLoading: company_loading } =
-    useGetSystemCompany(enabled_com, setEnabledCom, 'all');
   const { data: emp_cat_data, isLoading: cat_loading } =
     useGetSystemEmpCategory(enabled_empCat, setEnabledEmpCat, 'all');
   const { data: emp_status_data, isLoading: status_loading } =
