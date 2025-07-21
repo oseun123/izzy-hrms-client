@@ -1,8 +1,14 @@
 export const storage_type = window.sessionStorage;
 // export const BASE_URL = "https://web-production-0fbb.up.railway.app/";
-export const BASE_URL = "http://localhost:5000/api";
-export const HOST_URL = "http://localhost:3000";
+export const BASE_URL = 'http://localhost:5000/api';
+export const HOST_URL = 'http://localhost:3000';
 // export const BASE_URL = "https://izzy-hrms-server.onrender.com/api";
 // export const HOST_URL = "https://izzy-hrms-client.onrender.com";
-export const token = "aYkyK3yIBcLt0Sox0Jk5XKxypJtD77";
-export const user_perm = "asytwtIBcLt0Sox0Jk5cmtylyt";
+export const token = 'aYkyK3yIBcLt0Sox0Jk5XKxypJtD77';
+export const user_perm = 'asytwtIBcLt0Sox0Jk5cmtylyt';
+export const DateFormats = {
+  DEFAULT: 'DD MMM YYYY',
+  FULL: 'dddd, MMMM D, YYYY',
+  SHORT: 'MM/DD/YYYY',
+  NORMAL: 'YYYY-MM-DD',
+};

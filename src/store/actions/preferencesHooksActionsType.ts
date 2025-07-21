@@ -473,7 +473,7 @@ const useGetSystemUsers = (
     if (data) {
       dispatch({ type: 'STOP_SPINNER' });
       dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
-      dispatch({ type: 'SYSTEM_USERS_SUCCESS', payload: data });
+
       setEnabled(false);
     }
 
@@ -509,6 +509,79 @@ const useGetSystemUsers = (
     location,
     history,
     queryClient,
+  ]);
+
+  return { data, refetch, isLoading };
+};
+
+const useGetSystemSingleUser = (
+  enabled: boolean,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  user_id: number | null,
+) => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  const { data, error, refetch, isLoading } = useQuery<ApiResponse>(
+    ['system_single_users', user_id],
+    async (): Promise<ApiResponse> => {
+      const result = await request.get<ApiResponse>(
+        `/preferences/single-user?user_id=${user_id}`,
+      );
+
+      return result.data;
+    },
+    { enabled: enabled, retry: 2 },
+  );
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch({ type: 'START_SPINNER' });
+      dispatch({ type: 'START_SPINNER_PREFERENCES' });
+    }
+    if (data) {
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+
+      setEnabled(false);
+    }
+
+    if (error) {
+      queryClient.removeQueries(['system_single_users', user_id]);
+      isForbiddden(dispatch, error, token, location, history);
+      let resMessage = {
+        status: 'error',
+        message: 'An Error Occured',
+        payload: {},
+      }; // Default error message
+
+      // Check if the error is an AxiosError
+      if (error && axios.isAxiosError(error)) {
+        // Safely access response data
+        // @ts-ignore
+        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+
+      dispatch({ type: 'STOP_SPINNER' });
+      dispatch({ type: 'STOP_SPINNER_PREFERENCES' });
+      dispatch({ type: 'SYSTEM_USERS_ERROR', payload: resMessage });
+      setEnabled(false);
+    }
+  }, [
+    dispatch,
+    isLoading,
+    data,
+    error,
+    setEnabled,
+    location,
+    history,
+    queryClient,
+    user_id,
   ]);
 
   return { data, refetch, isLoading };
@@ -1766,7 +1839,7 @@ const useGetCurrentEmployeeProfilePic = (
       if (error && axios.isAxiosError(error)) {
         // Safely access response data
         // @ts-ignore
-        resMessage = error.response?.data || resMessage; // Adjust according to your API's response structure
+        resMessage = error.response?.data || resMessage;
       } else {
         console.error('An unexpected error occurred:', error);
       }
@@ -1794,6 +1867,7 @@ const useGetCurrentEmployeeProfilePic = (
 
 export {
   useGetSystemGender,
+  useGetSystemSingleUser,
   useGetCurrentEmployeeProfilePic,
   useGetSystemGenderPaginated,
   useGetSystemDepartmentPaginated,

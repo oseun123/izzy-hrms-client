@@ -40,6 +40,7 @@ export interface State {
 }
 export interface User {
   branch_id: number | null;
+  company_id: number | null;
   country_id: number | null;
   created_at: string;
   updated_at: string;
@@ -56,7 +57,7 @@ export interface User {
   id: number;
   last_name: string;
   employee_number: string;
-  employement_date: string;
+  employment_date: string;
   primary_supervisor: number | null;
   secondary_supervisor: number | null;
   state_id: number | null;
@@ -148,6 +149,7 @@ export interface Payload {
   total_pages?: number;
   total_count?: number;
   system_users?: User[];
+  system_user?: User;
   departments?: Department[];
   countrys?: Country[];
   states?: State[];
