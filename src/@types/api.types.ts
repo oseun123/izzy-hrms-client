@@ -27,16 +27,16 @@ export interface Department {
 export interface Country {
   id: number;
   name: string;
-  created_at: string; // ISO date string
-  updated_at: string; // ISO date string
-  users: User[];
+  created_at?: string; // ISO date string
+  updated_at?: string; // ISO date string
+  users?: User[];
 }
 export interface State {
   id: number;
   name: string;
-  created_at: string; // ISO date string
-  updated_at: string; // ISO date string
-  users: User[];
+  created_at?: string; // ISO date string
+  updated_at?: string; // ISO date string
+  users?: User[];
 }
 export interface User {
   branch_id: number | null;
@@ -143,6 +143,24 @@ interface ProfilePic {
   updated_at: string; // Use Date if you want it as a Date object
 }
 
+export interface Contact {
+  id?: number;
+  user_id: number | null;
+  created_by: number;
+  house_number: string;
+  street_name: string;
+  land_mark: string;
+  lga: string;
+  postal_code: string;
+  state_id: number | null;
+  country_id: number | null;
+  is_authorized: boolean | null;
+  created_at: string; // ISO timestamp
+  updated_at: string; // ISO timestamp
+  state: State | null;
+  country: Country | null;
+}
+
 export interface Payload {
   current_cleint?: CurrentClient; // Correct property name
   genders?: Gender[]; // Correct property name
@@ -163,6 +181,7 @@ export interface Payload {
   format?: Format;
   format_string?: string;
   profile_pic?: ProfilePic;
+  contact?: Contact;
 }
 
 export interface ApiResponse {

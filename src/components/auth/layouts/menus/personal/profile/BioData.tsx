@@ -32,6 +32,7 @@ import {
   useGetSystemState,
   useGetSystemStep,
   useGetSystemUsers,
+  useGetEmpContact,
 } from '../../../../../../store/actions/preferencesHooksActionsType';
 
 import uploadImage from './../../../../../../svg/upload.svg';
@@ -58,13 +59,17 @@ import {
   State,
   Step,
   User,
+  Contact,
 } from '../../../../../../@types/api.types';
 import dayjs from 'dayjs';
 import { DateFormats } from '../../../../../../config';
-import { updateEmployee } from '../../../../../../store/actions/hrActions';
+import {
+  createContact,
+  updateEmployee,
+} from '../../../../../../store/actions/hrActions';
 const { Option } = Select;
 
-interface FormValues {
+interface FormValuesEmp {
   branch_id: number | null;
   company_id: number | null;
   country_id: number | null;
@@ -85,6 +90,19 @@ interface FormValues {
   secondary_supervisor: number | null;
   state_id: number | null;
   user_id: number | null;
+}
+
+interface ContactEmp {
+  user_id: number | undefined;
+  house_number: string;
+  street_name: string;
+  land_mark: string;
+  lga: string;
+  postal_code: string;
+  state_id: number | null;
+  country_id: number | null;
+  state: State | null;
+  country: Country | null;
 }
 
 function ProfilePicture() {
@@ -176,7 +194,7 @@ function ProfilePicture() {
   }, [pic_data]);
 
   return (
-    <div className="col-md-4">
+    <div className="col-md-6">
       <div className="card ">
         <div className="card-header">
           <h3 className="card-title">
@@ -336,7 +354,7 @@ function EmployementInfo() {
     user_id,
   );
 
-  const initValues: FormValues = {
+  const initValues: FormValuesEmp = {
     user_id: selected?.id || null,
     first_name: selected?.first_name || '',
     middle_name: selected?.middle_name || '',
@@ -364,7 +382,7 @@ function EmployementInfo() {
   }
 
   function validateUpdateEmployee(
-    values: FormValues,
+    values: FormValuesEmp,
   ): Record<string, string | undefined> {
     let errors: Record<string, string | undefined> = {};
 
@@ -525,7 +543,7 @@ function EmployementInfo() {
   }, [values.company_id, branch_data]);
 
   return (
-    <div className="col-md-8">
+    <div className="col-md-12">
       <div className="card ">
         <div className="card-header">
           <h3 className="card-title">
@@ -1421,7 +1439,7 @@ function EmployementInfo() {
                         htmlType="button"
                       >
                         {' '}
-                        Update
+                        Save
                       </Button>
                     </Popconfirm>
                   </Space>
@@ -1634,16 +1652,149 @@ function EmployementInfo() {
 }
 
 function ContactInfo() {
+  const dispatch = useDispatch();
+  const request = useAxiosPrivate();
   const [edit_state, setEditSate] = useState(false);
-  const input_sm = {
-    height: '29px',
-    fontSize: '12px',
-    padding: '0 8px',
+  const [loading, setLoading] = useState(false);
+  const [enabled_con, setEnableCon] = useState(false);
+  const [user_id, setUserId] = useState<number | null>(null);
+  const [selected, setSelected] = useState<Contact | null>(null);
+  const [enabled_country, setEnabledCountry] = useState(true);
+  const [enabled_state, setEnabledState] = useState(true);
+  const currentuser = useSelector((state: any) => state.user.currentUser);
+
+  const { data: country_data, isLoading: country_loading } =
+    useGetSystemCountry(enabled_country, setEnabledCountry, 'all');
+
+  const { data: state_data, isLoading: state_loading } = useGetSystemState(
+    enabled_state,
+    setEnabledState,
+    'all',
+  );
+
+  const initValues: ContactEmp = {
+    user_id: selected?.user_id || undefined,
+    house_number: selected?.house_number || '',
+    street_name: selected?.street_name || '',
+    land_mark: selected?.land_mark || '',
+    lga: selected?.lga || '',
+    postal_code: selected?.postal_code || '',
+    state_id: selected?.state_id || null,
+    country_id: selected?.country_id || null,
+    state: selected?.state || null,
+    country: selected?.country || null,
   };
+
+  const {
+    data: contact_data,
+    isLoading: contact_loading,
+    refetch,
+  } = useGetEmpContact(enabled_con, setEnableCon, user_id);
 
   function handleToggle() {
     setEditSate((prev) => !prev);
   }
+
+  function validateUpdateContact(
+    values: ContactEmp,
+  ): Record<string, string | undefined> {
+    let errors: Record<string, string | undefined> = {};
+
+    if (values.hasOwnProperty('user_id') && values.user_id === null) {
+      errors.user_id = 'Invalid user.';
+    }
+    if (
+      values.hasOwnProperty('house_number') &&
+      values.house_number.trim() === ''
+    ) {
+      errors.house_number = 'House number is required.';
+    }
+    if (
+      values.hasOwnProperty('street_name') &&
+      values.street_name.trim() === ''
+    ) {
+      errors.street_name = 'Street number is required.';
+    }
+    if (values.hasOwnProperty('land_mark') && values.land_mark.trim() === '') {
+      errors.land_mark = 'Land mark is required.';
+    }
+    if (values.hasOwnProperty('lga') && values.lga.trim() === '') {
+      errors.lga = 'Land mark is required.';
+    }
+    if (
+      values.hasOwnProperty('postal_code') &&
+      values.postal_code.trim() === ''
+    ) {
+      errors.postal_code = 'Postal code is required.';
+    }
+    if (values.hasOwnProperty('state_id') && values.state_id === null) {
+      errors.state_id = 'State is required.';
+    }
+    if (values.hasOwnProperty('country_id') && values.country_id === null) {
+      errors.country_id = 'Country is required.';
+    }
+
+    return errors;
+  }
+
+  //callback
+
+  function updateContactCallback() {
+    setLoading(true);
+    // console.log({ values });
+    createContact(dispatch, request, values).then((res) => {
+      if (res?.status === 'success') {
+        clearForm();
+        refetch();
+      }
+      setLoading(false);
+    });
+  }
+
+  function confirm() {
+    const fakeEvent = {
+      preventDefault: () => {},
+    } as React.FormEvent<HTMLFormElement>;
+    handleSubmit(fakeEvent);
+  }
+
+  const { values, errors, handleChange, handleSubmit, clearForm } =
+    useCustomForm(updateContactCallback, initValues, validateUpdateContact);
+
+  useEffect(() => {
+    if (currentuser) {
+      setUserId(parseInt(currentuser.id));
+
+      setEnableCon(true);
+    }
+  }, [currentuser]);
+
+  // set selected user data
+  useEffect(() => {
+    if (contact_data && Object.keys(contact_data).length) {
+      const single = contact_data?.payload?.contact;
+
+      setSelected(single || null);
+    }
+  }, [contact_data]);
+
+  useEffect(() => {
+    if (selected) {
+      clearForm();
+      values.user_id = selected?.id;
+      values.house_number = selected?.house_number;
+      values.street_name = selected?.street_name;
+      values.land_mark = selected?.land_mark;
+      values.lga = selected?.lga;
+      values.postal_code = selected?.postal_code;
+      values.state_id = selected?.state_id;
+      values.country_id = selected?.country_id;
+      values.country = selected?.country;
+      values.state = selected?.state;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
+
   return (
     <div className="col-md-6">
       <div className="card ">
@@ -1671,117 +1822,309 @@ function ContactInfo() {
           </div>
         </div>
         <div className="card-body">
-          {edit_state ? (
-            <div className="row">
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{' '}
-                </label>
-                <Input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  allowClear
-                  // className="w-75"
-                  placeholder="First name"
-                  // value={values.first_name}
-                  // onChange={handleChange}
-                  // status={errors.first_name ? "error" : ""}
-                  style={input_sm}
-                />
+          {contact_loading ? (
+            <Skeleton active />
+          ) : edit_state ? (
+            <form onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="form-group col-md-4 d-flex flex-column ">
+                  <label htmlFor="house_number">
+                    House number <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Input
+                    type="text"
+                    name="house_number"
+                    id="house_number"
+                    allowClear
+                    // className="w-75"
+                    placeholder="House number"
+                    value={values.house_number}
+                    onChange={handleChange}
+                    status={errors.house_number ? 'error' : ''}
+                  />
 
-                {/* <div
+                  <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.first_name,
-                      }
+                        'custom-visibible': errors.house_number,
+                      },
                     )}
                   >
-                    {errors.first_name}
-                  </div> */}
-              </div>
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{' '}
-                </label>
-                <Input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  allowClear
-                  // className="w-75"
-                  placeholder="First name"
-                  // value={values.first_name}
-                  // onChange={handleChange}
-                  // status={errors.first_name ? "error" : ""}
-                  style={input_sm}
-                />
+                    {errors.house_number}
+                  </div>
+                </div>
+                <div className="form-group col-md-4 d-flex flex-column ">
+                  <label htmlFor="street_name">
+                    Street name <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Input
+                    type="text"
+                    name="street_name"
+                    id="street_name"
+                    allowClear
+                    // className="w-75"
+                    placeholder=" Street name"
+                    value={values.street_name}
+                    onChange={handleChange}
+                    status={errors.street_name ? 'error' : ''}
+                  />
 
-                {/* <div
+                  <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.first_name,
-                      }
+                        'custom-visibible': errors.street_name,
+                      },
                     )}
                   >
-                    {errors.first_name}
-                  </div> */}
-              </div>
-              <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{' '}
-                </label>
-                <Input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  allowClear
-                  // @ts-ignore
-                  size={15}
-                  className="input_sm"
-                  placeholder="First name"
-                  // value={values.first_name}
-                  // onChange={handleChange}
-                  // status={errors.first_name ? "error" : ""}
-                  style={input_sm}
-                />
+                    {errors.street_name}
+                  </div>
+                </div>
+                <div className="form-group col-md-4 d-flex flex-column ">
+                  <label htmlFor="land_mark">
+                    Land mark <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Input
+                    type="text"
+                    name="land_mark"
+                    id="land_mark"
+                    allowClear
+                    // className="w-75"
+                    placeholder=" Land mark"
+                    value={values.land_mark}
+                    onChange={handleChange}
+                    status={errors.land_mark ? 'error' : ''}
+                  />
 
-                {/* <div
+                  <div
                     className={classnames(
-                      "invalid-feedback",
-                      "custom-feedback",
+                      'invalid-feedback',
+                      'custom-feedback',
                       {
-                        "custom-visibible": errors.first_name,
-                      }
+                        'custom-visibible': errors.land_mark,
+                      },
                     )}
                   >
-                    {errors.first_name}
-                  </div> */}
+                    {errors.land_mark}
+                  </div>
+                </div>
+                <div className="form-group col-md-4 d-flex flex-column ">
+                  <label htmlFor="postal_code">
+                    Postal code <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Input
+                    type="text"
+                    name="postal_code"
+                    id="postal_code"
+                    allowClear
+                    // className="w-75"
+                    placeholder="Postal code"
+                    value={values.postal_code}
+                    onChange={handleChange}
+                    status={errors.postal_code ? 'error' : ''}
+                  />
+
+                  <div
+                    className={classnames(
+                      'invalid-feedback',
+                      'custom-feedback',
+                      {
+                        'custom-visibible': errors.postal_code,
+                      },
+                    )}
+                  >
+                    {errors.postal_code}
+                  </div>
+                </div>
+                <div className="form-group col-md-4  d-flex flex-column ">
+                  <label htmlFor="country_id">
+                    Country <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Select
+                    showSearch
+                    allowClear
+                    id="country_id"
+                    // className="w-75"
+                    placeholder="Employee country"
+                    value={values.country_id}
+                    onChange={(value) =>
+                      handleChange({ name: 'country_id', value })
+                    }
+                    status={errors.country_id ? 'error' : ''}
+                    filterOption={(input, option) => {
+                      // Ensure option.label is a string before calling toLowerCase
+                      const label = option?.label ?? '';
+                      return (
+                        typeof label === 'string' &&
+                        label.toLowerCase().includes(input.toLowerCase())
+                      );
+                    }}
+                    loading={country_loading}
+                  >
+                    {country_data?.payload?.countrys &&
+                      country_data?.payload?.countrys.map(
+                        (country: Country) => (
+                          <Option
+                            key={country.id}
+                            value={country.id}
+                            label={country.name}
+                          >
+                            {' '}
+                            {country.name}
+                          </Option>
+                        ),
+                      )}
+                  </Select>
+
+                  <div
+                    className={classnames(
+                      'invalid-feedback',
+                      'custom-feedback',
+                      {
+                        'custom-visibible': errors.country_id,
+                      },
+                    )}
+                  >
+                    {errors.country_id}
+                  </div>
+                </div>
+                <div className="form-group col-md-4  d-flex flex-column ">
+                  <label htmlFor="state_id">
+                    State <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Select
+                    showSearch
+                    allowClear
+                    id="state_id"
+                    // className="w-75"
+                    placeholder="Employee state"
+                    value={values.state_id}
+                    onChange={(value) =>
+                      handleChange({ name: 'state_id', value })
+                    }
+                    status={errors.state_id ? 'error' : ''}
+                    filterOption={(input, option) => {
+                      const label = option?.label ?? '';
+                      return (
+                        typeof label === 'string' &&
+                        label.toLowerCase().includes(input.toLowerCase())
+                      );
+                    }}
+                    loading={state_loading}
+                  >
+                    {state_data?.payload?.states &&
+                      state_data?.payload?.states.map((state: State) => (
+                        <Option
+                          key={state.id}
+                          value={state.id}
+                          label={state.name}
+                        >
+                          {' '}
+                          {state.name}
+                        </Option>
+                      ))}
+                  </Select>
+
+                  <div
+                    className={classnames(
+                      'invalid-feedback',
+                      'custom-feedback',
+                      {
+                        'custom-visibible': errors.state_id,
+                      },
+                    )}
+                  >
+                    {errors.state_id}
+                  </div>
+                </div>
+                <div className="form-group col-md-4 d-flex flex-column ">
+                  <label htmlFor="lga">
+                    Lga <span className="text-danger">*</span>{' '}
+                  </label>
+                  <Input
+                    type="text"
+                    name="lga"
+                    id="lga"
+                    allowClear
+                    // className="w-75"
+                    placeholder=" Lga"
+                    value={values.lga}
+                    onChange={handleChange}
+                    status={errors.lga ? 'error' : ''}
+                  />
+
+                  <div
+                    className={classnames(
+                      'invalid-feedback',
+                      'custom-feedback',
+                      {
+                        'custom-visibible': errors.lga,
+                      },
+                    )}
+                  >
+                    {errors.lga}
+                  </div>
+                </div>
               </div>
-            </div>
+
+              <div className="row mt-4">
+                <div className="form-group col-md-12">
+                  <Space>
+                    <Popconfirm
+                      title="Create Contact"
+                      description="Are you sure you want to update this record?"
+                      onConfirm={confirm}
+                      // onCancel={cancel}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button
+                        type="primary"
+                        icon={<LuFileEdit />}
+                        loading={loading}
+                        className="on_hover"
+                        htmlType="button"
+                      >
+                        {' '}
+                        Save
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </div>
+              </div>
+            </form>
           ) : (
             <div className="row">
               <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  First Name <span className="text-danger">*</span>{' '}
-                </label>
-                <p> Seun</p>
+                <label htmlFor="house_number">House number</label>
+                <p>{selected?.house_number || 'N/A'} </p>
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name">
-                  Last Name <span className="text-danger">*</span>{' '}
-                </label>
-                <p> Ogunsanya Emmanuel</p>
+                <label htmlFor="street_name">Street name</label>
+                <p>{selected?.street_name || 'N/A'} </p>
               </div>
               <div className="form-group col-md-4 d-flex flex-column ">
-                <label htmlFor="first_name" className="label__sm">
-                  Middle Name <span className="text-danger">*</span>{' '}
-                </label>
-                <p> {'N/A'}</p>
+                <label htmlFor="land_mark">Land mark</label>
+                <p>{selected?.land_mark || 'N/A'} </p>
+              </div>
+              <div className="form-group col-md-4 d-flex flex-column ">
+                <label htmlFor="postal_code">Postal code</label>
+                <p>{selected?.postal_code || 'N/A'} </p>
+              </div>
+              <div className="form-group col-md-4 d-flex flex-column ">
+                <label htmlFor="country_id">Country</label>
+                <p>{selected?.country?.name || 'N/A'} </p>
+              </div>
+              <div className="form-group col-md-4 d-flex flex-column ">
+                <label htmlFor="state_id">State</label>
+                <p>{selected?.state?.name || 'N/A'} </p>
+              </div>
+              <div className="form-group col-md-4 d-flex flex-column ">
+                <label htmlFor="lga">Lga</label>
+                <p>{selected?.lga || 'N/A'} </p>
               </div>
             </div>
           )}
@@ -1797,9 +2140,8 @@ function BioData() {
     <>
       <div className="row">
         <ProfilePicture />
-        <EmployementInfo />
-
         <ContactInfo />
+        <EmployementInfo />
       </div>
     </>
   );
