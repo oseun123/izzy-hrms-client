@@ -1,13 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import PreferencesHero from "../../PreferencesHero";
-import AminatedLayout from "../../../../../../ui/AminatedLayout";
+import PreferencesHero from '../../PreferencesHero';
+import AminatedLayout from '../../../../../../ui/AminatedLayout';
 import {
   useCleanUp,
   usePreferenceNotification,
-} from "../../../../../../../hooks";
-import EmployeeNumber from "./EmployeeNumber";
+} from '../../../../../../../hooks';
+import EmployeeNumber from './EmployeeNumber';
+import SystemHR from './SystemHR';
 
 function GeneralSettings() {
   useCleanUp();
@@ -39,6 +40,7 @@ function GeneralSettings() {
 
         <div className="row m-0">
           <EmployeeNumber />
+          <SystemHR />
         </div>
 
         {/* /.content */}
