@@ -114,34 +114,36 @@ function SystemHR() {
                         administrator
                       </small>
                     </div>
-                    <span style={{ width: '300px' }}>
-                      <Select
-                        placeholder="Select System HR"
-                        value={systemHR}
-                        onChange={handleSystemHRChange}
-                        style={{ width: '100%' }}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (!option?.children) return false;
-                          return (
-                            option.children
-                              .toString()
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          );
-                        }}
-                      >
-                        {user_data?.payload?.system_users?.map((user: User) => (
-                          <Option key={user.id} value={user.id}>
-                            {user.first_name} {user.last_name} - {user.email}
-                          </Option>
-                        ))}
-                      </Select>
-                    </span>
-                  </div>
-
-                  <div className="row mt-3">
-                    <div className="form-group col-md-6">
+                    <div
+                      className="d-flex align-items-center justify-content-between"
+                      style={{ width: '500px' }}
+                    >
+                      <span style={{ width: '300px' }}>
+                        <Select
+                          placeholder="Select System HR"
+                          value={systemHR}
+                          onChange={handleSystemHRChange}
+                          style={{ width: '100%' }}
+                          showSearch
+                          filterOption={(input, option) => {
+                            if (!option?.children) return false;
+                            return (
+                              option.children
+                                .toString()
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }}
+                        >
+                          {user_data?.payload?.system_users?.map(
+                            (user: User) => (
+                              <Option key={user.id} value={user.id}>
+                                {user.fullname} - {user.employee_number}
+                              </Option>
+                            ),
+                          )}
+                        </Select>
+                      </span>
                       <Button
                         type="primary"
                         icon={<FormOutlined />}
