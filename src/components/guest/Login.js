@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useCleanUp, useForm, useUserNotification } from '../../hooks';
 import Spinner from './../helpers/Spinner';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginForm } from '../../util/formValidations';
 import { login } from './../../store/actions/userActions';
@@ -11,7 +10,6 @@ import { Input, Button } from 'antd';
 import { LoginOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { current_cleint } from '../../store/selectors/userSelectors';
 import { useShallowEqualSelector } from '../../hooks';
-import styles from '../styles/layout/Layout.module.css';
 import AminatedLayout from '../ui/AminatedLayout';
 
 const Login = () => {
@@ -47,17 +45,42 @@ const Login = () => {
 
   return (
     <AminatedLayout>
-      <div className="hold-transition login-page">
-        <div className="login-box">
-          <div className="login-logo">{currentCleint.name} HRMS</div>
-          {/* /.login-logo */}
-          <div className="card">
-            <div className="card-body login-card-body">
-              <p className="login-box-msg">Sign in to start your session</p>
+      <div className="hold-transition login-page" style={{ 
+        height: '100vh',
+        background: 'linear-gradient(120deg, #f6f9fc 0%, #eef2f6 100%)',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <div className="login-box" style={{ 
+          maxWidth: '420px', 
+          width: '100%',
+          padding: '20px 15px 0',
+          margin: '0 auto',
+          flex: '0 0 auto'
+        }}>
+          <div className="text-center mb-4">
+            <h1 className="text-primary mb-3" style={{ 
+              fontSize: '2.2rem',
+              fontWeight: 600,
+              letterSpacing: '-0.5px' 
+            }}>
+              {currentCleint.name} HRMS
+            </h1>
+            <p className="text-muted" style={{ lineHeight: '1.4' }}>Welcome back! Please login to continue</p>
+          </div>
 
-              <Spinner mb-2 position={'right'} />
+          <div 
+            className="card border-0 shadow-lg" 
+            style={{ borderRadius: '16px' }}
+          >
+            <div className="card-body p-4">
+              <Spinner position={'right'} className="mb-4" />
+
               <form onSubmit={handleSubmit}>
-                <div className="input-group mb-3">
+                {/* Email Field */}
+                <div className="mb-3">
+                  <label className="form-label text-gray-600 mb-2 d-block">Email Address</label>
                   <Input
                     allowClear
                     status={errors.email ? 'error' : ''}
@@ -65,22 +88,31 @@ const Login = () => {
                     value={values.email}
                     name="email"
                     onChange={handleChange}
-                    placeholder="Enter Email"
-                    addonBefore={<MailOutlined className="text-secondary" />}
+                    placeholder="name@company.com"
+                    className="py-3"
+                    prefix={<MailOutlined style={{ color: '#6c757d' }} />}
+                    style={{ borderRadius: '10px', borderColor: 'rgba(0,0,0,0.1)' }}
                   />
-                  <div
-                    className={classnames(
-                      'invalid-feedback',
-                      'custom-feedback',
-                      {
-                        'custom-visibible': errors.email,
-                      },
+                  <div className="mt-2" style={{ minHeight: '24px' }}>
+                    {errors.email && (
+                      <div className="text-danger small animate-fade-in">
+                        {errors.email}
+                      </div>
                     )}
-                  >
-                    {errors.email}
                   </div>
                 </div>
-                <div className="input-group mb-3">
+
+                {/* Password Field */}
+                <div className="mb-3">
+                  <div className="d-flex justify-content-between mb-2">
+                    <label className="form-label text-gray-600">Password</label>
+                    <Link 
+                      to="/forget-password" 
+                      className="text-primary small text-decoration-none"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
                   <Input.Password
                     allowClear
                     status={errors.password ? 'error' : ''}
@@ -88,47 +120,42 @@ const Login = () => {
                     value={values.password}
                     onChange={handleChange}
                     name="password"
-                    placeholder="Enter Password"
-                    addonBefore={<LockOutlined className="text-secondary" />}
+                    placeholder="••••••••"
+                    className="py-3"
+                    prefix={<LockOutlined style={{ color: '#6c757d' }} />}
+                    style={{ borderRadius: '10px', borderColor: 'rgba(0,0,0,0.1)' }}
                   />
-
-                  <div
-                    className={classnames(
-                      'invalid-feedback',
-                      'custom-feedback',
-                      {
-                        'custom-visibible': errors.password,
-                      },
+                  <div className="mt-2" style={{ minHeight: '24px' }}>
+                    {errors.password && (
+                      <div className="text-danger small animate-fade-in">
+                        {errors.password}
+                      </div>
                     )}
-                  >
-                    {errors.password}
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-4"></div>
-                  {/* /.col */}
-                  <div className="col-8 text-right">
-                    <Button
-                      type="primary"
-                      icon={<LoginOutlined />}
-                      loading={spinner}
-                      htmlType="submit"
-                      className={styles.on_hover}
-                    >
-                      {' '}
-                      Sign In
-                    </Button>
-                  </div>
-                  {/* /.col */}
+
+                <div className="mb-3">
+                  <Button
+                    type="primary"
+                    icon={<LoginOutlined />}
+                    loading={spinner}
+                    htmlType="submit"
+                    block
+                    size="large"
+                    className="rounded-lg"
+                    style={{
+                      height: '46px',
+                      fontWeight: 600,
+                      background: 'linear-gradient(135deg, #3f87f5 0%, #3469e0 100%)',
+                      border: 'none',
+                      boxShadow: '0 4px 6px rgba(63, 135, 245, 0.2)'
+                    }}
+                  >
+                    Sign In
+                  </Button>
                 </div>
               </form>
-
-              {/* /.social-auth-links */}
-              <p className="mb-1">
-                <Link to="/forget-password">I forgot my password</Link>
-              </p>
             </div>
-            {/* /.login-card-body */}
           </div>
         </div>
       </div>
